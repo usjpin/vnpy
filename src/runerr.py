@@ -1,4 +1,4 @@
-from token import Token
+from tok import Token
 
 class RuntimeErr(Exception):
     def __init__(self, token: Token, message: str):

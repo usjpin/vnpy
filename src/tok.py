@@ -1,9 +1,19 @@
 from enum import Enum
+from logging.config import IDENTIFIER
 from typing import Any
 
 class Type(Enum):
     LEFT_PAREN = '('
     RIGHT_PAREN = ')'
+    EOF = ''
+
+    IDENTIFIER = 'identifier'
+    STRING = 'string'
+    NUMBER = 'number'
+
+    # Special
+    SHOW = 'show'
+    WAIT = 'wait'
 
 class Token:
     def __init__(self, type: Type, lexeme: str, literal: Any, line: int):

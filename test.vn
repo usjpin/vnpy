@@ -1,0 +1,4 @@
+show "red.png"
+wait 5
+show "blue.png"
+wait 2

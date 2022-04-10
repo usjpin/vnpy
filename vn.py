@@ -1,12 +1,16 @@
 import sys
 
+sys.path.append('src')
+sys.setrecursionlimit(5000)
+
 from scan import Scanner
 from parse import Parser
 from resolve import Resolver
 from interpret import Interpreter
+from astprint import ASTPrinter
 
 interpreter = Interpreter()
-haderr = False
+hadErr = False
 hadRunErr = False
 
 def run(source: str) -> None:
@@ -14,19 +18,21 @@ def run(source: str) -> None:
     tokens = scanner.scanTokens()
     parser = Parser(tokens)
     statements = parser.parse()
-    if (haderr): return
+    '''for stmt in statements:
+        print(ASTPrinter().print(stmt))'''
+    if hadErr: return
     resolver = Resolver(interpreter)
     resolver.resolve(statements)
-    if (haderr): return
+    if hadErr: return
     interpreter.interpret(statements)
 
 
 def runFile(path: str) -> None:
     with open(path) as file:
-        err, runerr = run(path)
-    if err:
+        run(file.read())
+    if hadErr:
         sys.exit(65)
-    if runerr:
+    if hadRunErr:
         sys.exit(70)
 
 
