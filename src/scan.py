@@ -5,7 +5,12 @@ from tok import Token, Type
 class Scanner:
     keywords = {
         'show': Type.SHOW,
-        'wait': Type.WAIT
+        'wait': Type.WAIT,
+        'scene': Type.SCENE,
+        'option': Type.OPTION,
+        'do': Type.DO,
+        'jump': Type.JUMP,
+        'exit': Type.EXIT
     }
     tokens = []
     start = 0
@@ -27,7 +32,11 @@ class Scanner:
 
     def scanToken(self) -> None:
         c = self.advance()
-        if c == ' ' or c == '\r' or c == '\t':
+        if c == '{':
+            self.addToken(Type.LEFT_BRACE)
+        elif c == '}':
+            self.addToken(Type.RIGHT_BRACE)
+        elif c == ' ' or c == '\r' or c == '\t':
             pass
         elif c == '\n':
             self.line += 1

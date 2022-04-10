@@ -2,3 +2,17 @@ show "red.png"
 wait 5
 show "blue.png"
 wait 2
+scene a {
+    show "red.png"
+    wait 5
+    show "blue.png"
+    wait 2
+    exit
+}
+scene b {
+    show "red.png"
+    option "pick me" do wait 5
+    wait 3
+    jump a
+}
+jump b

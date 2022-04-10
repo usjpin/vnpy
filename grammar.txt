@@ -1,0 +1,128 @@
+S0 -> D* EOF
+
+D -> LoadD | SetD | FunD | SceneD | Stmt
+
+loadD -> "load" id "=" filepath
+SetD -> "set" id ( "=" D )? ";"
+FunD -> "fun" Func
+SceneD -> "scene" id Block
+
+Func -> id "(" Params? ")" Block
+Parmas -> id ( "," id )*
+Args -> Expr ( "," Expr)*
+
+Stmt -> ExprS | IfS | ReturnS | WhileS | Block | SpecS
+ExprS -> Expr ";"
+IfS -> "if" "(" Exp ")" Stmt ( "else" Stmt )?
+WhileS -> "while" "(" Expr ")" Stmt
+Block -> "{" D* "}"
+
+SpecS -> ShowS | PlayS | GotoS | DisplayS | DelayS | ExitS 
+ShowS -> "showimg" id
+PlayS -> "playaudio" id
+GotoS -> "jump" id
+Display -> "display" Expr ("[" Stmt* "]")*
+OptionS -> "option" Expr "do" Stmt
+DelayS -> "wait" ( num | InputS )
+ExitS -> "exit"
+InputS -> "input" ("click" | "key" )
+
+Expr -> A
+A -> id "=" A | Or
+Or -> And ("or" And)*
+And -> Eq ("and" Eq)*
+Eq -> Comp ( ("!=" | "==" ) Comp )*
+Comp -> Term ( ( ">" | ">=" | "<" | "<=" ) Term )*
+Term -> Fact ( ( "-" | "+" ) Fac )*
+Fact -> U ( ( "/" | "*" ) U )*
+U -> ( "!" | "-" ) U | C
+C -> Prim ( "(" Args ")" )*
+Prim -> "true" | "false" | "nil" | num | string | id | "(" Expr ")"
+
+num -> digit + ( "." digit+ )?
+filepath -> <a valid filepath in string>
+id -> alpha ( alpha | digit )*
+alpha -> "a" ... "z" | "A" ... "Z" | "_"
+digit -> "0" ... "9"
+
+===========================================
+Grammar Update:
+
+S -> Sc | Dis | Audio | Opt | Wait
+Sc -> "scene" id "{" S* "}"
+Dis -> "display" ( id | File | Opt)
+Audio -> "audio" ("start" | "stop") ( id | File)
+Opt -> "options" "{" Case* "}"
+Case -> "case" ( id | string ) "do" Expr
+Wait -> "wait" ( Input | num)
+Input -> "choice" | "click" Click | "key" Key
+Key -> KEY_UP | KEY_DOWN | KEY_LEFT | KEY_RIGHT
+Click -> CLICK_LEFT | CLICK_RIGHT | CLICK_BOTH
+File -> string
+
+scene a {
+    display message "hihi";
+    display options {
+        case "ok" do {
+            wait 5;
+        }
+        case "meh" do {
+            set a = 5;
+        }
+    }
+    scene suba {
+
+    }
+    set ok = wait input (choice | click | key)
+}
+
+===========================================
+
+set first = nil;
+set second = nil;
+
+fun delayAndExit() {
+    delay 500;
+    exit;
+}
+
+fun displayError() {
+    display "An error occured"
+}
+
+scene Sub {
+    if (first && second) {
+        set result = first - second;
+        display "The subtraction result is " + result;
+    } else displayError();
+    delayAndExit();
+}
+
+scene Add {
+    if (first && second) {
+        set result = first + second;
+        display "The addition result is " + result;
+    } else displayError();
+    delayAndExit();
+}
+
+scene main {
+    display "Pick a number" [
+        option "1" do set first = 1;
+        option "2" do set first = 2;
+        option "3" do set first = 3;
+    ]
+    display "Pick another number" [
+        set i = 0
+        while (i <= 10) {
+            option i do set second = i;
+	    i = i + 1;
+        }
+    ]
+    display "Pick an operation" [
+         option "add" do jump Add;
+         option "sub" do jump Sub;
+    ]
+}
+
+jump main

@@ -5,6 +5,8 @@ from typing import Any
 class Type(Enum):
     LEFT_PAREN = '('
     RIGHT_PAREN = ')'
+    LEFT_BRACE = '{'
+    RIGHT_BRACE = '}'
     EOF = ''
 
     IDENTIFIER = 'identifier'
@@ -14,6 +16,11 @@ class Type(Enum):
     # Special
     SHOW = 'show'
     WAIT = 'wait'
+    SCENE = 'scene'
+    OPTION = 'option'
+    DO = 'do'
+    JUMP = 'jump'
+    EXIT = 'exit'
 
 class Token:
     def __init__(self, type: Type, lexeme: str, literal: Any, line: int):

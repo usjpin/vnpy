@@ -21,17 +21,39 @@ class Parser:
 
     def declaration(self) -> Stmt:
         try:
+            if (self.match(Type.SCENE)):
+                return self.sceneDeclaration()
             return self.statement()
         except ParseErr:
             print("Parse Error")
+            print(self.tokens[self.current])
             self.synchronize()
             return None
+        
+    def sceneDeclaration(self) -> Stmt:
+        name = self.consume(Type.IDENTIFIER, "Expect Scene Name")
+        self.consume(Type.LEFT_BRACE, "Expect \'{\' Before Scene Body")
+        body = self.block()
+        return Scene(name, body)
+    
+    def block(self) -> List[Stmt]:
+        statements = []
+        while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
+            statements.append(self.declaration())
+        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Block")
+        return statements
 
     def statement(self) -> Stmt:
         if self.match(Type.SHOW):
             return self.showStatement()
         if self.match(Type.WAIT):
             return self.waitStatement()
+        if self.match(Type.OPTION):
+            return self.optionStatement()
+        if self.match(Type.JUMP):
+            return self.jumpStatement()
+        if self.match(Type.EXIT):
+            return self.exitStatement()
         return self.expressionStatement()
 
     def showStatement(self) -> Stmt:
@@ -45,6 +67,21 @@ class Parser:
             number = Literal(self.previous().literal)
             return Wait(number)
         raise self.error(self.peek(), "Expect Number Value")
+
+    def optionStatement(self) -> Stmt:
+        if not self.match(Type.STRING):
+            raise self.error(self.peek(), "Expect String Value")
+        message = Literal(self.previous().literal)
+        self.consume(Type.DO, "Expect \'do\' After Option Message")
+        action = self.statement()
+        return Option(message, action)
+
+    def jumpStatement(self) -> Stmt:
+        dest = self.consume(Type.IDENTIFIER, "Expect Scene Name")
+        return Jump(dest)
+
+    def exitStatement(self) -> Stmt:
+        return Exit()
 
     def expressionStatement(self) -> Stmt:
         pass

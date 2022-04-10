@@ -1,11 +1,10 @@
+import sys
 from typing import List
 
-from sympy import evaluate
-
 from expr import *
+from stmt import *
 from game import Game
 from runerr import RuntimeErr
-from stmt import *
 from env import Env
 
 class Interpreter(ExprVisitor, StmtVisitor):
@@ -39,6 +38,18 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def visitWaitStmt(self, stmt: Wait):
         #print("Interpreting Wait")
         self.game.wait(self.evaluate(stmt.number))
+
+    def visitSceneStmt(self, stmt: Scene):
+        pass
+
+    def visitOptionStmt(self, stmt: Option):
+        pass
+
+    def visitJumpStmt(self, stmt: Jump):
+        pass
+
+    def visitExitStmt(self, stmt: Exit):
+        sys.exit(0)
 
     def visitAssignExpr(self, expr: Assign):
         pass

@@ -9,7 +9,7 @@ from resolve import Resolver
 from interpret import Interpreter
 from astprint import ASTPrinter
 
-interpreter = Interpreter()
+#interpreter = Interpreter()
 hadErr = False
 hadRunErr = False
 
@@ -18,11 +18,12 @@ def run(source: str) -> None:
     tokens = scanner.scanTokens()
     parser = Parser(tokens)
     statements = parser.parse()
-    '''for stmt in statements:
-        print(ASTPrinter().print(stmt))'''
+    for stmt in statements:
+        print(ASTPrinter().print(stmt))
     if hadErr: return
-    resolver = Resolver(interpreter)
-    resolver.resolve(statements)
+    #resolver = Resolver(interpreter)
+    #resolver.resolve(statements)
+    return
     if hadErr: return
     interpreter.interpret(statements)
 
