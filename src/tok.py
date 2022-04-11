@@ -7,20 +7,33 @@ class Type(Enum):
     RIGHT_PAREN = ')'
     LEFT_BRACE = '{'
     RIGHT_BRACE = '}'
+    SEMICOLON = ';'
     EOF = ''
 
     IDENTIFIER = 'identifier'
     STRING = 'string'
     NUMBER = 'number'
 
-    # Special
-    SHOW = 'show'
-    WAIT = 'wait'
+    CONFIG = 'config'
+    WIDTH = 'width'
+    HEIGHT = 'height'
+    MODE = 'mode'
     SCENE = 'scene'
+    DISPLAY = 'display'
+    AUDIO = 'audio'
+    START = 'start'
+    STOP = 'stop'
+    MESSAGE = 'message'
     OPTION = 'option'
+    CASE = 'case'
     DO = 'do'
+    WAIT = 'wait'
     JUMP = 'jump'
     EXIT = 'exit'
+    CHOICE = 'choice'
+    CLICK = 'click'
+    KEY = 'key'
+
 
 class Token:
     def __init__(self, type: Type, lexeme: str, literal: Any, line: int):

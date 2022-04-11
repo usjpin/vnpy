@@ -17,7 +17,7 @@ class Game:
             (self.width, self.height)
         )
 
-    def show(self, path: str):
+    def display(self, path: str):
         self.checkEvents()
         pic = pygame.image.load(path)
         pic = pygame.transform.scale(pic, (self.width, self.height))

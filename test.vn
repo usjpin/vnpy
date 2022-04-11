@@ -1,17 +1,22 @@
-show "red.png"
+config width 100;
+config height 200;
+config mode "console";
+
+display "red.png"
 wait 5
-show "blue.png"
+display "blue.png"
 wait 2
 scene a {
-    show "red.png"
+    display "red.png"
     wait 5
-    show "blue.png"
+    display "blue.png"
     wait 2
     exit
 }
+wait 2
 scene b {
-    show "red.png"
-    option "pick me" do wait 5
+    display "red.png"
+    display option "pick me" do wait 5
     wait 3
     jump a
 }

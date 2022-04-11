@@ -4,13 +4,25 @@ from tok import Token, Type
 
 class Scanner:
     keywords = {
-        'show': Type.SHOW,
-        'wait': Type.WAIT,
+        'config': Type.CONFIG,
+        'width': Type.WIDTH,
+        'height': Type.HEIGHT,
+        'mode': Type.MODE,
         'scene': Type.SCENE,
+        'display': Type.DISPLAY,
+        'audio': Type.AUDIO,
+        'start': Type.START,
+        'stop': Type.STOP,
+        'message': Type.MESSAGE,
         'option': Type.OPTION,
+        'case': Type.CASE,
         'do': Type.DO,
+        'wait': Type.WAIT,
         'jump': Type.JUMP,
-        'exit': Type.EXIT
+        'exit': Type.EXIT,
+        'choice': Type.CHOICE,
+        'click': Type.CLICK,
+        'key': Type.KEY
     }
     tokens = []
     start = 0
@@ -36,6 +48,8 @@ class Scanner:
             self.addToken(Type.LEFT_BRACE)
         elif c == '}':
             self.addToken(Type.RIGHT_BRACE)
+        elif c == ';':
+            self.addToken(Type.SEMICOLON)
         elif c == ' ' or c == '\r' or c == '\t':
             pass
         elif c == '\n':

@@ -15,9 +15,29 @@ class Parser:
     def parse(self) -> List[Stmt]:
         statements = []
         while not self.isAtEnd():
+            if (self.match(Type.CONFIG)):
+                statements.append(self.config())
+            else:
+                break
+        while not self.isAtEnd():
             statements.append(self.declaration())
-            #print(statements[len(statements)-1])
+            print(statements[len(statements)-1])
         return statements
+
+    def config(self) -> Stmt:
+        # Need Error Handling
+        if (self.match(Type.WIDTH)):
+            value = self.consume(Type.NUMBER, "Expect Number For Width")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+            return Config(Type.WIDTH, value)
+        if (self.match(Type.HEIGHT)):
+            value = self.consume(Type.NUMBER, "Expect Number For Height")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+            return Config(Type.HEIGHT, value)
+        if (self.match(Type.MODE)):
+            value = self.consume(Type.STRING, "Expect \'console\' Or \'graphic\' For Mode")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+            return Config(Type.MODE, value)
 
     def declaration(self) -> Stmt:
         try:
@@ -44,35 +64,43 @@ class Parser:
         return statements
 
     def statement(self) -> Stmt:
-        if self.match(Type.SHOW):
-            return self.showStatement()
+        if self.match(Type.DISPLAY):
+            return self.displayStatement()
+        if self.match(Type.AUDIO):
+            return self.audioStatement()
         if self.match(Type.WAIT):
             return self.waitStatement()
-        if self.match(Type.OPTION):
-            return self.optionStatement()
         if self.match(Type.JUMP):
             return self.jumpStatement()
         if self.match(Type.EXIT):
             return self.exitStatement()
         return self.expressionStatement()
 
-    def showStatement(self) -> Stmt:
+    def displayStatement(self) -> Stmt:
+        if self.match(Type.OPTION):
+            return self.optionSubStatement()
         if self.match(Type.STRING):
             path = Literal(self.previous().literal)
-            return Show(path)
+            return Display(path)
         raise self.error(self.peek(), "Expect String Value")
 
+    def audioStatement(self) -> Stmt:
+        pass
+
     def waitStatement(self) -> Stmt:
+        print("hi")
         if self.match(Type.NUMBER):
             number = Literal(self.previous().literal)
             return Wait(number)
         raise self.error(self.peek(), "Expect Number Value")
 
-    def optionStatement(self) -> Stmt:
+    def optionSubStatement(self) -> Stmt:
+        print("opt")
         if not self.match(Type.STRING):
             raise self.error(self.peek(), "Expect String Value")
         message = Literal(self.previous().literal)
         self.consume(Type.DO, "Expect \'do\' After Option Message")
+        print("here")
         action = self.statement()
         return Option(message, action)
 

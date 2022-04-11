@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from tok import Token
+from tok import Token, Type
 from expr import Expr
 
 class Stmt(ABC):
@@ -14,7 +14,10 @@ class StmtVisitor(ABC):
     def visitExpressionStmt(self, stmt: Stmt):
         pass
     @abstractmethod
-    def visitShowStmt(self, stmt: Stmt):
+    def visitConfigStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitDisplayStmt(self, stmt: Stmt):
         pass
     @abstractmethod
     def visitWaitStmt(self, stmt: Stmt):
@@ -39,11 +42,18 @@ class Expression(Stmt):
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitExpressionStmt(self)
 
-class Show(Stmt):
+class Config(Stmt):
+    def __init__(self, config: Type, value: Token) -> None:
+        self.config = config
+        self.value = value
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitConfigStmt(self)
+
+class Display(Stmt):
     def __init__(self, path: Expr) -> None:
         self.path = path
     def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitShowStmt(self)
+        return visitor.visitDisplayStmt(self)
     
 class Wait(Stmt):
     def __init__(self, number: Expr) -> None:

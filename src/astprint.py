@@ -16,9 +16,15 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
     def visitExpressionStmt(self, stmt: Expression) -> str:
         pass
 
-    def visitShowStmt(self, stmt: Show) -> str:
+    def visitConfigStmt(self, stmt: Config) -> str:
+        ret = self.indent()
+        ret += "(config " + stmt.config.value
+        ret += " " + stmt.value.lexeme + ")"
+        return ret
+
+    def visitDisplayStmt(self, stmt: Display) -> str:
         ret = self.indent() 
-        ret += "(show " + self.print(stmt.path) + ")"
+        ret += "(display " + self.print(stmt.path) + ")"
         return ret
 
     def visitWaitStmt(self, stmt: Wait) -> str:

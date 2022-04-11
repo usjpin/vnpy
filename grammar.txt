@@ -1,15 +1,18 @@
-S0 -> D* EOF
+S0 -> Conf* D* EOF
 
-D -> Conf | SetD | FunD | Stmt
 Conf -> "config" ConfType Value ";"
 ConfType -> "width" | "height" | "mode"
-Value -> num | "console" | "graphic"
-SetD -> "let" id ( "=" D )? ";"
+Value -> num | string
+
+D -> SetD | FunD | SceneD | Stmt
+SetD -> "let" id ( "=" Expr )? ";"
 FunD -> "fun" Func
 
 Func -> id "(" Params? ")" Block
 Parmas -> id ( "," id )*
 Args -> Expr ( "," Expr)*
+
+SceneD -> "scene" id Block
 
 Stmt -> ExprS | IfS | ReturnS | WhileS | Block | SpecS 
 ExprS -> Expr ";"
@@ -17,15 +20,15 @@ IfS -> "if" "(" Exp ")" Stmt ( "else" Stmt )?
 WhileS -> "while" "(" Expr ")" Stmt
 Block -> "{" D* "}"
 
-SpecS -> Sc | Dis | Audio | Opt | Wait | Jump
-Sc -> "scene" id "{" S* "}"
-Dis -> "display" (Expr | Message | Opt) ";"
+SpecS -> Image | Dis | Opt | Audio | Wait | Jump | Exit
+Dis -> "display" Expr ";"
+Image -> "image" ("show" | "hide") Expr ";"
 Audio -> "audio" ("start" | "stop") Expr ";"
-Message -> "message" Expr
 Opt -> "options" "{" Case* "}"
-Case -> "case" ( id | string ) "do" Expr ";"
+Case -> "case" Expr "do" Expr ";"
 Wait -> "wait" ( Input | num) ";"
 Jump -> "jump" Expr ";"
+Exit -> "exit"
 Input -> "choice" | "click" Click | "key" Key
 Key -> KEY_UP | KEY_DOWN | KEY_LEFT | KEY_RIGHT
 Click -> CLICK_LEFT | CLICK_RIGHT | CLICK_BOTH

@@ -31,9 +31,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def visitExpressionStmt(self, stmt: Expression):
         pass
 
-    def visitShowStmt(self, stmt: Show):
-        #print("Interpreting Show")
-        self.game.show(self.evaluate(stmt.path))
+    def visitDisplayStmt(self, stmt: Display):
+        #print("Interpreting Display")
+        self.game.display(self.evaluate(stmt.path))
 
     def visitWaitStmt(self, stmt: Wait):
         #print("Interpreting Wait")
