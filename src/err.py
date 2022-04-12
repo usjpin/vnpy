@@ -1,5 +1,6 @@
 
 from tok import Token
+from call import VNScene
 
 class RuntimeErr(Exception):
     def __init__(self, token: Token, message: str):
@@ -7,9 +8,9 @@ class RuntimeErr(Exception):
         self.token = token
 
 class JumpErr(Exception):
-    def __init__(self, dest):
+    def __init__(self, scene: VNScene):
         super().__init__(None, None)
-        self.dest = dest
+        self.scene = scene
 
 class ReturnErr(Exception):
     pass

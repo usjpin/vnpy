@@ -1,12 +1,12 @@
 from typing import Any, List
 
-from env import Env
+import env
 from stmt import *
 import interpret
 
 class VNScene:
 
-    def __init__(self, body: List[Stmt], env: Env):
+    def __init__(self, body: List[Stmt], env: 'env.Env'):
         self.body = body
         self.env = env
 
@@ -20,7 +20,7 @@ class VNCallable:
 
 class VNFunction(VNCallable):
 
-    def __init__(self, declaration: Any, closure: Env): # Change to 'Function'
+    def __init__(self, declaration: Any, closure: 'env.Env'): # Change to 'Function'
         pass
 
     def __str__(self) -> str:
