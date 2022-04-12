@@ -5,11 +5,10 @@ sys.setrecursionlimit(5000)
 
 from scan import Scanner
 from parse import Parser
-from resolve import Resolver
 from interpret import Interpreter
 from astprint import ASTPrinter
 
-#interpreter = Interpreter()
+interpreter = Interpreter()
 hadErr = False
 hadRunErr = False
 
@@ -19,15 +18,13 @@ def run(source: str) -> None:
     for token in tokens:
         print(token)
     parser = Parser(tokens)
-    statements = parser.parse()
+    configs, statements = parser.parse()
+    for stmt in configs:
+        print(ASTPrinter().print(stmt))
     for stmt in statements:
         print(ASTPrinter().print(stmt))
     if hadErr: return
-    #resolver = Resolver(interpreter)
-    #resolver.resolve(statements)
-    return
-    if hadErr: return
-    interpreter.interpret(statements)
+    interpreter.interpret(configs, statements)
 
 
 def runFile(path: str) -> None:

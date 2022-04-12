@@ -1,25 +1,26 @@
 from typing import Any, List
 
 from env import Env
-from stmt import Function
-from interpret import Interpreter
+from stmt import *
+import interpret
 
-class Return(Exception):
+class VNScene:
 
-    def __init__(self, value: Any):
-        self.value = value
+    def __init__(self, body: List[Stmt], env: Env):
+        self.body = body
+        self.env = env
 
 class VNCallable:
 
     def arity() -> int:
         pass
 
-    def call(interpreter: Interpreter, args: List[Any]) -> Any:
+    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
         pass
-    
+
 class VNFunction(VNCallable):
 
-    def __init__(self, declaration: Function, closure: Env):
+    def __init__(self, declaration: Any, closure: Env): # Change to 'Function'
         pass
 
     def __str__(self) -> str:
@@ -27,6 +28,6 @@ class VNFunction(VNCallable):
 
     def arity(self) -> int:
         pass
-    
-    def call(self, interpreter: Interpreter, arguments: List[Any]) -> Any:
-        pass 
+
+    def call(self, interpreter: 'interpret.Interpreter', arguments: List[Any]) -> Any:
+        pass

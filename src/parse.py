@@ -14,16 +14,17 @@ class Parser:
 
     def parse(self) -> List[Stmt]:
         # Check Error Handling
-        statements = []
+        configs = []
         while not self.isAtEnd():
             if (self.match(Type.CONFIG)):
-                statements.append(self.config())
+                configs.append(self.config())
             else:
                 break
+        statements = []
         while not self.isAtEnd():
             statements.append(self.declaration())
-            print(statements[len(statements)-1])
-        return statements
+            #print(statements[len(statements)-1])
+        return configs, statements
 
     def config(self) -> Stmt:
         # Need Error Handling

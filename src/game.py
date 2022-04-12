@@ -14,7 +14,6 @@ from stmt import *
 Template To Follow
 
 class VNGame:
-    options: Options = None
 
     def __init__(self) -> None:
         pass
@@ -59,7 +58,6 @@ class VNGame:
 
 
 class VNConsoleGame:
-    options = None
 
     def __init__(self) -> None:
         pass
@@ -78,13 +76,12 @@ class VNConsoleGame:
         pass
 
 class VNGUIGame:
-    options = None
-    imagelist = {}
-    audiolist = {}
 
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
+        self.imagelist = {}
+        self.audiolist = {}
         pygame.init()
         self.screen = pygame.display.set_mode(
             (self.width, self.height)

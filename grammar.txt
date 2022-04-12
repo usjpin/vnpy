@@ -65,6 +65,25 @@ scene a {
     set ok = wait input (choice | click | key)
 }
 
+scene a {
+    ...
+    scene b {
+        jumpto D
+    }
+    ...
+    scene c {
+        jumpto B
+    }
+    ...
+    jumpto C
+    ... ( never )
+}
+...
+scene main {
+
+}
+... ( never )
+
 ===========================================
 
 set first = nil;
@@ -113,5 +132,3 @@ scene main {
          option "sub" do jump Sub;
     ]
 }
-
-jump main

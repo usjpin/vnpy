@@ -29,6 +29,7 @@ class Type(Enum):
     WAIT = 'wait'
     JUMP = 'jump'
     EXIT = 'exit'
+    LOG = 'log' # add
     # Other
     SHOW = 'show'
     HIDE = 'hide'
