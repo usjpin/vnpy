@@ -20,12 +20,13 @@ IfS -> "if" "(" Exp ")" Stmt ( "else" Stmt )?
 WhileS -> "while" "(" Expr ")" Stmt
 Block -> "{" D* "}"
 
+// replace strings with Expr later on
 SpecS -> Image | Dis | Opt | Audio | Wait | Jump | Exit
 Dis -> "display" Expr ";"
 Image -> "image" ("show" | "hide") Expr ";"
 Audio -> "audio" ("start" | "stop") Expr ";"
 Opt -> "options" "{" Case* "}"
-Case -> "case" Expr "do" Expr ";"
+Case -> "case" Expr "do" Stmt ";"
 Wait -> "wait" ( Input | num) ";"
 Jump -> "jump" Expr ";"
 Exit -> "exit"
@@ -48,8 +49,9 @@ Prim -> "true" | "false" | "nil" | num | string | id | "(" Expr ")"
 ===========================================
 
 scene a {
-    display message "hihi";
-    display options {
+    image "red.png"
+    display "hihi";
+    options {
         case "ok" do {
             wait 5;
         }

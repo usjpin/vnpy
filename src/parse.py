@@ -13,6 +13,7 @@ class Parser:
         self.tokens = tokens
 
     def parse(self) -> List[Stmt]:
+        # Check Error Handling
         statements = []
         while not self.isAtEnd():
             if (self.match(Type.CONFIG)):
@@ -26,18 +27,19 @@ class Parser:
 
     def config(self) -> Stmt:
         # Need Error Handling
-        if (self.match(Type.WIDTH)):
+        if self.match(Type.WIDTH):
             value = self.consume(Type.NUMBER, "Expect Number For Width")
             self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
             return Config(Type.WIDTH, value)
-        if (self.match(Type.HEIGHT)):
+        if self.match(Type.HEIGHT):
             value = self.consume(Type.NUMBER, "Expect Number For Height")
             self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
             return Config(Type.HEIGHT, value)
-        if (self.match(Type.MODE)):
+        if self.match(Type.MODE):
             value = self.consume(Type.STRING, "Expect \'console\' Or \'graphic\' For Mode")
             self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
             return Config(Type.MODE, value)
+        # Need Error Handling
 
     def declaration(self) -> Stmt:
         try:
@@ -64,8 +66,12 @@ class Parser:
         return statements
 
     def statement(self) -> Stmt:
+        if self.match(Type.IMAGE):
+            return self.imageStatement()
         if self.match(Type.DISPLAY):
             return self.displayStatement()
+        if self.match(Type.OPTION):
+            return self.optionStatement()
         if self.match(Type.AUDIO):
             return self.audioStatement()
         if self.match(Type.WAIT):
@@ -76,39 +82,76 @@ class Parser:
             return self.exitStatement()
         return self.expressionStatement()
 
+    def imageStatement(self) -> Stmt:
+        # Change String to Expr
+        if self.match(Type.SHOW):
+            path = self.consume(Type.STRING, "Expect String For Image")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Image")
+            return Image(Type.SHOW, path)
+        if self.match(Type.HIDE):
+            path = self.consume(Type.STRING, "Expect String For Image")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Image")
+            return Image(Type.HIDE, path)
+        raise self.error(self.peek(), "Expect Image Action")
+
     def displayStatement(self) -> Stmt:
-        if self.match(Type.OPTION):
-            return self.optionSubStatement()
-        if self.match(Type.STRING):
-            path = Literal(self.previous().literal)
-            return Display(path)
-        raise self.error(self.peek(), "Expect String Value")
+        # Replace String with Expr
+        value = self.consume(Type.STRING, "Expect String For Display")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Display")
+        return Display(value)
+
+    def optionStatement(self) -> Stmt:
+        # Replace String with Expr
+        self.consume(Type.LEFT_BRACE, "Expect \'{\' After Option Keyword")
+        cases = []
+        while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
+            self.consume(Type.CASE, "Expect \'case\' in Option Block")
+            choice = self.consume(Type.STRING, "Expect String For Case")
+            self.consume(Type.DO, "Expect \'do\' After Case")
+            action = self.statement()
+            cases.append((choice, action))
+        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Option Block")
+        return Option(cases)
 
     def audioStatement(self) -> Stmt:
-        pass
+        # Change String to Expr
+        if self.match(Type.START):
+            path = self.consume(Type.STRING, "Expect String For Audio")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
+            return Audio(Type.START, path)
+        if self.match(Type.STOP):
+            path = self.consume(Type.STRING, "Expect String For Audio")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
+            return Audio(Type.STOP, path)
+        raise self.error(self.peek(), "Expect Audio Action")
 
     def waitStatement(self) -> Stmt:
-        print("hi")
-        if self.match(Type.NUMBER):
-            number = Literal(self.previous().literal)
-            return Wait(number)
-        raise self.error(self.peek(), "Expect Number Value")
-
-    def optionSubStatement(self) -> Stmt:
-        print("opt")
-        if not self.match(Type.STRING):
-            raise self.error(self.peek(), "Expect String Value")
-        message = Literal(self.previous().literal)
-        self.consume(Type.DO, "Expect \'do\' After Option Message")
-        print("here")
-        action = self.statement()
-        return Option(message, action)
+        # Change Stuff to Expr
+        # Make choice, click and key just callables?
+        '''if self.match(Type.CHOICE):
+            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
+            return Wait(Type.CHOICE, None)
+        if self.match(Type.CLICK):
+            value = self.consume(Type.NUMBER, "Expect Number For Click")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
+            return Wait(Type.CLICK, value)
+        if self.match(Type.KEY):
+            value = self.consume(Type.NUMBER, "Expect Number For Key")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
+            return Wait(Type.KEY, value)'''
+        if self.match(Type.DELAY):
+            value = self.consume(Type.NUMBER, "Expect Number For Wait")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Wait")
+            return Wait(Type.NUMBER, value)
+        raise self.error(self.peek(), "Expect Wait Condition")
 
     def jumpStatement(self) -> Stmt:
         dest = self.consume(Type.IDENTIFIER, "Expect Scene Name")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Jump")
         return Jump(dest)
 
     def exitStatement(self) -> Stmt:
+        self.consume(Type.SEMICOLON, "Expect \';\' After Exit")
         return Exit()
 
     def expressionStatement(self) -> Stmt:

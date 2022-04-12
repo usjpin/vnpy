@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Tuple
 
 from tok import Token, Type
 from expr import Expr
@@ -11,22 +11,25 @@ class Stmt(ABC):
 
 class StmtVisitor(ABC):
     @abstractmethod
-    def visitExpressionStmt(self, stmt: Stmt):
-        pass
-    @abstractmethod
     def visitConfigStmt(self, stmt: Stmt):
-        pass
-    @abstractmethod
-    def visitDisplayStmt(self, stmt: Stmt):
-        pass
-    @abstractmethod
-    def visitWaitStmt(self, stmt: Stmt):
         pass
     @abstractmethod
     def visitSceneStmt(self, stmt: Stmt):
         pass
     @abstractmethod
+    def visitImageStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitDisplayStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
     def visitOptionStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitAudioStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitWaitStmt(self, stmt: Stmt):
         pass
     @abstractmethod
     def visitJumpStmt(self, stmt: Stmt):
@@ -34,13 +37,9 @@ class StmtVisitor(ABC):
     @abstractmethod
     def visitExitStmt(self, stmt: Stmt):
         pass
-
-
-class Expression(Stmt):
-    def __init__(self, expression: Expr) -> None:
-        self.expression = expression
-    def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitExpressionStmt(self)
+    @abstractmethod
+    def visitExpressionStmt(self, stmt: Stmt):
+        pass
 
 class Config(Stmt):
     def __init__(self, config: Type, value: Token) -> None:
@@ -49,18 +48,6 @@ class Config(Stmt):
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitConfigStmt(self)
 
-class Display(Stmt):
-    def __init__(self, path: Expr) -> None:
-        self.path = path
-    def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitDisplayStmt(self)
-    
-class Wait(Stmt):
-    def __init__(self, number: Expr) -> None:
-        self.number = number
-    def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitWaitStmt(self)
-
 class Scene(Stmt):
     def __init__(self, name: Token, body: List[Stmt]) -> None:
         self.name = name
@@ -68,12 +55,38 @@ class Scene(Stmt):
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitSceneStmt(self)
 
-class Option(Stmt):
-    def __init__(self, message: Expr, action: Stmt):
-        self.message = message
+class Image(Stmt):
+    def __init__(self, action: Type, path: Token) -> None:
         self.action = action
-    def accept(self, visitor: StmtVisitor):
+        self.path = path
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitImageStmt(self)
+
+class Display(Stmt):
+    def __init__(self, value: Token) -> None:
+        self.value = value
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitDisplayStmt(self)
+
+class Option(Stmt):
+    def __init__(self, cases: List[Tuple[Token, Stmt]]) -> None:
+        self.cases = cases
+    def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitOptionStmt(self)
+
+class Audio(Stmt):
+    def __init__(self, action: Type, path: Token) -> None:
+        self.action = action
+        self.path = path
+    def accept(self, visitor: StmtVisitor):
+        return visitor.visitAudioStmt(self)
+    
+class Wait(Stmt):
+    def __init__(self, action: Type, value: Token) -> None:
+        self.action = action
+        self.value = value
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitWaitStmt(self)
 
 class Jump(Stmt):
     def __init__(self, dest: Token):
@@ -86,3 +99,9 @@ class Exit(Stmt):
         pass
     def accept(self, visitor: StmtVisitor):
         return visitor.visitExitStmt(self)
+
+class Expression(Stmt):
+    def __init__(self, expression: Expr) -> None:
+        self.expression = expression
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitExpressionStmt(self)

@@ -22,14 +22,42 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
         ret += " " + stmt.value.lexeme + ")"
         return ret
 
+    def visitImageStmt(self, stmt: Image) -> str:
+        ret = self.indent()
+        ret += "(image " + stmt.action.value
+        ret += " " + stmt.path.lexeme + ")"
+        return ret
+
     def visitDisplayStmt(self, stmt: Display) -> str:
         ret = self.indent() 
-        ret += "(display " + self.print(stmt.path) + ")"
+        ret += "(display " + stmt.value.lexeme + ")"
+        return ret
+
+    def visitOptionStmt(self, stmt: Option) -> str:
+        ret = self.indent()
+        ret += "(option "
+        self.tabs += 1
+        for case in stmt.cases:
+            ret += "\n" + self.indent()
+            ret += "(case " + case[0].lexeme
+            ret += " do\n" + self.indent() + self.print(case[1])
+            ret += "\n" + self.indent() + ")"
+        self.tabs -= 1
+        ret += "\n" + self.indent() + ")"
+        return ret
+    
+    def visitAudioStmt(self, stmt: Audio) -> str:
+        ret = self.indent()
+        ret += "(audio " + stmt.action.value
+        ret += " " + stmt.path.lexeme + ")"
         return ret
 
     def visitWaitStmt(self, stmt: Wait) -> str:
         ret = self.indent() 
-        ret += "(wait " + self.print(stmt.number) + ")"
+        ret += "(wait " + stmt.action.value
+        if stmt.value is not None:
+            ret += " " + stmt.value.lexeme
+        ret += ")"
         return ret
 
     def visitSceneStmt(self, stmt: Scene) -> str:
@@ -40,15 +68,6 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
             ret += "\n" + self.print(statement)
         self.tabs -= 1
         ret += "\n)"
-        return ret
-
-    def visitOptionStmt(self, stmt: Option) -> str:
-        ret = self.indent()
-        ret += "(option " + self.print(stmt.message) + " do"
-        self.tabs += 1
-        ret += "\n" + self.print(stmt.action)
-        self.tabs -= 1
-        ret += "\n" + self.indent() + ")"
         return ret
     
     def visitJumpStmt(self, stmt: Jump) -> str:
