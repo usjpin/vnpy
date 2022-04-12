@@ -70,8 +70,8 @@ class Parser:
             return self.imageStatement()
         if self.match(Type.DISPLAY):
             return self.displayStatement()
-        if self.match(Type.OPTION):
-            return self.optionStatement()
+        if self.match(Type.OPTIONS):
+            return self.optionsStatement()
         if self.match(Type.AUDIO):
             return self.audioStatement()
         if self.match(Type.WAIT):
@@ -100,18 +100,18 @@ class Parser:
         self.consume(Type.SEMICOLON, "Expect \';\' After Display")
         return Display(value)
 
-    def optionStatement(self) -> Stmt:
+    def optionsStatement(self) -> Stmt:
         # Replace String with Expr
-        self.consume(Type.LEFT_BRACE, "Expect \'{\' After Option Keyword")
+        self.consume(Type.LEFT_BRACE, "Expect \'{\' After Options Keyword")
         cases = []
         while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
-            self.consume(Type.CASE, "Expect \'case\' in Option Block")
+            self.consume(Type.CASE, "Expect \'case\' in Options Block")
             choice = self.consume(Type.STRING, "Expect String For Case")
             self.consume(Type.DO, "Expect \'do\' After Case")
             action = self.statement()
             cases.append((choice, action))
-        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Option Block")
-        return Option(cases)
+        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Options Block")
+        return Options(cases)
 
     def audioStatement(self) -> Stmt:
         # Change String to Expr

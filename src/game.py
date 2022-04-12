@@ -1,13 +1,86 @@
 import sys
 import pygame
 import time
+from typing import List
 
 OPTION_COLOR = (255, 255, 255)
 FONT_FAMILY = 'Corbel'
 FONT_SIZE = 35
 FONT_COLOR = (0, 0, 0)
 
-class Game:
+from stmt import *
+
+'''
+Template To Follow
+
+class VNGame:
+    options: Options = None
+
+    def __init__(self) -> None:
+        pass
+
+    def display(self, text: str) -> None:
+        # Clear Previous Text
+        # Show Text
+        pass
+
+    def newScreen(self) -> None:
+        # Clear the Screen
+        pass
+
+    def setOptions(self, options: Options) -> None:
+        self.options = options
+        # Clear Previous Options
+        # Display Options (store locations of each)
+        pass
+
+    def delay(self, value: int) -> None:
+        # Delay (Check For Events While At it (like quit))
+        pass
+
+    def waitChoice(self) -> None:
+        # Check Event for Option Click (or check input for console)
+        # Use stored locations / index n stuff
+        # Return Stmt Belonging To Case
+        pass
+
+    --- for gui only ---
+    def showImage(self, path: str) -> None:
+        # store image path -> Image object
+        # show image (on top of any existing images)
+        pass
+
+    def hideImage(self, path: str) -> None:
+        # lookup stored images, delete it
+        # rerender all images
+
+    def startAudio / stopAudio
+'''
+
+
+class VNConsoleGame:
+    options = None
+
+    def __init__(self) -> None:
+        pass
+
+    def display(self, text: str) -> None:
+        pass
+
+    def setOptions(self, options: Options) -> None:
+        self.options = options
+        pass
+
+    def delay(self, value: int) -> None:
+        pass
+
+    def waitChoice(self) -> None:
+        pass
+
+class VNGUIGame:
+    options = None
+    imagelist = {}
+    audiolist = {}
 
     def __init__(self, width: int, height: int):
         self.width = width

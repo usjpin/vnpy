@@ -33,9 +33,9 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
         ret += "(display " + stmt.value.lexeme + ")"
         return ret
 
-    def visitOptionStmt(self, stmt: Option) -> str:
+    def visitOptionsStmt(self, stmt: Options) -> str:
         ret = self.indent()
-        ret += "(option "
+        ret += "(options "
         self.tabs += 1
         for case in stmt.cases:
             ret += "\n" + self.indent()

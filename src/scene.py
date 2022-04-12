@@ -1,17 +1,14 @@
 
-from stmt import Stmt
+from stmt import *
 
 class VNScene:
-    options = []
+    options = None
     
     def __init__(self, name):
         self.name = name
 
-    def getOption(self, idx: int) -> Stmt:
-        return self.options[idx]
-
-    def addOption(self, stmt: Stmt) -> None:
-        self.options.append(stmt)
+    def setOptions(self, options: Options):
+        self.options = options
 
     def __str__(self) -> str:
         return "scene " + self.name

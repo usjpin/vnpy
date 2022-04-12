@@ -3,7 +3,7 @@ from typing import List
 
 from expr import *
 from stmt import *
-from game import Game
+from game import *
 from runerr import RuntimeErr
 from env import Env
 
@@ -13,7 +13,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
         self.globals = Env()
         self.env = globals
         self.locals = {}
-        self.game = Game(500, 500)
+        self.game = VNGUIGame(500, 500)
 
     def interpret(self, statements: List[Stmt]) -> None:
         try:
@@ -42,7 +42,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def visitSceneStmt(self, stmt: Scene):
         pass
 
-    def visitOptionStmt(self, stmt: Option):
+    def visitOptionsStmt(self, stmt: Options):
         pass
 
     def visitJumpStmt(self, stmt: Jump):

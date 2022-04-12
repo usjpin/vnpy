@@ -11,7 +11,7 @@ class Scanner:
         'scene': Type.SCENE,
         'image': Type.IMAGE,
         'display': Type.DISPLAY,
-        'option': Type.OPTION,
+        'options': Type.OPTIONS,
         'audio': Type.AUDIO,
         'wait': Type.WAIT,
         'jump': Type.JUMP,

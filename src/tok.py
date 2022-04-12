@@ -24,7 +24,7 @@ class Type(Enum):
     # Statement
     IMAGE = 'image'
     DISPLAY = 'display'
-    OPTION = 'option'
+    OPTIONS = 'options'
     AUDIO = 'audio'
     WAIT = 'wait'
     JUMP = 'jump'

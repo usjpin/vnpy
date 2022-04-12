@@ -19,7 +19,7 @@ scene a {
 wait delay 2;
 scene b {
     display "red.png";
-    option {
+    options {
         case "pick me" do wait delay 5;
     }
     wait delay 3;

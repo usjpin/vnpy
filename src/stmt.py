@@ -23,7 +23,7 @@ class StmtVisitor(ABC):
     def visitDisplayStmt(self, stmt: Stmt):
         pass
     @abstractmethod
-    def visitOptionStmt(self, stmt: Stmt):
+    def visitOptionsStmt(self, stmt: Stmt):
         pass
     @abstractmethod
     def visitAudioStmt(self, stmt: Stmt):
@@ -68,11 +68,11 @@ class Display(Stmt):
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitDisplayStmt(self)
 
-class Option(Stmt):
+class Options(Stmt):
     def __init__(self, cases: List[Tuple[Token, Stmt]]) -> None:
         self.cases = cases
     def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitOptionStmt(self)
+        return visitor.visitOptionsStmt(self)
 
 class Audio(Stmt):
     def __init__(self, action: Type, path: Token) -> None:
