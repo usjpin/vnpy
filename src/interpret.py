@@ -71,15 +71,17 @@ class Interpreter(ExprVisitor, StmtVisitor):
             self.game.showImage(stmt.path.literal)
         elif stmt.action == Type.HIDE:
             self.game.hideImage(stmt.path.literal)
+        self.game.render()
 
     def visitDisplayStmt(self, stmt: Display):
         print("Interpreting Display")
         self.game.display(stmt.value.literal)
+        self.game.render()
 
     def visitOptionsStmt(self, stmt: Options):
         print("Interpreting Options")
         choice = self.game.popOptions(stmt.cases)
-        #choice = 
+        choice.accept(self)
 
     def visitAudioStmt(self, stmt: Audio):
         print("Interpreting Audio")

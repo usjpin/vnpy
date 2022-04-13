@@ -5,6 +5,7 @@ from PIL import Image
 from typing import List
 
 OPTION_COLOR = (255, 255, 255)
+OPTION_HOVER = (255, 255, 0)
 FONT_FAMILY = 'Corbel'
 FONT_SIZE = 35
 FONT_COLOR = (0, 0, 0)
@@ -67,6 +68,9 @@ class VNConsoleGame(VNGame):
             i += 1
             time.sleep(1)
 
+    def render(self) -> None:
+        pass
+
 class VNGUIGame(VNGame):
 
     def __init__(self, width: int, height: int):
@@ -80,17 +84,19 @@ class VNGUIGame(VNGame):
         )
 
     def showImage(self, path: str):
-        self.checkEvents()
+        self.imagePath = path
+        #self.checkEvents()
+        self.screen.fill((0, 0, 0))
         pic = pygame.image.load(path)
         pic = pygame.transform.scale(pic, (self.width, self.height))
         self.screen.blit(pic, (0, 0))
-        self.render()
 
     def hideImage(self, path: str):
         pass
 
     def display(self, text: str):
-        self.checkEvents()
+        self.displayText = text
+        #self.checkEvents()
         x = int(self.width//50)
         y = int(self.height//2 - self.height//100)
         w = self.width - 2 * x
@@ -103,7 +109,6 @@ class VNGUIGame(VNGame):
         message = font.render(text, True, FONT_COLOR)
         s.blit(message, (0.05 * w, 0.3 * h))
         self.screen.blit(s, (x, y))
-        self.render()
 
     def delay(self, number: int):
         i = 0
@@ -113,22 +118,37 @@ class VNGUIGame(VNGame):
             time.sleep(1)
 
     def popOptions(self, options: List[Tuple[Token, Stmt]]) -> Stmt:
-        # Implement Hover and Clicking
-        w = int(0.9 * self.width)
-        h = int(self.height//(len(options) * 2.5)) - int(self.height//50)
-        r = int(self.width//25)
-        x = int(0.05 * self.width)
-        y = int(self.height//2 + self.height//7 - self.height//100)
-        for idx, option in enumerate(options):
-            s = pygame.Surface((w, h))
-            s.set_alpha(100)
-            pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
-            font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
-            message = font.render(option[0].literal, True, FONT_COLOR)
-            s.blit(message, (0.05 * w, 0.3 * h))
-            self.screen.blit(s, (x, y))
-            y += h + self.height//100
-        self.render()
+        while True:
+            self.checkEvents()
+            if self.imagePath is not None:
+                self.showImage(self.imagePath)
+            if self.displayText is not None:
+                self.display(self.displayText)
+            w = int(0.9 * self.width)
+            h = int(self.height//(len(options) * 2.5)) - int(self.height//50)
+            r = int(self.width//25)
+            x = int(0.05 * self.width)
+            y = int(self.height//2 + self.height//7 - self.height//100)
+            mux, muy = pygame.mouse.get_pos()
+            for idx, option in enumerate(options):
+                mx = mux - x
+                my = muy - y
+                s = pygame.Surface((w, h))
+                s.set_alpha(100)
+                if mx >= 0 and mx <= w and my >= 0 and my <= h:
+                    events = pygame.event.get()
+                    for event in events:
+                        if event.type == pygame.MOUSEBUTTONUP:
+                            return options[idx][1]
+                    pygame.draw.rect(s, OPTION_HOVER, [0, 0, w, h], border_radius = r)
+                else:
+                    pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
+                font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
+                message = font.render(option[0].literal, True, FONT_COLOR)
+                s.blit(message, (0.05 * w, 0.3 * h))
+                self.screen.blit(s, (x, y))
+                y += h + self.height//100
+            self.render()
 
     def checkEvents(self):
         for event in pygame.event.get():

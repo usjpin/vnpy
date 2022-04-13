@@ -17,4 +17,4 @@ def to_ascii(path):
     ascii_image = "\n".join(ascii_image)
     return ascii_image
 
-print(to_ascii("test2.jpg"))
+print(to_ascii("red.png"))

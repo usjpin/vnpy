@@ -5,11 +5,13 @@ config mode "graphic";
 image show "red.png";
 display "sup";
 options {
-    case "pick me" do delay 2;
-    case "pick me 2" do delay 3;
-
+    case "pick me 1" do display "1 picked";
+    case "pick me 2" do display "2 picked";
+    case "pick me 3" do display "3 picked";
+    case "pick me 3" do display "4 picked";
 }
-delay 2;
+display "over";
+delay 20;
 //image show "blue.png";
 //delay 2;
 scene a {
