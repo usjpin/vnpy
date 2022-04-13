@@ -8,6 +8,7 @@ class Type(Enum):
     LEFT_BRACE = '{'
     RIGHT_BRACE = '}'
     SEMICOLON = ';'
+    SLASH = '/'
     EOF = ''
 
     IDENTIFIER = 'identifier'
@@ -38,9 +39,6 @@ class Type(Enum):
     CASE = 'case'
     DO = 'do'
     DELAY = 'delay'
-    CHOICE = 'choice'
-    CLICK = 'click'
-    KEY = 'key'
 
 
 class Token:

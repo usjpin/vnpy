@@ -16,7 +16,7 @@ class Parser:
         # Check Error Handling
         configs = []
         while not self.isAtEnd():
-            if (self.match(Type.CONFIG)):
+            if self.match(Type.CONFIG):
                 configs.append(self.config())
             else:
                 break
@@ -44,7 +44,7 @@ class Parser:
 
     def declaration(self) -> Stmt:
         try:
-            if (self.match(Type.SCENE)):
+            if self.match(Type.SCENE):
                 return self.sceneDeclaration()
             return self.statement()
         except ParseErr:
@@ -75,8 +75,8 @@ class Parser:
             return self.optionsStatement()
         if self.match(Type.AUDIO):
             return self.audioStatement()
-        if self.match(Type.WAIT):
-            return self.waitStatement()
+        if self.match(Type.DELAY):
+            return self.delayStatement()
         if self.match(Type.JUMP):
             return self.jumpStatement()
         if self.match(Type.EXIT):
@@ -126,25 +126,11 @@ class Parser:
             return Audio(Type.STOP, path)
         raise self.error(self.peek(), "Expect Audio Action")
 
-    def waitStatement(self) -> Stmt:
+    def delayStatement(self) -> Stmt:
         # Change Stuff to Expr
-        # Make choice, click and key just callables?
-        '''if self.match(Type.CHOICE):
-            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
-            return Wait(Type.CHOICE, None)
-        if self.match(Type.CLICK):
-            value = self.consume(Type.NUMBER, "Expect Number For Click")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
-            return Wait(Type.CLICK, value)
-        if self.match(Type.KEY):
-            value = self.consume(Type.NUMBER, "Expect Number For Key")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Input")
-            return Wait(Type.KEY, value)'''
-        if self.match(Type.DELAY):
-            value = self.consume(Type.NUMBER, "Expect Number For Wait")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Wait")
-            return Wait(Type.NUMBER, value)
-        raise self.error(self.peek(), "Expect Wait Condition")
+        value = self.consume(Type.NUMBER, "Expect Number For Delay")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Delay")
+        return Delay(value)
 
     def jumpStatement(self) -> Stmt:
         dest = self.consume(Type.IDENTIFIER, "Expect Scene Name")
@@ -160,7 +146,7 @@ class Parser:
     
     def match(self, *types: List[Type]):
         for type in types:
-            if (self.check(type)):
+            if self.check(type):
                 self.advance()
                 return True
         return False

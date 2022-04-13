@@ -23,9 +23,6 @@ class Scanner:
         'case': Type.CASE,
         'do': Type.DO,
         'delay': Type.DELAY,
-        'choice': Type.CHOICE,
-        'click': Type.CLICK,
-        'key': Type.KEY
     }
     tokens = []
     start = 0
@@ -53,6 +50,12 @@ class Scanner:
             self.addToken(Type.RIGHT_BRACE)
         elif c == ';':
             self.addToken(Type.SEMICOLON)
+        elif c == '/':
+            if self.match('/'):
+                while self.peek() != '\n' and not self.isAtEnd():
+                    self.advance()
+            else:
+                self.addToken(Type.SLASH)
         elif c == ' ' or c == '\r' or c == '\t':
             pass
         elif c == '\n':
@@ -95,6 +98,17 @@ class Scanner:
         self.advance()
         value = self.source[self.start+1:self.current-1]
         self.addToken(Type.STRING, value)
+
+    def match(self, expected):
+        if self.isAtEnd() or self.source[self.current] != expected:
+            return False
+        self.current += 1
+        return True
+    
+    def peekNext(self):
+        if self.current + 1 >= len(self.source):
+            return '\0'
+        return self.source[self.current + 1]
 
     def peek(self):
         if self.isAtEnd():

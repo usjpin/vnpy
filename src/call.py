@@ -2,6 +2,7 @@ from typing import Any, List
 
 import env
 from stmt import *
+from err import *
 import interpret
 
 class VNScene:
@@ -31,3 +32,31 @@ class VNFunction(VNCallable):
 
     def call(self, interpreter: 'interpret.Interpreter', arguments: List[Any]) -> Any:
         pass
+
+class VNClickCallable(VNCallable):
+
+    def arity() -> int:
+        return 0
+
+    def __str__(self) -> str:
+        return "<native fn>"
+    
+    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
+        game = interpreter.game
+        if game.options is not None:
+            return game.getClick()
+        raise RuntimeErr(None, "Can Not Call Read Click Native Function")
+
+class VNKeyCallable(VNCallable):
+
+    def arity() -> int:
+        return 0
+
+    def __str__(self) -> str:
+        return "<native fn>"
+    
+    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
+        game = interpreter.game
+        if game.options is not None:
+            return game.getClick()
+        raise RuntimeErr(None, "Can Not Call Read Key Native Function")

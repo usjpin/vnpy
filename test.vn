@@ -1,28 +1,28 @@
-config width 100;
-config height 200;
-config mode "console";
+config width 500;
+config height 500;
+config mode "graphic";
 
-display "red.png";
-wait delay 5;
-display "blue.png";
-wait delay 2;
+image show "red.png";
+delay 5;
+image show "blue.png";
+delay 2;
 scene a {
     image show "red.png";
-    audio start "cmon.wav";
-    display "red.png";
-    wait delay 5;
-    display "blue.png";
-    audio stop "cmon.wav";
-    wait delay 2;
+    //audio start "cmon.wav";
+    display "sup";
+    delay 3;
+    display "yeet";
+    //audio stop "cmon.wav";
+    delay 2;
     exit;
 }
-wait delay 2;
+delay 2;
 scene b {
-    display "red.png";
+    display "bro";
     options {
-        case "pick me" do wait delay 5;
+        case "pick me" do delay 2;
     }
-    wait delay 3;
+    delay 3;
     jump a;
 }
 jump b;

@@ -19,6 +19,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
             'height': 500,
             'mode': 'graphic'
         }
+        self.globals.define("readClick", VNClickCallable())
+        self.globals.define("readKey", VNClickCallable())
 
     def interpret(self, configs: List[Config], statements: List[Stmt]) -> None:
         # Error Handling
@@ -43,19 +45,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
             except ReturnErr as r:
                 pass
             except RuntimeErr as e:
+                print("Runtime Error")
                 pass
-            pass
-        '''try:
-            for statement in configs:
-                self.execute(statement)
-            if self.config["mode"] == "graphic":
-                self.game = VNGUIGame(self.config["width"], self.config["height"])
-            else:
-                self.game = VNConsoleGame()
-            for statement in statements:
-                self.execute(statement)
-        except RuntimeErr as e:
-            pass'''
         
     def execute(self, stmt: Stmt):
         stmt.accept(self)
@@ -74,12 +65,16 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitImageStmt(self, stmt: Image):
         print("Interpreting Image")
-        pass
+        if self.config["mode"] == "console":
+            raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
+        if stmt.action == Type.SHOW:
+            self.game.showImage(stmt.path.literal)
+        elif stmt.action == Type.HIDE:
+            self.game.hideImage(stmt.path.literal)
 
     def visitDisplayStmt(self, stmt: Display):
         print("Interpreting Display")
-        #self.game.display(self.evaluate(stmt.path))
-        pass
+        self.game.display(stmt.value.literal)
 
     def visitOptionsStmt(self, stmt: Options):
         print("Interpreting Options")
@@ -87,11 +82,12 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitAudioStmt(self, stmt: Audio):
         print("Interpreting Audio")
-        pass
+        if self.config["mode"] == "console":
+            raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
 
-    def visitWaitStmt(self, stmt: Wait):
-        print("Interpreting Wait")
-        #self.game.wait(self.evaluate(stmt.number))
+    def visitDelayStmt(self, stmt: Delay):
+        print("Interpreting Delay")
+        self.game.delay(stmt.value.literal)
         pass
 
     def visitJumpStmt(self, stmt: Jump):

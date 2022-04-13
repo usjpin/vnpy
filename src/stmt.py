@@ -29,7 +29,7 @@ class StmtVisitor(ABC):
     def visitAudioStmt(self, stmt: Stmt):
         pass
     @abstractmethod
-    def visitWaitStmt(self, stmt: Stmt):
+    def visitDelayStmt(self, stmt: Stmt):
         pass
     @abstractmethod
     def visitJumpStmt(self, stmt: Stmt):
@@ -81,12 +81,11 @@ class Audio(Stmt):
     def accept(self, visitor: StmtVisitor):
         return visitor.visitAudioStmt(self)
     
-class Wait(Stmt):
-    def __init__(self, action: Type, value: Token) -> None:
-        self.action = action
+class Delay(Stmt):
+    def __init__(self, value: Token) -> None:
         self.value = value
     def accept(self, visitor: StmtVisitor) -> None:
-        return visitor.visitWaitStmt(self)
+        return visitor.visitDelayStmt(self)
 
 class Jump(Stmt):
     def __init__(self, dest: Token):

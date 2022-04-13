@@ -6,7 +6,7 @@ sys.setrecursionlimit(5000)
 from scan import Scanner
 from parse import Parser
 from interpret import Interpreter
-from astprint import ASTPrinter
+from print import ASTPrinter
 
 interpreter = Interpreter()
 hadErr = False
