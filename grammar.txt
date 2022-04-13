@@ -1,134 +1,43 @@
-S0 -> Conf* D* EOF
+S0 -> Config* Decl* EOF
 
-Conf -> "config" ConfType Value ";"
+Config -> "config" ConfType ConfValue ";"
 ConfType -> "width" | "height" | "mode"
-Value -> num | string
+ConfValue -> num | string
 
-D -> SetD | FunD | SceneD | Stmt
-SetD -> "let" id ( "=" Expr )? ";"
-FunD -> "fun" Func
+Decl -> SetDecl | FunDecl | SceneDecl | Stmt
+SetDecl -> "let" id ( "=" Expr )? ";"
+FunDecl -> "fun" Func
+Func -> id "(" Params? ")" BlockStmt
+Params -> id ( "," id )*
+Args -> Expr ( "," Expr )*
+SceneDecl -> "scene" id BlockStmt
 
-Func -> id "(" Params? ")" Block
-Parmas -> id ( "," id )*
-Args -> Expr ( "," Expr)*
+Stmt -> ExprStmt | IfStmt | ReturnStmt 
+    | WhileStmt | BlockStmt | SpecialStmt
+ExprStmt -> Expr ";"
+IfStmt -> "if" "(" Expr ")" Stmt ( "else Stmt )?
+WhileStmt -> "while" "(" Expr ")" Stmt
+BlockStmt -> "{" Decl* "}"
 
-SceneD -> "scene" id Block
-
-Stmt -> ExprS | IfS | ReturnS | WhileS | Block | SpecS 
-ExprS -> Expr ";"
-IfS -> "if" "(" Exp ")" Stmt ( "else" Stmt )?
-WhileS -> "while" "(" Expr ")" Stmt
-Block -> "{" D* "}"
-
-// replace strings with Expr later on
-SpecS -> Image | Dis | Opt | Audio | Wait | Jump | Exit
-Dis -> "display" Expr ";"
-Image -> "image" ("show" | "hide") Expr ";"
-Audio -> "audio" ("start" | "stop") Expr ";"
-Opt -> "options" "{" Case* "}"
+SpecialStmt -> ImageStmt | DisplayStmt | OptionsStmt 
+    | AudioStmt | WaitStmt | JumpStmt | ExitStmt
+ImageStmt -> "image ( "show" | "hide" ) Expr ";"
+DisplayStmt -> "display" Expr ";"
+OptionsStmt -> "options" "{" Case "}"
 Case -> "case" Expr "do" Stmt ";"
-Wait -> "wait" ( Input | num) ";"
-Jump -> "jump" Expr ";"
-Exit -> "exit"
-Input -> "choice" | "click" Click | "key" Key
-Key -> KEY_UP | KEY_DOWN | KEY_LEFT | KEY_RIGHT
-Click -> CLICK_LEFT | CLICK_RIGHT | CLICK_BOTH
+AudioStmt -> "audio" ( "start" | "stop" ) Expr ";"
+WaitStmt -> "wait" Expr ";"
+JumpStmt -> "jump" Expr ";"
 
 Expr -> A
 A -> id "=" A | Or
-Or -> And ("or" And)*
-And -> Eq ("and" Eq)*
-Eq -> Comp ( ("!=" | "==" ) Comp )*
+Or -> And ( "or" And )*
+And -> Eq ( "and" Eq )*
+Eq -> Comp ( ( "!=" | "==" ) Comp )*
 Comp -> Term ( ( ">" | ">=" | "<" | "<=" ) Term )*
 Term -> Fact ( ( "-" | "+" ) Fac )*
 Fact -> U ( ( "/" | "*" ) U )*
 U -> ( "!" | "-" ) U | C
 C -> Prim ( "(" Args ")" )*
-Prim -> "true" | "false" | "nil" | num | string | id | "(" Expr ")"
-
-===========================================
-
-scene a {
-    image "red.png"
-    display "hihi";
-    options {
-        case "ok" do {
-            wait 5;
-        }
-        case "meh" do {
-            set a = 5;
-        }
-    }
-    scene suba {
-
-    }
-    set ok = wait input (choice | click | key)
-}
-
-scene a {
-    ...
-    scene b {
-        jumpto D
-    }
-    ...
-    scene c {
-        jumpto B
-    }
-    ...
-    jumpto C
-    ... ( never )
-}
-...
-scene main {
-
-}
-... ( never )
-
-===========================================
-
-set first = nil;
-set second = nil;
-
-fun delayAndExit() {
-    delay 500;
-    exit;
-}
-
-fun displayError() {
-    display "An error occured"
-}
-
-scene Sub {
-    if (first && second) {
-        set result = first - second;
-        display "The subtraction result is " + result;
-    } else displayError();
-    delayAndExit();
-}
-
-scene Add {
-    if (first && second) {
-        set result = first + second;
-        display "The addition result is " + result;
-    } else displayError();
-    delayAndExit();
-}
-
-scene main {
-    display "Pick a number" [
-        option "1" do set first = 1;
-        option "2" do set first = 2;
-        option "3" do set first = 3;
-    ]
-    display "Pick another number" [
-        set i = 0
-        while (i <= 10) {
-            option i do set second = i;
-	    i = i + 1;
-        }
-    ]
-    display "Pick an operation" [
-         option "add" do jump Add;
-         option "sub" do jump Sub;
-    ]
-}
+Prim -> "true" | "false" | "nil" | num 
+    | string | id | "(" Expr ")"
