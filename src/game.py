@@ -129,8 +129,8 @@ class VNGUIGame(VNGame):
             r = int(self.width//25)
             x = int(0.05 * self.width)
             y = int(self.height//2 + self.height//7 - self.height//100)
-            mux, muy = pygame.mouse.get_pos()
             for idx, option in enumerate(options):
+                mux, muy = pygame.mouse.get_pos()
                 mx = mux - x
                 my = muy - y
                 s = pygame.Surface((w, h))
