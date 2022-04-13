@@ -119,7 +119,7 @@ class VNGUIGame(VNGame):
 
     def popOptions(self, options: List[Tuple[Token, Stmt]]) -> Stmt:
         while True:
-            self.checkEvents()
+            events = self.checkEvents()
             if self.imagePath is not None:
                 self.showImage(self.imagePath)
             if self.displayText is not None:
@@ -136,9 +136,8 @@ class VNGUIGame(VNGame):
                 s = pygame.Surface((w, h))
                 s.set_alpha(100)
                 if mx >= 0 and mx <= w and my >= 0 and my <= h:
-                    events = pygame.event.get()
                     for event in events:
-                        if event.type == pygame.MOUSEBUTTONUP:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
                             return options[idx][1]
                     pygame.draw.rect(s, OPTION_HOVER, [0, 0, w, h], border_radius = r)
                 else:
@@ -151,10 +150,11 @@ class VNGUIGame(VNGame):
             self.render()
 
     def checkEvents(self):
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
                 sys.exit(0)
-        return pygame.event.get()
+        return events
 
     def render(self):
         pygame.display.flip()
