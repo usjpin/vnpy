@@ -111,6 +111,10 @@ class Parser:
             self.consume(Type.DO, "Expect \'do\' After Case")
             action = self.statement()
             cases.append((choice, action))
+        if len(cases) == 0:
+            raise self.error(self.peek(), "Can Not Have Empty Options Block")
+        elif len(cases) > 6:
+            raise self.error(self.peek(), "Can Not Have More Than 6 Cases In Option Block")
         self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Options Block")
         return Options(cases)
 

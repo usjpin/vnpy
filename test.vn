@@ -1,11 +1,17 @@
-config width 500;
+config width 800;
 config height 500;
 config mode "graphic";
 
 image show "red.png";
-delay 5;
-image show "blue.png";
+display "sup";
+options {
+    case "pick me" do delay 2;
+    case "pick me 2" do delay 3;
+
+}
 delay 2;
+//image show "blue.png";
+//delay 2;
 scene a {
     image show "red.png";
     //audio start "cmon.wav";
@@ -16,13 +22,14 @@ scene a {
     delay 2;
     exit;
 }
-delay 2;
+//delay 1;
 scene b {
+    image show "blue.png";
     display "bro";
     options {
         case "pick me" do delay 2;
     }
-    delay 3;
+    delay 30;
     jump a;
 }
 jump b;

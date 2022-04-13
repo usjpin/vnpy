@@ -78,7 +78,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitOptionsStmt(self, stmt: Options):
         print("Interpreting Options")
-        pass
+        choice = self.game.popOptions(stmt.cases)
+        #choice = 
 
     def visitAudioStmt(self, stmt: Audio):
         print("Interpreting Audio")

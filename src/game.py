@@ -25,7 +25,7 @@ class VNGame:
         # Clear the Screen
         pass
 
-    def setOptions(self, options: Options) -> None:
+    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
         # Clear Previous Options
         # Display Options (store locations of each)
         pass
@@ -43,9 +43,23 @@ class VNConsoleGame(VNGame):
     def display(self, text: str) -> None:
         print(text)
 
-    def setOptions(self, options: Options) -> None:
-        self.options = options
-        pass
+    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
+        for idx, option in enumerate(options):
+            print(str(idx+1) + ". " + option[0].literal)
+        print("Pick An Option (Enter a Number):")
+        valid = False
+        while not valid:
+            valid = True
+            print(">> Option #", end = "")
+            try:
+                choice = int(input())-1
+                if choice > len(options):
+                    valid = False
+            except:
+                valid = False
+            if valid == False:
+                print("Incorrect Input, Pick Again:")
+        return options[choice]
 
     def delay(self, value: int) -> None:
         i = 0
@@ -76,16 +90,19 @@ class VNGUIGame(VNGame):
         pass
 
     def display(self, text: str):
-        x = 10
-        y = self.height/2 + 5
-        pygame.draw.rect(
-            self.screen, OPTION_COLOR,
-            [x, y, self.width - 20, self.height/6 - 10],
-            border_radius = 20
-        )
-        font = pygame.font.SysFont(FONT_FAMILY, FONT_SIZE)
+        self.checkEvents()
+        x = int(self.width//50)
+        y = int(self.height//2 - self.height//100)
+        w = self.width - 2 * x
+        h = int(self.height//7) - int(self.height//50)
+        r = int(self.width//25)
+        s = pygame.Surface((w, h))
+        s.set_alpha(100)
+        pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
+        font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
         message = font.render(text, True, FONT_COLOR)
-        self.screen.blit(message, (x + 20, y + 20))
+        s.blit(message, (0.05 * w, 0.3 * h))
+        self.screen.blit(s, (x, y))
         self.render()
 
     def delay(self, number: int):
@@ -95,17 +112,22 @@ class VNGUIGame(VNGame):
             i += 1
             time.sleep(1)
 
-    def createOption(self, message):
-        x = 10
-        y = self.height/2 + 5
-        pygame.draw.rect(
-            self.screen, OPTION_COLOR,
-            [x, y, self.width - 20, self.height/6 - 10],
-            border_radius = 20
-        )
-        font = pygame.font.SysFont(FONT_FAMILY, FONT_SIZE)
-        text = font.render(message, True, FONT_COLOR)
-        self.screen.blit(text, (x + 20, y + 20))
+    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> Stmt:
+        # Implement Hover and Clicking
+        w = int(0.9 * self.width)
+        h = int(self.height//(len(options) * 2.5)) - int(self.height//50)
+        r = int(self.width//25)
+        x = int(0.05 * self.width)
+        y = int(self.height//2 + self.height//7 - self.height//100)
+        for idx, option in enumerate(options):
+            s = pygame.Surface((w, h))
+            s.set_alpha(100)
+            pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
+            font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
+            message = font.render(option[0].literal, True, FONT_COLOR)
+            s.blit(message, (0.05 * w, 0.3 * h))
+            self.screen.blit(s, (x, y))
+            y += h + self.height//100
         self.render()
 
     def checkEvents(self):
