@@ -8,6 +8,7 @@ class Scanner:
         'width': Type.WIDTH,
         'height': Type.HEIGHT,
         'mode': Type.MODE,
+        'volume': Type.VOLUME,
         'scene': Type.SCENE,
         'image': Type.IMAGE,
         'display': Type.DISPLAY,

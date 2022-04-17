@@ -40,6 +40,10 @@ class Parser:
             value = self.consume(Type.STRING, "Expect \'console\' Or \'graphic\' For Mode")
             self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
             return Config(Type.MODE, value)
+        if self.match(Type.VOLUME):
+            value = self.consume(Type.NUMBER, "Expect Number Between 0 to 1 For Volume")
+            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+            return Config(Type.VOLUME, value)
         # Need Error Handling
 
     def declaration(self) -> Stmt:
@@ -125,9 +129,8 @@ class Parser:
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
             return Audio(Type.START, path)
         if self.match(Type.STOP):
-            path = self.consume(Type.STRING, "Expect String For Audio")
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
-            return Audio(Type.STOP, path)
+            return Audio(Type.STOP, None)
         raise self.error(self.peek(), "Expect Audio Action")
 
     def delayStatement(self) -> Stmt:

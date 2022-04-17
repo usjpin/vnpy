@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import List
 
@@ -17,7 +18,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
         self.config = {
             'width': 500,
             'height': 500,
-            'mode': 'graphic'
+            'mode': 'graphic',
+            'volume': 0.5
         }
         self.globals.define("readClick", VNClickCallable())
         self.globals.define("readKey", VNClickCallable())
@@ -30,7 +32,11 @@ class Interpreter(ExprVisitor, StmtVisitor):
         except RuntimeErr as e:
             pass
         if self.config["mode"] == "graphic":
-            self.game = VNGUIGame(self.config["width"], self.config["height"])
+            self.game = VNGUIGame(
+                self.config["width"],
+                self.config["height"],
+                self.config["volume"]
+            )
         else:
             self.game = VNConsoleGame()
         while statements is not None:
@@ -54,6 +60,11 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def evaluate(self, expr: Expr):
         return expr.accept(self)
 
+    def resolvePath(self, path: Token) -> str:
+        if not os.path.exists(path.literal):
+            raise RuntimeErr(path, "Path \'" + path.literal + "\' Does Not Exist")
+        return path.literal
+
     def visitConfigStmt(self, stmt: Config):
         print("Interpreting Config")
         self.config[stmt.config.value] = stmt.value.literal
@@ -68,9 +79,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
         if self.config["mode"] == "console":
             raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
         if stmt.action == Type.SHOW:
-            self.game.showImage(stmt.path.literal)
+            self.game.showImage(self.resolvePath(stmt.path))
         elif stmt.action == Type.HIDE:
-            self.game.hideImage(stmt.path.literal)
+            self.game.hideImage(self.resolvePath(stmt.path))
         self.game.render()
 
     def visitDisplayStmt(self, stmt: Display):
@@ -86,12 +97,15 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def visitAudioStmt(self, stmt: Audio):
         print("Interpreting Audio")
         if self.config["mode"] == "console":
-            raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
+            raise RuntimeErr(stmt.action, "Cannot Use Audio In Console Mode")
+        if stmt.action == Type.START:
+            self.game.startAudio(self.resolvePath(stmt.path))
+        elif stmt.action == Type.STOP:
+            self.game.stopAudio()
 
     def visitDelayStmt(self, stmt: Delay):
         print("Interpreting Delay")
         self.game.delay(stmt.value.literal)
-        pass
 
     def visitJumpStmt(self, stmt: Jump):
         print("Interpreting Jump")

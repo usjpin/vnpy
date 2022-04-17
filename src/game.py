@@ -73,42 +73,63 @@ class VNConsoleGame(VNGame):
 
 class VNGUIGame(VNGame):
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, volume: float):
         self.width = width
         self.height = height
-        self.imagelist = {}
-        self.audiolist = {}
+        self.volume = volume
+        self.imagePaths = []
+        self.imageSurfaces = []
         pygame.init()
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(self.volume)
         self.screen = pygame.display.set_mode(
             (self.width, self.height)
         )
 
-    def showImage(self, path: str):
-        self.imagePath = path
-        #self.checkEvents()
+    def showImage(self, path: str = None):
+        if path is not None:
+            self.imagePaths.append(path)
+            pic = pygame.image.load(path)
+            pic = pygame.transform.scale(pic, (self.width, self.height))
+            self.imageSurfaces.append(pic)
         self.screen.fill((0, 0, 0))
-        pic = pygame.image.load(path)
-        pic = pygame.transform.scale(pic, (self.width, self.height))
-        self.screen.blit(pic, (0, 0))
+        for imageSurface in self.imageSurfaces:
+            self.screen.blit(imageSurface, (0, 0))
 
     def hideImage(self, path: str):
-        pass
+        if path not in self.imagePaths:
+            # Throw Error?
+            return
+        idx = self.imagePaths.index(path)
+        self.imagePaths.pop(idx)
+        self.imageSurfaces.pop(idx)
+        self.showImage()
 
-    def display(self, text: str):
-        self.displayText = text
-        #self.checkEvents()
+    def startAudio(self, path: str):
+        pygame.mixer.music.load(path)
+        pygame.mixer.music.play()
+
+    def stopAudio(self):
+        pygame.mixer.music.stop()
+
+    def display(self, text: str = None):
         x = int(self.width//50)
         y = int(self.height//2 - self.height//100)
-        w = self.width - 2 * x
-        h = int(self.height//7) - int(self.height//50)
-        r = int(self.width//25)
-        s = pygame.Surface((w, h))
-        s.set_alpha(100)
-        pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
-        font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
-        message = font.render(text, True, FONT_COLOR)
-        s.blit(message, (0.05 * w, 0.3 * h))
-        self.screen.blit(s, (x, y))
+        if text is not None:
+            self.displayText = text
+            w = self.width - 2 * x
+            h = int(self.height//7) - int(self.height//50)
+            r = int(self.width//25)
+            s = pygame.Surface((w, h))
+            s.set_alpha(100)
+            pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
+            font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
+            message = font.render(text, True, FONT_COLOR)
+            s.blit(message, (0.05 * w, 0.3 * h))
+            self.displaySurface = s
+        self.showImage()
+        if self.displaySurface is not None:
+            self.screen.blit(self.displaySurface, (x, y))
 
     def delay(self, number: int):
         i = 0
@@ -120,10 +141,7 @@ class VNGUIGame(VNGame):
     def popOptions(self, options: List[Tuple[Token, Stmt]]) -> Stmt:
         while True:
             events = self.checkEvents()
-            if self.imagePath is not None:
-                self.showImage(self.imagePath)
-            if self.displayText is not None:
-                self.display(self.displayText)
+            self.display()
             w = int(0.9 * self.width)
             h = int(self.height//(len(options) * 2.5)) - int(self.height//50)
             r = int(self.width//25)

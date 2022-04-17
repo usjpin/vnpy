@@ -1,7 +1,9 @@
 config width 800;
 config height 500;
 config mode "graphic";
+config volume 0.7;
 
+audio start "cmon.mp3";
 image show "img/red.png";
 display "sup";
 options {
@@ -16,11 +18,11 @@ delay 20;
 //delay 2;
 scene a {
     image show "img/red.png";
-    //audio start "cmon.wav";
+    //audio start "cmon.mp3";
     display "sup";
     delay 3;
     display "yeet";
-    //audio stop "cmon.wav";
+    //audio stop "cmon.mp3";
     delay 2;
     exit;
 }

@@ -20,6 +20,7 @@ class Type(Enum):
     WIDTH = 'width'
     HEIGHT = 'height'
     MODE = 'mode'
+    VOLUME = 'volume'
     # Declaration
     SCENE = 'scene'
     # Statement
