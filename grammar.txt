@@ -23,7 +23,7 @@ SpecialStmt -> ImageStmt | DisplayStmt | OptionsStmt
     | AudioStmt | WaitStmt | JumpStmt | ExitStmt
 ImageStmt -> "image ( "show" | "hide" ) Expr ";"
 DisplayStmt -> "display" Expr ";"
-OptionsStmt -> "options" "{" Case "}"
+OptionsStmt -> "options" "{" Case* "}"
 Case -> "case" Expr "do" Stmt ";"
 AudioStmt -> "audio" ( "start" | "stop" ) Expr ";"
 WaitStmt -> "wait" Expr ";"
