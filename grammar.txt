@@ -1,7 +1,7 @@
 S0 -> Config* Decl* EOF
 
 Config -> "config" ConfType ConfValue ";"
-ConfType -> "width" | "height" | "mode"
+ConfType -> "width" | "height" | "mode" | "volume"
 ConfValue -> num | string
 
 Decl -> SetDecl | FunDecl | SceneDecl | Stmt
@@ -25,7 +25,7 @@ ImageStmt -> "image ( "show" | "hide" ) Expr ";"
 DisplayStmt -> "display" Expr ";"
 OptionsStmt -> "options" "{" Case* "}"
 Case -> "case" Expr "do" Stmt ";"
-AudioStmt -> "audio" ( "start" | "stop" ) Expr ";"
+AudioStmt -> "audio" ( "start" Expr | "stop" ) ";"
 WaitStmt -> "wait" Expr ";"
 JumpStmt -> "jump" Expr ";"
 
