@@ -1,3 +1,4 @@
+from pyclbr import Function
 from typing import List
 
 from tok import Token, Type
@@ -48,6 +49,10 @@ class Parser:
 
     def declaration(self) -> Stmt:
         try:
+            if self.match(Type.SET):
+                return self.setDeclaration()
+            if self.match(Type.FUN):
+                return Function("function")
             if self.match(Type.SCENE):
                 return self.sceneDeclaration()
             return self.statement()
@@ -62,7 +67,15 @@ class Parser:
         self.consume(Type.LEFT_BRACE, "Expect \'{\' Before Scene Body")
         body = self.block()
         return Scene(name, body)
-    
+
+    def setDeclaration(self) -> Stmt:
+        name = self.consume(Type.IDENTIFIER, "Expect Variable Name.")
+        initializer = None
+        if self.match(Type.EQUAL):
+            initializer = Expr
+        self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration.")
+        return Stmt(name, initializer)
+
     def block(self) -> List[Stmt]:
         statements = []
         while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
@@ -85,6 +98,16 @@ class Parser:
             return self.jumpStatement()
         if self.match(Type.EXIT):
             return self.exitStatement()
+        if self.match(Type.IF):
+            return self.ifStatement()
+        if self.match(Type.PRINT):
+            return self.printStatement()
+        if self.match(Type.RETURN):
+            return self.returnStatement()
+        if self.match(Type.WHILE):
+            return self.whileStatement()
+        if self.match(Type.LEFT_BRACE):
+            return Stmt(Block())
         return self.expressionStatement()
 
     def imageStatement(self) -> Stmt:
@@ -147,6 +170,21 @@ class Parser:
     def exitStatement(self) -> Stmt:
         self.consume(Type.SEMICOLON, "Expect \';\' After Exit")
         return Exit()
+    
+    def ifStatement(self) -> Stmt:
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After \'If\'.")
+        condition = self.expression()
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After If Condition.")
+        thenBranch = self.statement()
+        elseBranch = None
+        if (self.match(Type.ELSE)):
+            elseBranch = self.statement()
+        return Stmt(condition, thenBranch, elseBranch)
+    
+    def printStatement(self) -> Stmt:
+        value = self.expression()
+        self.consume(Type.SEMICOLON, "Expect \';\' After Value.")
+        pass #WAS HERE
 
     def expressionStatement(self) -> Stmt:
         pass
