@@ -107,7 +107,7 @@ class Parser:
         if self.match(Type.WHILE):
             return self.whileStatement()
         if self.match(Type.LEFT_BRACE):
-            return Stmt(Block())
+            return Stmt(self.block())
         return self.expressionStatement()
 
     def imageStatement(self) -> Stmt:
@@ -179,16 +179,143 @@ class Parser:
         elseBranch = None
         if (self.match(Type.ELSE)):
             elseBranch = self.statement()
-        return Stmt(condition, thenBranch, elseBranch)
+        return If(condition, thenBranch, elseBranch)
     
     def printStatement(self) -> Stmt:
         value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Value.")
-        pass #WAS HERE
+        return Print(value)
+    
+    def returnStatement(self) -> Stmt:
+        keyword = self.previous()
+        value = None
+        if (not self.check(Type.SEMICOLON)):
+            value = self.expression()
+        self.consume(Type.SEMICOLON, "Expect \';\' After Return Value.")
+        return Stmt(keyword, value)
+
+    def whileStatement(self) -> Stmt:
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After 'while'.")
+        condition = self.expression()
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Condition.")
+        body = self.statement()
+        return Return(condition, body)
 
     def expressionStatement(self) -> Stmt:
-        pass
-    
+        expr = self.expression()
+        self.consume(Type.SEMICOLON, "Expect \';\' After Expression")
+        return Expression(expr)
+
+    def function(self, kind: str) -> Function:
+        name = self.consume(Type.IDENTIFIER, "Expect " + kind + " Name.")
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After " + kind + " Name.")
+        params = []
+        if not self.check(Type.RIGHT_PAREN):
+            while True:
+                if params.count >= 255:
+                    self.error(self.peek(), "Can't Have More Than 255 Params.")
+                params.append(self.consume(Type.IDENTIFIER, "Expect Param Name."))
+                if not self.match(Type.COMMA):
+                    break
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Params.")
+        self.consume(Type.LEFT_BRACE, "Expect \'{\' Before " + kind + " Body.")
+        body = self.block()
+        return Function(name, params, body)
+
+    def assignment(self) -> Expr:
+        expr = self.orExpression()
+        if self.match(Type.EQUAL):
+            equals = self.previous()
+            value = self.assignment()
+            if expr.__getattribute__ == type(Variable):
+                name = Variable(expr).name
+                return Assign(name, value)
+            elif expr.__getattribute__ == type(Get):
+                get = Get(expr)
+                return Set(get.obj, get.name, value)
+            Error(equals, "Invalid assignment target")
+        return expr
+
+    def orExpression(self) -> Expr:
+        expr = self.andExpression()
+        while self.match(Type.OR):
+            oper = self.previous()
+            right = self.andExpression()
+            expr = Logical(expr, oper, right)
+        return expr
+
+    def andExpression(self) -> Expr:
+        expr = self.equality()
+        while self.match(Type.AND):
+            oper = self.previous()
+            right = self.equality()
+            expr = Logical(expr, oper, right)
+        return expr
+
+    def equality(self) -> Expr:
+        expr = self.comparison()
+        while self.match(Type.BANG_EQUAL, Type.EQUAL_EQUAL):
+            oper = self.previous()
+            right = self.comparison()
+            expr = Binary(expr, oper, right)
+        return expr
+
+    def comparison(self) -> Expr:
+        expr = self.term()
+        while self.match(Type.GREATER, Type.GREATER_EQUAL, Type.LESS, Type.LESS_EQUAL):
+            oper = self.previous()
+            right = self.term()
+            expr = Binary(expr, oper, right)
+        return expr
+
+    def term(self) -> Expr:
+        expr = self.factor()
+        while self.match(Type.MINUS, Type.PLUS):
+            oper = self.previous()
+            right = self.factor()
+            expr = Binary(expr, oper, right)
+        return expr
+
+    def factor(self) -> Expr:
+        expr = self.unary()
+        while self.match(Type.SLASH, Type.STAR):
+            oper = self.previous()
+            right = self.unary()
+            expr = Binary(expr, oper, right)
+        return expr
+
+    def unary(self) -> Expr:
+        if self.match(Type.BANG, Type.MINUS):
+            oper = self.previous()
+            right = self.unary()
+            return Unary(oper, right)
+        return self.call()
+
+    def finishCall(self, callee: Expr) -> Expr:
+        args = []
+        if not self.check(Type.RIGHT_PAREN):
+            while True:
+                if args.count >= 255:
+                    Error(self.peek(), "Can't Have More Than 255 Arguments.")
+                args.append(self.expression())
+                if self.match(Type.COMMA):
+                    break
+        
+    def call(self) -> Expr:
+        expr = self.primary()
+        while True:
+            if self.match(Type.LEFT_PAREN):
+                expr = self.finishCall(expr)
+            elif self.match(Type.DOT):
+                name = self.consume(Type.IDENTIFIER, "Expect Property Name After \'.\'.")
+                expr = Get(expr, name)
+            else:
+                break
+        return expr
+
+    def primary(self) -> Expr:
+        pass #Was here
+
     def match(self, *types: List[Type]):
         for type in types:
             if self.check(type):
