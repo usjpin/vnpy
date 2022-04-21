@@ -1,11 +1,12 @@
-from pyclbr import Function
 from typing import List
 
 from tok import Token, Type
 from expr import *
 from stmt import *
+from err import ParseErr
 
-class ParseErr(Exception): pass
+# For use in synchronize
+returnCases = [Type.SCENE, Type.FUN, Type.SET, Type.IF, Type.WHILE, Type.PRINT, Type.RETURN, Type.IMAGE, Type.DISPLAY, Type.OPTIONS, Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT, Type.LOG]
 
 class Parser:
     current = 0
@@ -26,6 +27,9 @@ class Parser:
             statements.append(self.declaration())
             #print(statements[len(statements)-1])
         return configs, statements
+
+    def expression(self) -> Expr:
+        return self.assignment()
 
     def config(self) -> Stmt:
         # Need Error Handling
@@ -52,7 +56,7 @@ class Parser:
             if self.match(Type.SET):
                 return self.setDeclaration()
             if self.match(Type.FUN):
-                return Function("function")
+                return Fun("function")
             if self.match(Type.SCENE):
                 return self.sceneDeclaration()
             return self.statement()
@@ -67,21 +71,6 @@ class Parser:
         self.consume(Type.LEFT_BRACE, "Expect \'{\' Before Scene Body")
         body = self.block()
         return Scene(name, body)
-
-    def setDeclaration(self) -> Stmt:
-        name = self.consume(Type.IDENTIFIER, "Expect Variable Name.")
-        initializer = None
-        if self.match(Type.EQUAL):
-            initializer = Expr
-        self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration.")
-        return Stmt(name, initializer)
-
-    def block(self) -> List[Stmt]:
-        statements = []
-        while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
-            statements.append(self.declaration())
-        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Block")
-        return statements
 
     def statement(self) -> Stmt:
         if self.match(Type.IMAGE):
@@ -110,6 +99,7 @@ class Parser:
             return Stmt(self.block())
         return self.expressionStatement()
 
+    #VNPy Specific Statements
     def imageStatement(self) -> Stmt:
         # Change String to Expr
         if self.match(Type.SHOW):
@@ -170,7 +160,8 @@ class Parser:
     def exitStatement(self) -> Stmt:
         self.consume(Type.SEMICOLON, "Expect \';\' After Exit")
         return Exit()
-    
+
+    #Standard Statements    
     def ifStatement(self) -> Stmt:
         self.consume(Type.LEFT_PAREN, "Expect \'(\' After \'If\'.")
         condition = self.expression()
@@ -194,6 +185,14 @@ class Parser:
         self.consume(Type.SEMICOLON, "Expect \';\' After Return Value.")
         return Stmt(keyword, value)
 
+    def setDeclaration(self) -> Stmt:
+        name = self.consume(Type.IDENTIFIER, "Expect Variable Name.")
+        initializer = None
+        if self.match(Type.EQUAL):
+            initializer = Expr
+        self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration.")
+        return Stmt(name, initializer)
+
     def whileStatement(self) -> Stmt:
         self.consume(Type.LEFT_PAREN, "Expect \'(\' After 'while'.")
         condition = self.expression()
@@ -206,7 +205,7 @@ class Parser:
         self.consume(Type.SEMICOLON, "Expect \';\' After Expression")
         return Expression(expr)
 
-    def function(self, kind: str) -> Function:
+    def function(self, kind: str) -> Fun:
         name = self.consume(Type.IDENTIFIER, "Expect " + kind + " Name.")
         self.consume(Type.LEFT_PAREN, "Expect \'(\' After " + kind + " Name.")
         params = []
@@ -220,20 +219,24 @@ class Parser:
         self.consume(Type.RIGHT_PAREN, "Expect \')\' After Params.")
         self.consume(Type.LEFT_BRACE, "Expect \'{\' Before " + kind + " Body.")
         body = self.block()
-        return Function(name, params, body)
+        return Fun(name, params, body)
+
+    def block(self) -> List[Stmt]:
+        statements = []
+        while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
+            statements.append(self.declaration())
+        self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Block")
+        return statements
 
     def assignment(self) -> Expr:
         expr = self.orExpression()
         if self.match(Type.EQUAL):
             equals = self.previous()
             value = self.assignment()
-            if expr.__getattribute__ == type(Variable):
+            if isinstance(expr, Variable):
                 name = Variable(expr).name
                 return Assign(name, value)
-            elif expr.__getattribute__ == type(Get):
-                get = Get(expr)
-                return Set(get.obj, get.name, value)
-            Error(equals, "Invalid assignment target")
+            raise self.error(equals, "Invalid assignment target")
         return expr
 
     def orExpression(self) -> Expr:
@@ -296,7 +299,7 @@ class Parser:
         if not self.check(Type.RIGHT_PAREN):
             while True:
                 if args.count >= 255:
-                    Error(self.peek(), "Can't Have More Than 255 Arguments.")
+                    raise self.error(self.peek(), "Can't Have More Than 255 Arguments.")
                 args.append(self.expression())
                 if self.match(Type.COMMA):
                     break
@@ -306,15 +309,26 @@ class Parser:
         while True:
             if self.match(Type.LEFT_PAREN):
                 expr = self.finishCall(expr)
-            elif self.match(Type.DOT):
-                name = self.consume(Type.IDENTIFIER, "Expect Property Name After \'.\'.")
-                expr = Get(expr, name)
             else:
                 break
         return expr
 
     def primary(self) -> Expr:
-        pass #Was here
+        if self.match(Type.FALSE):
+            return Literal(False)
+        if self.match(Type.TRUE):
+            return Literal(True)
+        if self.match(Type.NIL):
+            return Literal(None)
+        if self.match(Type.NUMBER, Type.STRING):
+            return Literal(self.previous().literal)
+        if self.match(Type.IDENTIFIER):
+            return Variable(self.previous())
+        if self.match(Type.LEFT_PAREN):
+            expr = self.expression()
+            self.consume(Type.RIGHT_PAREN, "Expect ) After Expression.")
+            return Grouping(expr)
+        raise self.error(self.peek(), "Expect Expression.")
 
     def match(self, *types: List[Type]):
         for type in types:
@@ -348,8 +362,14 @@ class Parser:
         raise self.error(self.peek(), message)
 
     def error(self, token: Token, message: str) -> ParseErr:
-        pass
-        return ParseErr()
+        print("Parse Error.")
+        return ParseErr(token, message)
 
     def synchronize(self) -> None:
-        pass
+        self.advance()
+        while not self.isAtEnd():
+            if self.previous().type == Type.SEMICOLON:
+                return
+            if self.peek in returnCases:
+                return
+            self.advance()

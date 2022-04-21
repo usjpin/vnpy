@@ -14,7 +14,13 @@ class Env:
         self.values[name] = value
 
     def assign(self, name: Token, value: Any) -> None:
-        pass
+        if name.lexeme in self.values:
+            self.values[name.lexeme] = value
+            return
+        if self.enclosing != None:
+            self.enclosing.assign(name, value)
+            return
+        raise RuntimeErr(name, "Undefined Variable \'" + name.lexeme + "\' During Assignment.")
 
     def get(self, name: Token) -> Any:
         if name in self.values:

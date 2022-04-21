@@ -38,7 +38,28 @@ class StmtVisitor(ABC):
     def visitExitStmt(self, stmt: Stmt):
         pass
     @abstractmethod
+    def visitBlockStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
     def visitExpressionStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitFunStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitIfStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitPrintStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitReturnStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitSetStmt(self, stmt: Stmt):
+        pass
+    @abstractmethod
+    def visitWhileStmt(self, stmt: Stmt):
         pass
 
 class Config(Stmt):
@@ -99,8 +120,57 @@ class Exit(Stmt):
     def accept(self, visitor: StmtVisitor):
         return visitor.visitExitStmt(self)
 
+class Set(Stmt):
+    def __init__(self, name: Token, initializer: Expr) -> None:
+        self.name = name
+        self.initializer = initializer
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitSetStmt(self)
+
+class Block(Stmt):
+    def __init__(self, statements: List[Stmt]) -> None:
+        self.statements = statements
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitBlockStmt(self)
+
 class Expression(Stmt):
     def __init__(self, expression: Expr) -> None:
         self.expression = expression
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitExpressionStmt(self)
+
+class Fun(Stmt):
+    def __init__(self, name: Token, args: List[Token], body: List[Stmt]) -> None:
+        self.name = name
+        self.args = args
+        self.body = body
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitFunStmt(self)
+
+class If(Stmt):
+    def __init__(self, condition: Expr, thenBranch: Stmt, elseBranch: Stmt) -> None:
+        self.condition = condition
+        self.thenBranch = thenBranch
+        self.elseBranch = elseBranch
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitIfStmt(self)
+
+class Print(Stmt):
+    def __init__(self, expression: Expr) -> None:
+        self.expression = expression
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitPrintStmt(self)
+
+class Return(Stmt):
+    def __init__(self, keyword: Token, value: Expr) -> None:
+        self.keyword = keyword
+        self.value = value
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitReturnStmt(self)
+
+class While(Stmt):
+    def __init__(self, condition: Expr, body: Stmt) -> None:
+        self.condition = condition
+        self.body = body
+    def accept(self, visitor: StmtVisitor) -> None:
+        return visitor.visitWhileStmt(self)

@@ -21,17 +21,26 @@ class VNCallable:
 
 class VNFunction(VNCallable):
 
-    def __init__(self, declaration: Any, closure: 'env.Env'): # Change to 'Function'
-        pass
+    def __init__(self, declaration: Fun, closure: 'env.Env', ): # Change to 'Function'
+        self.declaration = declaration
+        self.closure = closure
 
     def __str__(self) -> str:
-        pass
+        return "<fn " + self.declaration.name.lexeme + ">"
 
     def arity(self) -> int:
-        pass
+        return self.declaration.args.count
 
     def call(self, interpreter: 'interpret.Interpreter', arguments: List[Any]) -> Any:
-        pass
+        environment = env.Env(self.closure)
+        for i in range(self.declaration.args.count):
+            environment.define(self.declaration.args[i].lexeme, arguments[i])
+        try:
+            interpreter.executeBlock(self.declaration.body, environment)
+        except ReturnErr as r:
+            return r.value
+        return None
+
 
 class VNClickCallable(VNCallable):
 

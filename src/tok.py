@@ -1,6 +1,4 @@
 from enum import Enum
-from lib2to3.pgen2.token import GREATER
-from logging.config import IDENTIFIER
 from typing import Any
 
 class Type(Enum):
