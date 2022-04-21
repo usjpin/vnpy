@@ -17,7 +17,7 @@ class Scanner:
         'wait': Type.WAIT,
         'jump': Type.JUMP,
         'exit': Type.EXIT,
-        'set': Type.SET,
+        'let': Type.SET,
         'show': Type.SHOW,
         'hide': Type.HIDE,
         'start': Type.START,
@@ -84,7 +84,7 @@ class Scanner:
         elif c == '<':
             self.addToken(Type.LESS_EQUAL if self.match('=') else Type.LESS)
         elif c == '>':
-            self.addToken(Type.GREATER_EQUAL if self.match('>') else Type.GREATER)
+            self.addToken(Type.GREATER_EQUAL if self.match('=') else Type.GREATER)
         elif c == '/':
             if self.match('/'):
                 while self.peek() != '\n' and not self.isAtEnd():

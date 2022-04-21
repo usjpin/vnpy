@@ -96,6 +96,6 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
         pass
 
     def visitLiteralExpr(self, expr: Literal) -> str:
-        if expr.value == None:
+        if expr.value is None:
             return "nil"
         return "\'" + str(expr.value) + "\'"

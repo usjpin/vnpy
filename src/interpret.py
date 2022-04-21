@@ -1,3 +1,4 @@
+from ast import arg
 import os
 import sys
 from typing import List
@@ -128,9 +129,10 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitSetStmt(self, stmt: Set):
         value = None
-        if stmt.value != None:
-            value = self.evaluate(stmt.value)
-        raise Return(value)
+        if stmt.initializer is not None:
+            value = self.evaluate(stmt.initializer)
+        self.env.define(stmt.name.lexeme, value)
+        return None
 
     def visitBlockStmt(self, stmt: Block):
         self.executeBlock(stmt.statements, Env(self.env))
@@ -141,12 +143,14 @@ class Interpreter(ExprVisitor, StmtVisitor):
         return None
 
     def visitFunStmt(self, stmt: Fun):
-        pass #TODO implement
+        function = VNFunction(stmt, self.env)
+        self.env.define(stmt.name.lexeme, function)
+        return None
 
     def visitIfStmt(self, stmt: If):
         if self.isTruthy(self.evaluate(stmt.condition)):
             self.execute(stmt.thenBranch)
-        elif stmt.elseBranch != None:
+        elif stmt.elseBranch is not None:
             self.execute(stmt.elseBranch)
         return None
 
@@ -157,9 +161,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitReturnStmt(self, stmt: Return):
         value = None
-        if stmt.value != None:
+        if stmt.value is not None:
             value = self.evaluate(stmt.value)
-        raise Return(value)
+        raise ReturnErr(value)
 
     def visitWhileStmt(self, stmt: While):
         while self.isTruthy(self.evaluate(stmt.condition)):
@@ -198,9 +202,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
             self.checkNumberOperands(expr.oper, left, right)
             return float(left) - float(right)
         if exprType == Type.PLUS:
-            if left != None and isinstance(left, float) and right != None and isinstance(right, float):
+            if left is not None and isinstance(left, float) and right is not None and isinstance(right, float):
                 return float(left) + float(right)
-            if left != None and isinstance(left, str) and right != None and isinstance(right, str):
+            if left is not None and isinstance(left, str) and right is not None and isinstance(right, str):
                 return str(left) + str(right)
         if exprType == Type.SLASH:
             self.checkNumberOperands(expr.oper, left, right)
@@ -215,11 +219,11 @@ class Interpreter(ExprVisitor, StmtVisitor):
         arguments = []
         for argument in expr.args:
             arguments.append(self.evaluate(argument))
-        if callee == None or not isinstance(callee, VNFunction) and not isinstance(callee, Scene):
-            raise RuntimeErr(expr.paren, "Can Only Call Function And Classes.")
-        function = VNCallable(callee)
-        if arguments.count != function.arity():
-            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + arguments.count + ".")
+        if callee is None or not isinstance(callee, VNFunction):
+            raise RuntimeErr(expr.paren, "Can Only Call Functions")
+        function: VNCallable = callee
+        if len(arguments) != function.arity():
+            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + len(arguments) + ".")
         return function.call(self, arguments)
 
     def visitGroupingExpr(self, expr: Grouping):
@@ -245,6 +249,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
             return not self.isTruthy(right)
         if exprType == Type.MINUS:
             self.checkNumberOperand(expr.oper, right)
+            return -float(right)
         return None
     
     def visitVariableExpr(self, expr: Set):
@@ -252,36 +257,36 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def lookUpVariable(self, name: Token, expr: Expr):
         if expr in self.locals:
-            return self.env.get(self.locals.get(expr), name.lexeme)
+            return self.env.get(name.lexeme)
         else:
             return self.globals.get(name)
     
     def checkNumberOperand(self, oper: Token, operand: Any):
-        if operand != None and isinstance(operand, float):
+        if operand is not None and isinstance(operand, float):
             return
         raise RuntimeErr(oper, "Operand Must Be A Number.")
 
     def checkNumberOperands(self, oper: Token, left: Any, right: Any):
-        if left != None and isinstance(left, float) and right != None and isinstance(right, float):
+        if left is not None and isinstance(left, float) and right is not None and isinstance(right, float):
             return
         raise RuntimeErr(oper, "Operands Must Be Numbers.")
 
     def isTruthy(self, obj: Any):
-        if obj == None:
+        if obj is None:
             return False
         if isinstance(obj, bool):
             return bool(obj)
         return True
     
     def isEqual(self, a: Any, b: Any):
-        if a == None and b == None:
+        if a is None and b is None:
             return True
-        if a == None:
+        if a is None:
             return False
         return a == b
 
     def stringify(self, obj: Any):
-        if obj == None:
+        if obj is None:
             return "nil"
         if isinstance(obj, float):
             text = str(obj)

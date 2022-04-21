@@ -8,7 +8,7 @@ print "-----------------------";
 print "Test 1.1 Ints and Floats";
 {
 	print "Expected: 1, 2, 1.5, 2.5";
-	var A = 1;
+	let A = 1;
 	print A;
 	print A + 1;
 	A = 1.5;
@@ -20,7 +20,7 @@ print "Test 1.1 Ints and Floats";
 print "Test 1.2 Strings";
 {
 	print "Expected: String, String1";
-	var A = "String";
+	let A = "String";
 	print A;
 	print A + "1";
 	print "";
@@ -29,21 +29,9 @@ print "Test 1.2 Strings";
 print "Test 1.3 Booleans";
 {
 	print "Expected: true, false";
-	var A = true;
+	let A = true;
 	print A;
 	print A and false;
-	print "";
-}
-
-print "Test 1.4 Classes and Functions";
-{
-	print "Expected: Hello, World!";
-	fun testFun(){
-		print "Hello";
-	}
-	var A = testFun;
-	A();
-	A.printStuff();
 	print "";
 }
 
@@ -53,8 +41,8 @@ print "Test 1.5 Dynamic Reassignment";
 	fun testFun(){
 		print "Hello";
 	}
-	var B = 123;
-	var A = B;
+	let B = 123;
+	let A = B;
 	print A;
 	B = testFun;
 	A = B;
@@ -73,9 +61,9 @@ print "-----------------------";
 print "Test 2.1 Add, Subtract, Multiply, Divide";
 {
 	print "Expected: 30, -1, 5.5, 9, 4.5, 0, FirstSecond, FirstSecondThird";
-	var A2 = 10;
-	var B2 = 0;
-	var C2 = "Third";
+	let A2 = 10;
+	let B2 = 0;
+	let C2 = "Third";
 	print A2 + 20;
 	print A2 - 15 + (5 - 1);
 	print 5 * 2 - (A2 - 5.5);
@@ -90,8 +78,8 @@ print "Test 2.1 Add, Subtract, Multiply, Divide";
 print "Test 2.2 AND, OR, and !";
 {
 	print "Expected: true, true, false, false, true";
-	var A2 = true;
-	var B2 = false;
+	let A2 = true;
+	let B2 = false;
 	print (A2 and B2) or A2;
 	print (true and A2) or B2;
 	print (B2 and true) and A2;
@@ -107,9 +95,9 @@ print "Test 2.3 Comparisons";
 		print "First";
 	else 
 		print "Second";
-	var A2 = 1 < 2;
+	let A2 = 1 < 2;
 	print A2;
-	if ((15 != "15") and (15.0 == 15.0)) //different typed variables will compare false
+	if ((15 != "15") and (15.0 == 15.0)) //different typed letiables will compare false
 		print "First";
 	else
 		print "Second";
@@ -122,9 +110,9 @@ print "Test 2.3 Comparisons";
 print "Test 2.4 Assignment Operator";
 {
 	print "Expected: Is nil, Yes, 1, 1, 15, 10";
-	var A2;
-	var B2;
-	if (A2 == nil) //variables are by default initialized to nil
+	let A2;
+	let B2;
+	if (A2 == nil) //letiables are by default initialized to nil
 		print "Is nil";
 	print A2 = "Yes"; //assignment returns value assigned
 	A2 = B2 = 1; 
@@ -153,20 +141,16 @@ print "Test 3.1 If, For, and While";
 	else{
 		print "This will not print.";
 	}
-	var A3 = 2;
+	let A3 = 2;
 	if (A3 == 1)
 		print "1";
 	else if (A3 == 2)
 		print "2";
 	else
 		print "3";
-	for (var B3 = 0; B3 < 5; B3 = B3 + 1)
-		print B3;
 	A3 = 5;
-	for (var i = A3 - 1; i > 1; i = i - 1)
-		A3 = A3 * i;
 	print A3;
-	var C3 = "A";
+	let C3 = "A";
 	while (C3 != "AAAA"){
 		print C3;
 		C3 = C3 + "A";
@@ -177,16 +161,8 @@ print "Test 3.1 If, For, and While";
 print "Test 3.2 Nested Statements";
 {
 	print "Expected: 116";
-	var A3 = 20;
-	var result = 0;
-	for (var i = A3 - 1; i > 1; i = i - 1){ //conditional statements can be nested
-		if ((i > 15) or (i < 10))
-			result = result + 2;
-		else{
-			while (result < 100)
-				result = result + 1;
-		}
-	}
+	let A3 = 20;
+	let result = 0;
 	print result;
 	print "";
 }
@@ -194,22 +170,22 @@ print "Test 3.2 Nested Statements";
 print "Test 3.3 Blocks";
 {
 	print "Expected: Block 1, Block 2, Block 3, Block 3, Block 4, Block 3";
-	var A = "Block ";
+	let A = "Block ";
 	{
-		var B = "1";
-		print A + B; //variables from outer scope can be accessed in inner
+		let B = "1";
+		print A + B; //letiables from outer scope can be accessed in inner
 	}
 	{
-		var B = "2"; //variable of same name can be reinitialized since previous B is now out of scope
+		let B = "2"; //letiable of same name can be reinitialized since previous B is now out of scope
 		print A + B;
 	}
-	var B1;
-	var B2;
+	let B1;
+	let B2;
 	{
 		fun test(){
 			print "Block 3";
 		}
-		B1 = test; //variables from outer scope can be changed in inner
+		B1 = test; //letiables from outer scope can be changed in inner
 		B2 = test;
 	}
 	B1();
@@ -236,10 +212,10 @@ print "-----------------------";
 print "Test 4.1 Standard Functions";
 {
 	print "Expected: 20, 1, 2, 50, -19";
-	var A = 0;
+	let A = 0;
 	fun test(a){
 		print a + 20;
-		A = A + 1; //similar with blocks, function scope can access variables in outer
+		A = A + 1; //similar with blocks, function scope can access letiables in outer
 		print A;
 	}
 	test(A);
@@ -273,11 +249,11 @@ print "Test 4.2 Function Assignment";
 	fun test3(a, b){
 		return a - b;
 	}
-	var A = test1; //Functions can be assigned without being called
+	let A = test1; //Functions can be assigned without being called
 	print A();
-	var B = test2;
+	let B = test2;
 	print B(1);
-	var C = test3;
+	let C = test3;
 	print C(1, 2);
 	print "";
 }
@@ -294,7 +270,7 @@ print "Test 4.3 Nested Functions";
 				return -num;
 			}
 			second = negate(second);
-			var result = add(first, second);
+			let result = add(first, second);
 			if (invert == true)
 				return negate(result);
 			return result;
@@ -316,14 +292,15 @@ print "Test 4.4 Function Closures";
 {
 	print "Expected: 10";
 	fun outerTest(){
-		var a = 10;
+		let a = 10;
 		fun innerTest(){
+			print a;
 			return a;
 		}
 		return innerTest; //Nested functions can be used for closures
 	}
-	var a = outerTest();
-	print a();
+	let b = outerTest();
+	print b();
 	print "";
 }
 
@@ -388,7 +365,7 @@ print "-----------------------";
 {
 	//helper functions
 	fun mod(num, modulus){
-		var increment = modulus;
+		let increment = modulus;
 		if (modulus == 1)
 			return 0;
 		while (modulus <= num){
@@ -402,14 +379,11 @@ print "-----------------------";
 	fun pow(num, exponent){
 		if (exponent == 0)
 			return 1;
-		var mult = num;
-		for (var i = 1; i < exponent; i = i + 1){
-			num = num * mult;
-		}
+		let mult = num;
 		return num;
 	}
 	fun getBit(index, byte){
-		var result = mod(byte, pow(10, index + 1));
+		let result = mod(byte, pow(10, index + 1));
 		if (index > 0){
 			if (result >= pow(10, index))
 				result = 1;
@@ -420,25 +394,15 @@ print "-----------------------";
 	}
 
 	//bytes to be added
-	var byte1 = 11000111;
-	var byte2 = 11011100;
-	var byte3 = 00000000;
-	var byte4 = 11111111;
-	var byte5 = 10101010;
+	let byte1 = 11000111;
+	let byte2 = 11011100;
+	let byte3 = 00000000;
+	let byte4 = 11111111;
+	let byte5 = 10101010;
 
 	fun addBytes(byte1, byte2){
-		var result = 0;
-		var carry = 0;
-		for (var i = 0; i < 8; i = i + 1){
-			var decSum = getBit(i, byte1) + getBit(i, byte2) + carry;
-			if (decSum >= 2){
-				carry = 1;
-				decSum = decSum - 2;
-			}
-			else
-				carry = 0;
-			result = result + pow(10, i) * decSum; 
-		}
+		let result = 0;
+		let carry = 0;
 		if (carry == 1)
 			result = result + pow(10, 8);
 		return result;
@@ -472,7 +436,7 @@ print "-----------------------";
 	//generates numbers between 0-2147483647
 	fun generateNums(seed, times){
 		fun mod(num, modulus){ //reused from previous test
-			var increment = modulus;
+			let increment = modulus;
 			if (modulus == 1)
 				return 0;
 			while (modulus <= num){
@@ -485,19 +449,10 @@ print "-----------------------";
 		}
 
 		//a, b, and c are arbitrary. m determines max number
-		var a = 43;
-		var b = 29;
-		var c = 0;
-		var m = 2147483647;
-
-		for (var i = 0; i < 10; i = i + 1){
-			//run it a few times to get things going
-			seed = mod((a * seed + c), m);
-		}
-		for (var i = 0; i < times; i = i + 1){
-			seed = mod((a * seed + c), m);
-			print seed;
-		}
+		let a = 43;
+		let b = 29;
+		let c = 0;
+		let m = 2147483647;
 	}
 
 	print "PRNG Using Seed = 1000";

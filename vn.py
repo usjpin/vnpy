@@ -15,8 +15,8 @@ hadRunErr = False
 def run(source: str) -> None:
     scanner = Scanner(source)
     tokens = scanner.scanTokens()
-    for token in tokens:
-        print(token)
+    # for token in tokens:
+    #     print(token)
     parser = Parser(tokens)
     configs, statements = parser.parse()
     # for stmt in configs:

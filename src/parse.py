@@ -56,7 +56,7 @@ class Parser:
             if self.match(Type.SET):
                 return self.setDeclaration()
             if self.match(Type.FUN):
-                return Fun("function")
+                return self.function("function")
             if self.match(Type.SCENE):
                 return self.sceneDeclaration()
             return self.statement()
@@ -96,7 +96,7 @@ class Parser:
         if self.match(Type.WHILE):
             return self.whileStatement()
         if self.match(Type.LEFT_BRACE):
-            return Stmt(self.block())
+            return Block(self.block())
         return self.expressionStatement()
 
     #VNPy Specific Statements
@@ -183,22 +183,22 @@ class Parser:
         if (not self.check(Type.SEMICOLON)):
             value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Return Value.")
-        return Stmt(keyword, value)
+        return Return(keyword, value)
 
     def setDeclaration(self) -> Stmt:
         name = self.consume(Type.IDENTIFIER, "Expect Variable Name.")
         initializer = None
-        if self.match(Type.EQUAL):
-            initializer = Expr
+        if self.match(Type.EQUAL):   
+            initializer = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration.")
-        return Stmt(name, initializer)
+        return Set(name, initializer)
 
     def whileStatement(self) -> Stmt:
         self.consume(Type.LEFT_PAREN, "Expect \'(\' After 'while'.")
         condition = self.expression()
         self.consume(Type.RIGHT_PAREN, "Expect \')\' After Condition.")
         body = self.statement()
-        return Return(condition, body)
+        return While(condition, body)
 
     def expressionStatement(self) -> Stmt:
         expr = self.expression()
@@ -211,7 +211,7 @@ class Parser:
         params = []
         if not self.check(Type.RIGHT_PAREN):
             while True:
-                if params.count >= 255:
+                if len(params) >= 255:
                     self.error(self.peek(), "Can't Have More Than 255 Params.")
                 params.append(self.consume(Type.IDENTIFIER, "Expect Param Name."))
                 if not self.match(Type.COMMA):
@@ -234,7 +234,7 @@ class Parser:
             equals = self.previous()
             value = self.assignment()
             if isinstance(expr, Variable):
-                name = Variable(expr).name
+                name = expr.name
                 return Assign(name, value)
             raise self.error(equals, "Invalid assignment target")
         return expr
@@ -298,11 +298,13 @@ class Parser:
         args = []
         if not self.check(Type.RIGHT_PAREN):
             while True:
-                if args.count >= 255:
+                if len(args) >= 255:
                     raise self.error(self.peek(), "Can't Have More Than 255 Arguments.")
                 args.append(self.expression())
-                if self.match(Type.COMMA):
+                if not self.match(Type.COMMA):
                     break
+        paren = self.consume(Type.RIGHT_PAREN, "Expect \')\' After Arguments.")
+        return Call(callee, paren, args)
         
     def call(self) -> Expr:
         expr = self.primary()
