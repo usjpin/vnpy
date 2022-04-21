@@ -1,5 +1,5 @@
-from typing import Any
-
+from typing import Any, List
+from err import ScanErr
 from tok import Token, Type
 
 class Scanner:
@@ -17,6 +17,7 @@ class Scanner:
         'wait': Type.WAIT,
         'jump': Type.JUMP,
         'exit': Type.EXIT,
+        'let': Type.SET,
         'show': Type.SHOW,
         'hide': Type.HIDE,
         'start': Type.START,
@@ -24,6 +25,17 @@ class Scanner:
         'case': Type.CASE,
         'do': Type.DO,
         'delay': Type.DELAY,
+        'and': Type.AND,
+        'else': Type.ELSE,
+        'false': Type.FALSE,
+        'fun': Type.FUN,
+        'if': Type.IF,
+        'nil': Type.NIL,
+        'or': Type.OR,
+        'print': Type.PRINT,
+        'return': Type.RETURN,
+        'true': Type.TRUE,
+        'while': Type.WHILE
     }
     tokens = []
     start = 0
@@ -33,7 +45,7 @@ class Scanner:
     def __init__(self, source: str):
         self.source = source
 
-    def scanTokens(self) -> None:
+    def scanTokens(self) -> List[Token]:
         while not self.isAtEnd():
             self.start = self.current
             self.scanToken()
@@ -45,12 +57,34 @@ class Scanner:
 
     def scanToken(self) -> None:
         c = self.advance()
-        if c == '{':
+        if c == '(':
+            self.addToken(Type.LEFT_PAREN)
+        elif c == ')':
+            self.addToken(Type.RIGHT_PAREN)
+        elif c == '{':
             self.addToken(Type.LEFT_BRACE)
         elif c == '}':
             self.addToken(Type.RIGHT_BRACE)
+        elif c == ',':
+            self.addToken(Type.COMMA)
+        elif c == '.':
+            self.addToken(Type.DOT)
+        elif c == '-':
+            self.addToken(Type.MINUS)
+        elif c == '+':
+            self.addToken(Type.PLUS)
         elif c == ';':
             self.addToken(Type.SEMICOLON)
+        elif c == '*':
+            self.addToken(Type.STAR)
+        elif c == '!':
+            self.addToken(Type.BANG_EQUAL if self.match('=') else Type.BANG)
+        elif c == '=':
+            self.addToken(Type.EQUAL_EQUAL if self.match('=') else Type.EQUAL)
+        elif c == '<':
+            self.addToken(Type.LESS_EQUAL if self.match('=') else Type.LESS)
+        elif c == '>':
+            self.addToken(Type.GREATER_EQUAL if self.match('=') else Type.GREATER)
         elif c == '/':
             if self.match('/'):
                 while self.peek() != '\n' and not self.isAtEnd():
@@ -69,7 +103,7 @@ class Scanner:
             elif c.isalpha() or c == '_':
                 self.readIdentifier()
             else:
-                pass
+                raise ScanErr(self.line, "Unexpected Character")
 
     def readIdentifier(self) -> None:
         while self.peek().isalnum() or self.peek() == '_':

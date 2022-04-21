@@ -1,5 +1,4 @@
 from enum import Enum
-from logging.config import IDENTIFIER
 from typing import Any
 
 class Type(Enum):
@@ -7,13 +6,40 @@ class Type(Enum):
     RIGHT_PAREN = ')'
     LEFT_BRACE = '{'
     RIGHT_BRACE = '}'
+    COMMA = ','
+    DOT = '.'
+    MINUS = '-'
+    PLUS = '+'
     SEMICOLON = ';'
     SLASH = '/'
-    EOF = ''
+    STAR = '*'
+    BANG = '!'
+    BANG_EQUAL = '!='
+    EQUAL = '='
+    EQUAL_EQUAL = '=='
+    GREATER = '>'
+    GREATER_EQUAL = '>='
+    LESS = '<'
+    LESS_EQUAL = '<='
 
     IDENTIFIER = 'identifier'
     STRING = 'string'
     NUMBER = 'number'
+
+    AND = 'and'
+    ELSE = 'else'
+    FALSE = 'false'
+    FUN = 'fun'
+    IF = 'if'
+    NIL = 'nil'
+    OR = 'or'
+    PRINT = 'print'
+    RETURN = 'return'
+    SET = 'let'
+    TRUE = 'true'
+    WHILE = 'while'
+
+    EOF = ''
 
     # Config
     CONFIG = 'config'
