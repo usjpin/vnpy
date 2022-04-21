@@ -77,26 +77,26 @@ class Scene(Stmt):
         return visitor.visitSceneStmt(self)
 
 class Image(Stmt):
-    def __init__(self, action: Type, path: Token) -> None:
+    def __init__(self, action: Type, path: Expr) -> None:
         self.action = action
         self.path = path
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitImageStmt(self)
 
 class Display(Stmt):
-    def __init__(self, value: Token) -> None:
+    def __init__(self, value: Expr) -> None:
         self.value = value
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitDisplayStmt(self)
 
 class Options(Stmt):
-    def __init__(self, cases: List[Tuple[Token, Stmt]]) -> None:
+    def __init__(self, cases: List[Tuple[Expr, Stmt]]) -> None:
         self.cases = cases
     def accept(self, visitor: StmtVisitor) -> None:
         return visitor.visitOptionsStmt(self)
 
 class Audio(Stmt):
-    def __init__(self, action: Type, path: Token) -> None:
+    def __init__(self, action: Type, path: Expr) -> None:
         self.action = action
         self.path = path
     def accept(self, visitor: StmtVisitor):

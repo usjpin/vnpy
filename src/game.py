@@ -138,7 +138,7 @@ class VNGUIGame(VNGame):
             i += 1
             time.sleep(1)
 
-    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> Stmt:
+    def popOptions(self, options: List[Tuple[str, Stmt]]) -> Stmt:
         while True:
             events = self.checkEvents()
             self.display()
@@ -161,7 +161,7 @@ class VNGUIGame(VNGame):
                 else:
                     pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
                 font = pygame.font.SysFont(FONT_FAMILY, int(h/1.5))
-                message = font.render(option[0].literal, True, FONT_COLOR)
+                message = font.render(option[0], True, FONT_COLOR)
                 s.blit(message, (0.05 * w, 0.3 * h))
                 self.screen.blit(s, (x, y))
                 y += h + self.height//100

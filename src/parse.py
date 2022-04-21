@@ -13,7 +13,6 @@ class Parser:
         self.tokens = tokens
 
     def parse(self) -> List[Stmt]:
-        # Check Error Handling
         configs = []
         while not self.isAtEnd():
             if self.match(Type.CONFIG):
@@ -23,7 +22,6 @@ class Parser:
         statements = []
         while not self.isAtEnd():
             statements.append(self.declaration())
-            #print(statements[len(statements)-1])
         return configs, statements, self.hadErr
 
     def parseErr(self):
@@ -102,30 +100,27 @@ class Parser:
 
     #VNPy Specific Statements
     def imageStatement(self) -> Stmt:
-        # Change String to Expr
         if self.match(Type.SHOW):
-            path = self.consume(Type.STRING, "Expect String For Image")
+            path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
             return Image(Type.SHOW, path)
         if self.match(Type.HIDE):
-            path = self.consume(Type.STRING, "Expect String For Image")
+            path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
             return Image(Type.HIDE, path)
         raise self.error(self.peek(), "Expect Image Action")
 
     def displayStatement(self) -> Stmt:
-        # Replace String with Expr
-        value = self.consume(Type.STRING, "Expect String For Display")
+        value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Display")
         return Display(value)
 
     def optionsStatement(self) -> Stmt:
-        # Replace String with Expr
         self.consume(Type.LEFT_BRACE, "Expect \'{\' After Options Keyword")
         cases = []
         while not self.check(Type.RIGHT_BRACE) and not self.isAtEnd():
             self.consume(Type.CASE, "Expect \'case\' in Options Block")
-            choice = self.consume(Type.STRING, "Expect String For Case")
+            choice = self.expression()
             self.consume(Type.DO, "Expect \'do\' After Case")
             action = self.statement()
             cases.append((choice, action))
@@ -137,9 +132,8 @@ class Parser:
         return Options(cases)
 
     def audioStatement(self) -> Stmt:
-        # Change String to Expr
         if self.match(Type.START):
-            path = self.consume(Type.STRING, "Expect String For Audio")
+            path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
             return Audio(Type.START, path)
         if self.match(Type.STOP):
@@ -148,8 +142,7 @@ class Parser:
         raise self.error(self.peek(), "Expect Audio Action")
 
     def delayStatement(self) -> Stmt:
-        # Change Stuff to Expr
-        value = self.consume(Type.NUMBER, "Expect Number For Delay")
+        value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Delay")
         return Delay(value)
 
@@ -371,7 +364,7 @@ class Parser:
     returnCases = [
         Type.SCENE, Type.FUN, Type.SET, Type.IF, Type.WHILE,
         Type.PRINT, Type.RETURN, Type.IMAGE, Type.DISPLAY, Type.OPTIONS,
-        Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT, Type.LOG
+        Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT
     ]
 
     def synchronize(self) -> None:

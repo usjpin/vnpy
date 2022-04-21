@@ -46,12 +46,12 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
     def visitImageStmt(self, stmt: Image) -> str:
         ret = self.indent()
         ret += "(image " + stmt.action.value
-        ret += " " + stmt.path.lexeme + ")"
+        ret += " " + self.print(stmt.path) + ")"
         return ret
 
     def visitDisplayStmt(self, stmt: Display) -> str:
         ret = self.indent() 
-        ret += "(display " + stmt.value.lexeme + ")"
+        ret += "(display " + self.print(stmt.value) + ")"
         return ret
 
     def visitOptionsStmt(self, stmt: Options) -> str:
@@ -60,7 +60,7 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
         self.tabs += 1
         for case in stmt.cases:
             ret += "\n" + self.indent()
-            ret += "(case " + case[0].lexeme
+            ret += "(case " + self.print(case[0])
             ret += " do\n" + self.indent() + self.print(case[1])
             ret += "\n" + self.indent() + ")"
         self.tabs -= 1
@@ -70,12 +70,12 @@ class ASTPrinter(StmtVisitor, ExprVisitor):
     def visitAudioStmt(self, stmt: Audio) -> str:
         ret = self.indent()
         ret += "(audio " + stmt.action.value
-        ret += " " + stmt.path.lexeme + ")"
+        ret += " " + self.print(stmt.path) + ")"
         return ret
 
     def visitDelayStmt(self, stmt: Delay) -> str:
         ret = self.indent() 
-        ret += "(delay " + stmt.value.lexeme + ")"
+        ret += "(delay " + self.print(stmt.value) + ")"
         return ret
 
     def visitSceneStmt(self, stmt: Scene) -> str:

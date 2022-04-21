@@ -3,11 +3,18 @@ config height 500;
 config mode "graphic";
 config volume 0.7;
 
-audio start "cmon.mp3";
-image show "img/red.png";
+log "hello";
+let u = 1;
+//audio start u;
+let a = "ok";
+//display a;
+//delay 2;
+delay 1 + 1;
+let b = "img/red.png";
+image show b;
 display "sup";
 options {
-    case "pick me 1" do display "1 picked";
+    case a do display "1 picked";
     case "pick me 2" do display "2 picked";
     case "pick me 3" do display "3 picked";
     case "pick me 3" do display "4 picked";

@@ -72,10 +72,11 @@ class Interpreter(ExprVisitor, StmtVisitor):
         finally:
             self.env = previous
 
-    def resolvePath(self, path: Token) -> str:
-        if not os.path.exists(path.literal):
-            raise RuntimeErr(path, "Path \'" + path.literal + "\' Does Not Exist")
-        return path.literal
+    def resolvePath(self, path: str) -> str:
+        if not os.path.exists(path):
+            # Need Fix
+            raise RuntimeErr(None, "Path \'" + path + "\' Does Not Exist")
+        return path
 
     def visitConfigStmt(self, stmt: Config):
         print("Interpreting Config")
@@ -91,19 +92,38 @@ class Interpreter(ExprVisitor, StmtVisitor):
         if self.config["mode"] == "console":
             raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
         if stmt.action == Type.SHOW:
-            self.game.showImage(self.resolvePath(stmt.path))
+            path = self.evaluate(stmt.path)
+            if not isinstance(path, str):
+                # Need Fix
+                raise RuntimeErr(None, "Image Path Must Be A String")
+            self.game.showImage(self.resolvePath(path))
         elif stmt.action == Type.HIDE:
-            self.game.hideImage(self.resolvePath(stmt.path))
+            path = self.evaluate(stmt.path)
+            if not isinstance(path, str):
+                # Need Fix
+                raise RuntimeErr(None, "Image Path Must Be A String")
+            self.game.hideImage(self.resolvePath(path))
         self.game.render()
 
     def visitDisplayStmt(self, stmt: Display):
         print("Interpreting Display")
-        self.game.display(stmt.value.literal)
+        message = self.evaluate(stmt.value)
+        if not isinstance(message, str):
+            # Need Fix
+            raise RuntimeErr(None, "Display Message Must Be A String")
+        self.game.display(message)
         self.game.render()
 
     def visitOptionsStmt(self, stmt: Options):
         print("Interpreting Options")
-        choice = self.game.popOptions(stmt.cases)
+        cases = []
+        for case in stmt.cases:
+            text = self.evaluate(case[0])
+            if not isinstance(text, str):
+                # Need Fix
+                raise RuntimeErr(None, "Options Text Must Be A String")
+            cases.append((self.evaluate(case[0]), case[1]))
+        choice = self.game.popOptions(cases)
         choice.accept(self)
 
     def visitAudioStmt(self, stmt: Audio):
@@ -111,13 +131,21 @@ class Interpreter(ExprVisitor, StmtVisitor):
         if self.config["mode"] == "console":
             raise RuntimeErr(stmt.action, "Cannot Use Audio In Console Mode")
         if stmt.action == Type.START:
-            self.game.startAudio(self.resolvePath(stmt.path))
+            path = self.evaluate(stmt.path)
+            if not isinstance(path, str):
+                # Need Fix
+                raise RuntimeErr(None, "Audio Path Must Be A String")
+            self.game.startAudio(self.resolvePath(path))
         elif stmt.action == Type.STOP:
             self.game.stopAudio()
 
     def visitDelayStmt(self, stmt: Delay):
         print("Interpreting Delay")
-        self.game.delay(stmt.value.literal)
+        value = self.evaluate(stmt.value)
+        if not isinstance(value, float):
+            # Need Fix
+            raise RuntimeErr(None, "Delay Value Must Be Number")
+        self.game.delay(value)
 
     def visitJumpStmt(self, stmt: Jump):
         print("Interpreting Jump")

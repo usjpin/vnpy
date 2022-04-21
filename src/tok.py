@@ -33,7 +33,7 @@ class Type(Enum):
     IF = 'if'
     NIL = 'nil'
     OR = 'or'
-    PRINT = 'print'
+    PRINT = 'log'
     RETURN = 'return'
     SET = 'let'
     TRUE = 'true'
@@ -57,7 +57,6 @@ class Type(Enum):
     WAIT = 'wait'
     JUMP = 'jump'
     EXIT = 'exit'
-    LOG = 'log' # add
     # Other
     SHOW = 'show'
     HIDE = 'hide'

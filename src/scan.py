@@ -32,7 +32,7 @@ class Scanner:
         'if': Type.IF,
         'nil': Type.NIL,
         'or': Type.OR,
-        'print': Type.PRINT,
+        'log': Type.PRINT,
         'return': Type.RETURN,
         'true': Type.TRUE,
         'while': Type.WHILE
