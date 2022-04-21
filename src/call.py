@@ -41,7 +41,6 @@ class VNFunction(VNCallable):
             return r.value
         return None
 
-
 class VNClickCallable(VNCallable):
 
     def arity() -> int:

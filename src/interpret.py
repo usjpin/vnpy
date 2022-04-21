@@ -1,6 +1,5 @@
 import os
 import sys
-from tokenize import Double
 from typing import List
 
 from expr import *
@@ -22,8 +21,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
             'mode': 'graphic',
             'volume': 0.5
         }
-        self.globals.define("readClick", VNClickCallable())
-        self.globals.define("readKey", VNClickCallable())
+        # self.globals.define("readClick", VNClickCallable())
+        # self.globals.define("readKey", VNClickCallable())
 
     def interpret(self, configs: List[Config], statements: List[Stmt]) -> None:
         # Error Handling

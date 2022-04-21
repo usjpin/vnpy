@@ -1,0 +1,518 @@
+//============================
+//===Test 1: Dynamic Typing===
+//============================
+print "-----------------------";
+print "---Output for Test 1---";
+print "-----------------------";
+
+print "Test 1.1 Ints and Floats";
+{
+	print "Expected: 1, 2, 1.5, 2.5";
+	var A = 1;
+	print A;
+	print A + 1;
+	A = 1.5;
+	print A;
+	print A + 1;
+	print "";
+}
+
+print "Test 1.2 Strings";
+{
+	print "Expected: String, String1";
+	var A = "String";
+	print A;
+	print A + "1";
+	print "";
+}
+
+print "Test 1.3 Booleans";
+{
+	print "Expected: true, false";
+	var A = true;
+	print A;
+	print A and false;
+	print "";
+}
+
+print "Test 1.4 Classes and Functions";
+{
+	print "Expected: Hello, World!";
+	fun testFun(){
+		print "Hello";
+	}
+	var A = testFun;
+	A();
+	A.printStuff();
+	print "";
+}
+
+print "Test 1.5 Dynamic Reassignment";
+{
+	print "Expected: 123, Hello";
+	fun testFun(){
+		print "Hello";
+	}
+	var B = 123;
+	var A = B;
+	print A;
+	B = testFun;
+	A = B;
+	A();
+	print "";
+}
+
+
+//===================================
+//===Test 2: Arithmetic Operations===
+//===================================
+print "-----------------------";
+print "---Output for Test 2---";
+print "-----------------------";
+
+print "Test 2.1 Add, Subtract, Multiply, Divide";
+{
+	print "Expected: 30, -1, 5.5, 9, 4.5, 0, FirstSecond, FirstSecondThird";
+	var A2 = 10;
+	var B2 = 0;
+	var C2 = "Third";
+	print A2 + 20;
+	print A2 - 15 + (5 - 1);
+	print 5 * 2 - (A2 - 5.5);
+	print (A2 / 5) / 0.5 + 5;
+	print -5.5 + A2 - B2;
+	print 10000 * B2;
+	print "First" + "Second";
+	print "First" + "Second" + C2;
+	print "";
+}
+
+print "Test 2.2 AND, OR, and !";
+{
+	print "Expected: true, true, false, false, true";
+	var A2 = true;
+	var B2 = false;
+	print (A2 and B2) or A2;
+	print (true and A2) or B2;
+	print (B2 and true) and A2;
+	print !A2;
+	print !(!A2 or B2);
+	print "";
+}
+
+print "Test 2.3 Comparisons";
+{
+	print "Expected: First, true, First, true, false";
+	if (10 == 10)
+		print "First";
+	else 
+		print "Second";
+	var A2 = 1 < 2;
+	print A2;
+	if ((15 != "15") and (15.0 == 15.0)) //different typed variables will compare false
+		print "First";
+	else
+		print "Second";
+	A2 = 30 >= 15;
+	print A2;
+	print ("Yes" == "No") == true;
+	print "";
+}
+
+print "Test 2.4 Assignment Operator";
+{
+	print "Expected: Is nil, Yes, 1, 1, 15, 10";
+	var A2;
+	var B2;
+	if (A2 == nil) //variables are by default initialized to nil
+		print "Is nil";
+	print A2 = "Yes"; //assignment returns value assigned
+	A2 = B2 = 1; 
+	print A2;
+	print B2;
+	A2 = (B2 = 10) + 5;
+	print A2;
+	print B2;
+	print "";
+}
+
+
+//===============================================
+//===Test 3: Conditional Statements and Blocks===
+//===============================================
+print "-----------------------";
+print "---Output For Test 3---";
+print "-----------------------";
+
+print "Test 3.1 If, For, and While";
+{
+	print "Expected: This will print., 2, 0, 1, 2, 3, 4, 120, A, AA, AAA";
+	if (true){
+		print "This will print.";
+	}
+	else{
+		print "This will not print.";
+	}
+	var A3 = 2;
+	if (A3 == 1)
+		print "1";
+	else if (A3 == 2)
+		print "2";
+	else
+		print "3";
+	for (var B3 = 0; B3 < 5; B3 = B3 + 1)
+		print B3;
+	A3 = 5;
+	for (var i = A3 - 1; i > 1; i = i - 1)
+		A3 = A3 * i;
+	print A3;
+	var C3 = "A";
+	while (C3 != "AAAA"){
+		print C3;
+		C3 = C3 + "A";
+	}
+	print "";
+}
+
+print "Test 3.2 Nested Statements";
+{
+	print "Expected: 116";
+	var A3 = 20;
+	var result = 0;
+	for (var i = A3 - 1; i > 1; i = i - 1){ //conditional statements can be nested
+		if ((i > 15) or (i < 10))
+			result = result + 2;
+		else{
+			while (result < 100)
+				result = result + 1;
+		}
+	}
+	print result;
+	print "";
+}
+
+print "Test 3.3 Blocks";
+{
+	print "Expected: Block 1, Block 2, Block 3, Block 3, Block 4, Block 3";
+	var A = "Block ";
+	{
+		var B = "1";
+		print A + B; //variables from outer scope can be accessed in inner
+	}
+	{
+		var B = "2"; //variable of same name can be reinitialized since previous B is now out of scope
+		print A + B;
+	}
+	var B1;
+	var B2;
+	{
+		fun test(){
+			print "Block 3";
+		}
+		B1 = test; //variables from outer scope can be changed in inner
+		B2 = test;
+	}
+	B1();
+	B2();
+	{
+		fun test(){
+			print "Block 4";
+		}
+		B1 = test;
+	}
+	B1();
+	B2();
+	print "";
+}
+
+
+//=======================
+//===Test 4: Functions===
+//=======================
+print "-----------------------";
+print "---Output For Test 4---";
+print "-----------------------";
+
+print "Test 4.1 Standard Functions";
+{
+	print "Expected: 20, 1, 2, 50, -19";
+	var A = 0;
+	fun test(a){
+		print a + 20;
+		A = A + 1; //similar with blocks, function scope can access variables in outer
+		print A;
+	}
+	test(A);
+	
+	fun test2(a){
+		return a + A; //functions can return values
+	}
+	print test2(A);
+
+	//functions can take 0 or more arguments
+	fun test3(){
+		return 50;
+	}
+	fun test4(a, b){
+		return a - b;
+	}
+	print test3();
+	print test4(A, 20);
+	print "";
+}
+
+print "Test 4.2 Function Assignment";
+{
+	print "Expected: 100, 101, -1";
+	fun test1(){
+		return 100;
+	}
+	fun test2(a){
+		return a + 100;
+	}
+	fun test3(a, b){
+		return a - b;
+	}
+	var A = test1; //Functions can be assigned without being called
+	print A();
+	var B = test2;
+	print B(1);
+	var C = test3;
+	print C(1, 2);
+	print "";
+}
+
+print "Test 4.3 Nested Functions";
+{
+	print "Expected: 3, -1, 1";
+	fun outerTest(select, a, b){
+		fun add(first, second){ //Functions can be nested
+			return first + second;
+		}
+		fun subtract(first, second, invert){
+			fun negate(num){
+				return -num;
+			}
+			second = negate(second);
+			var result = add(first, second);
+			if (invert == true)
+				return negate(result);
+			return result;
+		}
+		if (select == "ADD")
+			print add(a, b);
+		else if (select == "SUBTRACT")
+			print subtract(a, b, false);
+		else if (select == "SUBNEGATE")
+			print subtract(a, b, true);
+	}
+	outerTest("ADD", 1, 2);
+	outerTest("SUBTRACT", 1, 2);
+	outerTest("SUBNEGATE", 1, 2);
+	print "";
+}
+
+print "Test 4.4 Function Closures";
+{
+	print "Expected: 10";
+	fun outerTest(){
+		var a = 10;
+		fun innerTest(){
+			return a;
+		}
+		return innerTest; //Nested functions can be used for closures
+	}
+	var a = outerTest();
+	print a();
+	print "";
+}
+
+print "Test 4.5 Argument Evaluation";
+{
+	print "Expected: false, 16, 81, 24, 99";
+	fun test(a){
+		return a;
+	}
+	print test(20 - 45 == "Hello"); //Arguments are evaluated when passed 
+
+	//Function calls can be nested
+	fun first(a){
+		return a * a;
+	}
+	fun second(a){
+		return a - 1;
+	}
+	print first(second(5)); //including function calls
+	print first(second(10));
+	print second(first(5));
+	print second(first(10));
+
+	print "";
+}
+
+print "Test 4.6 Recursive Functions";
+{
+	print "Expected: 120, 5040";
+	fun factorial(a){
+		if (a > 1)
+			return a * factorial(a-1); //Functions can be called recursively
+		return a;
+	}
+	print factorial(5);
+	print factorial(7);
+	print "";
+}
+
+print "Test 4.7 Sequential Function Calls";
+{
+	print "Expected: third";
+	fun first(a){
+		return a;
+	}
+	fun second(a){
+		print a;
+	}
+
+	first(second)("third"); //Functions can be called sequentially in-line
+	//this is due to previously demonstrated fact functions can be assigned without
+	//necessarily being called
+}
+
+//=============================
+//===Test 8: Binary Addition===
+//=============================
+print "-----------------------";
+print "---Output For Test 8---";
+print "-----------------------";
+//Functions for 8-bit binary addition (bytes are represented as decimal ints)
+{
+	//helper functions
+	fun mod(num, modulus){
+		var increment = modulus;
+		if (modulus == 1)
+			return 0;
+		while (modulus <= num){
+			if (num / modulus > 2)
+				modulus = modulus * 2;
+			else
+				modulus = modulus + increment;
+		}
+		return num - (modulus - increment);
+	}
+	fun pow(num, exponent){
+		if (exponent == 0)
+			return 1;
+		var mult = num;
+		for (var i = 1; i < exponent; i = i + 1){
+			num = num * mult;
+		}
+		return num;
+	}
+	fun getBit(index, byte){
+		var result = mod(byte, pow(10, index + 1));
+		if (index > 0){
+			if (result >= pow(10, index))
+				result = 1;
+			else
+				result = 0;
+		}
+		return result;
+	}
+
+	//bytes to be added
+	var byte1 = 11000111;
+	var byte2 = 11011100;
+	var byte3 = 00000000;
+	var byte4 = 11111111;
+	var byte5 = 10101010;
+
+	fun addBytes(byte1, byte2){
+		var result = 0;
+		var carry = 0;
+		for (var i = 0; i < 8; i = i + 1){
+			var decSum = getBit(i, byte1) + getBit(i, byte2) + carry;
+			if (decSum >= 2){
+				carry = 1;
+				decSum = decSum - 2;
+			}
+			else
+				carry = 0;
+			result = result + pow(10, i) * decSum; 
+		}
+		if (carry == 1)
+			result = result + pow(10, 8);
+		return result;
+	}
+	
+	print "Sum 1 (Expected: 100100011):";
+	print addBytes(byte1, byte2);
+	print "Sum 2 (Expected: 11000111):";
+	print addBytes(byte1, byte3);
+	print "Sum 3 (Expected: 111000110):";
+	print addBytes(byte1, byte4);
+	print "Sum 4 (Expected: 101110001):";
+	print addBytes(byte1, byte5);
+	print "Sum 5 (Expected: 11111111):";
+	print addBytes(byte3, byte4);
+	print "Sum 6 (Expected: 110101001):";
+	print addBytes(byte4, byte5);
+	print "";
+}
+
+
+//===========================================
+//===Test 9: Pseudorandom Number Generator===
+//===========================================
+print "-----------------------";
+print "---Output For Test 9---";
+print "-----------------------";
+//Using mathematical algorithms we can simulate RNG
+//In this case we're replicating a linear congruential generator
+{
+	//generates numbers between 0-2147483647
+	fun generateNums(seed, times){
+		fun mod(num, modulus){ //reused from previous test
+			var increment = modulus;
+			if (modulus == 1)
+				return 0;
+			while (modulus <= num){
+				if (num / modulus > 2)
+					modulus = modulus * 2;
+				else
+					modulus = modulus + increment;
+			}
+			return num - (modulus - increment);
+		}
+
+		//a, b, and c are arbitrary. m determines max number
+		var a = 43;
+		var b = 29;
+		var c = 0;
+		var m = 2147483647;
+
+		for (var i = 0; i < 10; i = i + 1){
+			//run it a few times to get things going
+			seed = mod((a * seed + c), m);
+		}
+		for (var i = 0; i < times; i = i + 1){
+			seed = mod((a * seed + c), m);
+			print seed;
+		}
+	}
+
+	print "PRNG Using Seed = 1000";
+	generateNums(1000, 5);
+	print "";
+	print "PRNG Using Seed = 1001";
+	generateNums(1001, 5);
+	print "";
+	print "PRNG Using Seed = 1002";
+	generateNums(1002, 5);
+	print "";
+	print "PRNG Using Seed = 1003";
+	generateNums(1003, 10);
+	print "";
+	print "PRNG Using Seed = 1000 (Again)"; 
+	generateNums(1000, 5); //results should be same
+	print "";
+}
