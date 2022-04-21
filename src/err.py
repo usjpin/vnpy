@@ -18,7 +18,7 @@ class ParseErr(Exception):
         if self.token.type == Type.EOF:
             print("[line " + str(self.token.line)+ "] Error At End: " + self.message)
         else:
-            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\':" + self.message)
+            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\': " + self.message)
 
 class ScanErr(Exception):
     def __init__(self, token: Token, message: str):
@@ -29,7 +29,7 @@ class ScanErr(Exception):
         if self.token.type == Type.EOF:
             print("[line " + str(self.token.line) + "] Error At End: " + self.message)
         else:
-            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\':" + self.message)
+            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\': " + self.message)
 
 class JumpErr(Exception):
     def __init__(self, scene): # Fix Type

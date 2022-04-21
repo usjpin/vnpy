@@ -5,11 +5,9 @@ from expr import *
 from stmt import *
 from err import ParseErr
 
-# For use in synchronize
-returnCases = [Type.SCENE, Type.FUN, Type.SET, Type.IF, Type.WHILE, Type.PRINT, Type.RETURN, Type.IMAGE, Type.DISPLAY, Type.OPTIONS, Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT, Type.LOG]
-
 class Parser:
     current = 0
+    hadErr = False
 
     def __init__(self, tokens: List[Token]):
         self.tokens = tokens
@@ -26,30 +24,36 @@ class Parser:
         while not self.isAtEnd():
             statements.append(self.declaration())
             #print(statements[len(statements)-1])
-        return configs, statements
+        return configs, statements, self.hadErr
+
+    def parseErr(self):
+        self.hadErr = True
+        self.synchronize()
+        return None
 
     def expression(self) -> Expr:
         return self.assignment()
 
     def config(self) -> Stmt:
-        # Need Error Handling
-        if self.match(Type.WIDTH):
-            value = self.consume(Type.NUMBER, "Expect Number For Width")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
-            return Config(Type.WIDTH, value)
-        if self.match(Type.HEIGHT):
-            value = self.consume(Type.NUMBER, "Expect Number For Height")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
-            return Config(Type.HEIGHT, value)
-        if self.match(Type.MODE):
-            value = self.consume(Type.STRING, "Expect \'console\' Or \'graphic\' For Mode")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
-            return Config(Type.MODE, value)
-        if self.match(Type.VOLUME):
-            value = self.consume(Type.NUMBER, "Expect Number Between 0 to 1 For Volume")
-            self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
-            return Config(Type.VOLUME, value)
-        # Need Error Handling
+        try:
+            if self.match(Type.WIDTH):
+                value = self.consume(Type.NUMBER, "Expect Number For Width")
+                self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+                return Config(Type.WIDTH, value)
+            if self.match(Type.HEIGHT):
+                value = self.consume(Type.NUMBER, "Expect Number For Height")
+                self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+                return Config(Type.HEIGHT, value)
+            if self.match(Type.MODE):
+                value = self.consume(Type.STRING, "Expect \'console\' Or \'graphic\' For Mode")
+                self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+                return Config(Type.MODE, value)
+            if self.match(Type.VOLUME):
+                value = self.consume(Type.NUMBER, "Expect Number Between 0 to 1 For Volume")
+                self.consume(Type.SEMICOLON, "Expect \';\' After Config Statement")
+                return Config(Type.VOLUME, value)
+        except ParseErr:
+            return self.parseErr()
 
     def declaration(self) -> Stmt:
         try:
@@ -61,10 +65,7 @@ class Parser:
                 return self.sceneDeclaration()
             return self.statement()
         except ParseErr:
-            print("Parse Error")
-            print(self.tokens[self.current])
-            self.synchronize()
-            return None
+            return self.parseErr()
         
     def sceneDeclaration(self) -> Stmt:
         name = self.consume(Type.IDENTIFIER, "Expect Scene Name")
@@ -367,11 +368,17 @@ class Parser:
         print("Parse Error.")
         return ParseErr(token, message)
 
+    returnCases = [
+        Type.SCENE, Type.FUN, Type.SET, Type.IF, Type.WHILE,
+        Type.PRINT, Type.RETURN, Type.IMAGE, Type.DISPLAY, Type.OPTIONS,
+        Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT, Type.LOG
+    ]
+
     def synchronize(self) -> None:
         self.advance()
         while not self.isAtEnd():
             if self.previous().type == Type.SEMICOLON:
                 return
-            if self.peek in returnCases:
+            if self.peek in self.returnCases:
                 return
             self.advance()

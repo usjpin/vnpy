@@ -32,6 +32,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
                 self.execute(statement)
         except RuntimeErr as e:
             e.printErr()
+            return True
         if self.config["mode"] == "graphic":
             self.game = VNGUIGame(
                 self.config["width"],
@@ -53,6 +54,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
                 self.value = r.value
             except RuntimeErr as e:
                 e.printErr()
+                return True
+        return False
         
     def execute(self, stmt: Stmt):
         stmt.accept(self)
