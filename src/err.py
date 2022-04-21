@@ -1,6 +1,5 @@
 
 from tok import Token, Type
-from call import VNScene
 from typing import Any
 
 class RuntimeErr(Exception):
@@ -8,7 +7,7 @@ class RuntimeErr(Exception):
         self.token = token
         self.message = message
     def printErr(self):
-        print(self.message + "\n[line " + self.token.line + "]")
+        print(self.message + "\n[line " + str(self.token.line) + "]")
 
 class ParseErr(Exception):
     def __init__(self, token: Token, message: str):
@@ -33,7 +32,7 @@ class ScanErr(Exception):
             print("[line " + self.token.line + "] Error At \'" + self.token.lexeme + "\':" + self.message)
 
 class JumpErr(Exception):
-    def __init__(self, scene: VNScene):
+    def __init__(self, scene): # Fix Type
         self.scene = scene
 
 class ReturnErr(Exception):
