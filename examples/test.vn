@@ -10,7 +10,7 @@ let a = "ok";
 //display a;
 //delay 2;
 delay 1 + 1;
-let b = "img/red.png";
+let b = "examples/red.png";
 image show b;
 display "sup";
 options {
@@ -21,10 +21,10 @@ options {
 }
 display "over";
 delay 20;
-//image show "img/blue.png";
+//image show "examples/blue.png";
 //delay 2;
 scene a {
-    image show "img/red.png";
+    image show "examples/red.png";
     //audio start "cmon.mp3";
     display "sup";
     delay 3;
@@ -35,7 +35,7 @@ scene a {
 }
 //delay 1;
 scene b {
-    image show "img/blue.png";
+    image show "examples/blue.png";
     display "bro";
     options {
         case "pick me" do delay 2;
