@@ -103,17 +103,17 @@ class Parser:
         if self.match(Type.SHOW):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
-            return Image(Type.SHOW, path)
+            return Image(Type.SHOW, path, self.peek())
         if self.match(Type.HIDE):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
-            return Image(Type.HIDE, path)
+            return Image(Type.HIDE, path, self.peek())
         raise self.error(self.peek(), "Expect Image Action")
 
     def displayStatement(self) -> Stmt:
         value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Display")
-        return Display(value)
+        return Display(value, self.peek())
 
     def optionsStatement(self) -> Stmt:
         self.consume(Type.LEFT_BRACE, "Expect \'{\' After Options Keyword")
@@ -129,22 +129,22 @@ class Parser:
         elif len(cases) > 6:
             raise self.error(self.peek(), "Can Not Have More Than 6 Cases In Option Block")
         self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Options Block")
-        return Options(cases)
+        return Options(cases, self.peek())
 
     def audioStatement(self) -> Stmt:
         if self.match(Type.START):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
-            return Audio(Type.START, path)
+            return Audio(Type.START, path, self.peek())
         if self.match(Type.STOP):
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
-            return Audio(Type.STOP, None)
+            return Audio(Type.STOP, None, self.peek())
         raise self.error(self.peek(), "Expect Audio Action")
 
     def delayStatement(self) -> Stmt:
         value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Delay")
-        return Delay(value)
+        return Delay(value, self.peek())
 
     def jumpStatement(self) -> Stmt:
         dest = self.consume(Type.IDENTIFIER, "Expect Scene Name")
