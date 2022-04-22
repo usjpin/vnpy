@@ -1,5 +1,4 @@
 
-from sympy import GreaterThan
 from expr import *
 from stmt import *
 

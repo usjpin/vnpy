@@ -1,4 +1,5 @@
 from typing import Any, List
+
 from err import ScanErr
 from tok import Token, Type
 

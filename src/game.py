@@ -1,7 +1,6 @@
 import sys
 import pygame
 import time
-from PIL import Image
 from typing import List
 
 OPTION_COLOR = (255, 255, 255)
@@ -177,6 +176,7 @@ class VNGUIGame(VNGame):
     def render(self):
         pygame.display.flip()
 
+#from PIL import Image
 # For later?
 def to_ascii(path):
     img = Image.open(path)

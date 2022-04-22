@@ -1,6 +1,6 @@
+from typing import Any
 
 from tok import Token, Type
-from typing import Any
 
 class RuntimeErr(Exception):
     def __init__(self, token: Token, message: str):
