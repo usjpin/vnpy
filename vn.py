@@ -20,10 +20,10 @@ def run(source: str) -> None:
     parser = Parser(tokens)
     configs, statements, hadErr = parser.parse()
     if hadErr: return
-    for stmt in configs:
-        print(ASTPrinter().print(stmt))
-    for stmt in statements:
-        print(ASTPrinter().print(stmt))
+    # for stmt in configs:
+    #     print(ASTPrinter().print(stmt))
+    # for stmt in statements:
+    #     print(ASTPrinter().print(stmt))
     hadRunErr = interpreter.interpret(configs, statements)
 
 

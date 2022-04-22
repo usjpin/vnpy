@@ -248,7 +248,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
             raise RuntimeErr(expr.paren, "Can Only Call Functions")
         function: VNCallable = callee
         if len(arguments) != function.arity():
-            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + len(arguments) + ".")
+            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + len(arguments))
         return function.call(self, arguments)
 
     def visitGroupingExpr(self, expr: Grouping):
@@ -289,12 +289,12 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def checkNumberOperand(self, oper: Token, operand: Any):
         if operand is not None and isinstance(operand, float):
             return
-        raise RuntimeErr(oper, "Operand Must Be A Number.")
+        raise RuntimeErr(oper, "Operand Must Be A Number")
 
     def checkNumberOperands(self, oper: Token, left: Any, right: Any):
         if left is not None and isinstance(left, float) and right is not None and isinstance(right, float):
             return
-        raise RuntimeErr(oper, "Operands Must Be Numbers.")
+        raise RuntimeErr(oper, "Operands Must Be Numbers")
 
     def isTruthy(self, obj: Any):
         if obj is None:
