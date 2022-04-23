@@ -49,6 +49,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
             except JumpErr as j:
                 self.env = j.scene.env
                 statements = j.scene.body
+                print('Trying to Jump')
+                print(self.env)
+                print(statements)
             except ReturnErr as r:
                 self.value = r.value
             except RuntimeErr as e:
@@ -142,7 +145,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitJumpStmt(self, stmt: Jump):
         # print("Interpreting Jump")
-        scene = self.env.get(stmt.dest.lexeme)
+        scene = self.env.get(stmt.dest)
         if not isinstance(scene, VNScene):
             raise RuntimeErr(stmt.dest, "Jump Destination Must Be Scene")
         raise JumpErr(scene)
