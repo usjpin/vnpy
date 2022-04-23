@@ -12,7 +12,11 @@ config volume 0.7;
 //delay 1 + 1;
 //let b = "examples/red.png";
 //image show b;
-display "supWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
+display "sup";
+waitClick();
+display "click read";
+waitKey();
+display "key read";
 options {
     case "bruh" do display "1 picked";
     case "pick me 2" do display "2 picked";

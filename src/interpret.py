@@ -21,8 +21,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
             'mode': 'graphic',
             'volume': 0.5
         }
-        # self.globals.define("readClick", VNClickCallable())
-        # self.globals.define("readKey", VNClickCallable())
+        self.globals.define("waitClick", VNClickCallable())
+        self.globals.define("waitKey", VNKeyCallable())
 
     def interpret(self, configs: List[Config], statements: List[Stmt]) -> None:
         # Error Handling
@@ -76,9 +76,12 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def resolvePath(self, path: str, tok: Token) -> str:
         if not os.path.exists(path):
-            # Need Fix
             raise RuntimeErr(tok, "Path \'" + path + "\' Does Not Exist")
         return path
+
+    def checkGraphic(self, tok: Token, msg: str) -> None:
+        if self.config["mode"] != "graphic":
+            raise RuntimeErr(tok, msg)
 
     def visitConfigStmt(self, stmt: Config):
         # print("Interpreting Config")
@@ -91,8 +94,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitImageStmt(self, stmt: Image):
         # print("Interpreting Image")
-        if self.config["mode"] == "console":
-            raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
+        self.checkGraphic(stmt.action, "Cannot Use Image In Non-Graphic Mode")
         if stmt.action == Type.SHOW:
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
@@ -126,8 +128,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
 
     def visitAudioStmt(self, stmt: Audio):
         # print("Interpreting Audio")
-        if self.config["mode"] == "console":
-            raise RuntimeErr(stmt.action, "Cannot Use Audio In Console Mode")
+        self.checkGraphic(stmt.action, "Cannot Use Audio In Non-Graphic Mode")
         if stmt.action == Type.START:
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
@@ -246,7 +247,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
         arguments = []
         for argument in expr.args:
             arguments.append(self.evaluate(argument))
-        if callee is None or not isinstance(callee, VNFunction):
+        if callee is None or not isinstance(callee, VNCallable):
             raise RuntimeErr(expr.paren, "Can Only Call Functions")
         function: VNCallable = callee
         if len(arguments) != function.arity():

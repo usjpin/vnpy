@@ -97,7 +97,6 @@ class VNGUIGame(VNGame):
 
     def hideImage(self, path: str):
         if path not in self.imagePaths:
-            # Throw Error?
             return
         idx = self.imagePaths.index(path)
         self.imagePaths.pop(idx)
@@ -132,10 +131,10 @@ class VNGUIGame(VNGame):
 
     def delay(self, number: int):
         i = 0
-        while i < number:
+        while i < number * 10:
             self.checkEvents()
             i += 1
-            time.sleep(1)
+            time.sleep(0.1)
 
     def popOptions(self, options: List[Tuple[str, Stmt]]) -> Stmt:
         while True:
@@ -166,6 +165,22 @@ class VNGUIGame(VNGame):
                 y += h + self.height//100
             self.render()
 
+    def getClick(self):
+        while True:
+            events = self.checkEvents()
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+            time.sleep(0.01)
+
+    def getKey(self):
+        while True:
+            events = self.checkEvents()
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    return
+            time.sleep(0.01)
+
     def checkEvents(self):
         events = pygame.event.get()
         for event in events:
@@ -175,6 +190,7 @@ class VNGUIGame(VNGame):
 
     def render(self):
         pygame.display.flip()
+
 
 #from PIL import Image
 # For later?
