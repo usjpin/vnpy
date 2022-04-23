@@ -12,12 +12,9 @@ config volume 0.7;
 //delay 1 + 1;
 //let b = "examples/red.png";
 //image show b;
-display "supWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
+display "Me";
 options {
-    case "bruh" do display "1 picked";
-    case "pick me 2" do display "2 picked";
-    case "pick me 3" do display "3 picked";
-    case "pick me 3" do display "4 picked";
+    case "bruhWWWWWWWWWWWWWWWWWWW\nWWWWWWWWWWWWWWWWWWWWWWWWWWW\nWW" do 0;
 }
 display "over";
 //delay 20;
