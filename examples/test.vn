@@ -13,6 +13,10 @@ config volume 0.7;
 //let b = "examples/red.png";
 //image show b;
 display "sup";
+waitClick();
+display "click read";
+waitKey();
+display "key read";
 options {
     case "bruh" do display "1 picked";
     case "pick me 2" do display "2 picked";
