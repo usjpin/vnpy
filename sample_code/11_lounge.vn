@@ -1,5 +1,6 @@
 config width 1000;
 config height 600;
+config volume 0.65;
 
 let background  = "assets/desk.jpg";
 image show background;
@@ -20,7 +21,9 @@ display "...";
 waitClick();
 display "...Hours passed by in calm melodies.";
 waitClick();
-display "Finally Thomas could finish his paper on Underwater Basket Weaving.";
+display "Finally Thomas could finish his paper on Underwater Basket Weaving...";
+waitClick();
+display "...and other important subjects, as well as his tax return forms.";
 waitClick();
 display "Life was good.";
 waitClick();

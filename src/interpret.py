@@ -133,7 +133,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
                 raise RuntimeErr(stmt.tok, "Audio Path Must Be A String")
-            self.game.startAudio(self.resolvePath(path))
+            self.game.startAudio(self.resolvePath(path, stmt.tok))
         elif stmt.action == Type.STOP:
             self.game.stopAudio()
 

@@ -23,21 +23,33 @@ options {
 //delay 20;
 //image show "examples/blue.png";
 //delay 2;
+jump a;
 scene a {
     //audio start "cmon.mp3";
     display "sup";
-    delay 3;
     display "yeet";
     //audio stop "cmon.mp3";
-    delay 2;
-    exit;
+    display "as";
+    waitClick();
 }
 //delay 1;
+image show "assets/cowboy.png";
+image show "assets/cowboy.png";
+image show "assets/cowboy.png";
+image show "assets/robot.png";
+waitClick();
+image hide "assets/cowboy.png";
+image hide "assets/cowboy.png";
 scene b {
 
     display "bro";
     
-    delay 30;
-    jump a;
+    delay 1;
 }
 jump b;
+display "asd";
+waitClick();
+fun asd(){
+    log "asd";
+}
+asd();

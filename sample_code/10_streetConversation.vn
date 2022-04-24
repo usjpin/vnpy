@@ -21,28 +21,26 @@ waitClick();
 display "???: No, but I know you! You were at the bar last night, remember?";
 waitClick();
 
-image hide background;
-image hide person;
+let bar = "assets/bar.webp";
+image show bar;
 
 display "Suddenly, memories of last night fade back into your memory.";
 waitClick();
 
-let bar = "assets/bar.webp"
-image show bar;
 image show person;
 
 display "You didn't notice him then, but he was always lingering in the field of your vision.";
 waitClick();
 
 image hide bar;
-image hide bar;
+image hide person;
 
 display "You: Yes, yes, I was. Did something happen?";
 waitClick();
 display "???: Yeah. While you were talking to your friends I saw you dropped your wallet.";
 waitClick();
 
-let wallet = "assets/wallet.webp";
+let wallet = "assets/wallet.png";
 image show wallet;
 
 display "???: It's this one here, right?";
