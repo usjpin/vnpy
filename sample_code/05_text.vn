@@ -1,0 +1,21 @@
+config width 1000;
+config height 600;
+
+display "Once your are done reading this and future sentences, press any key to move onto the next one.";
+waitKey();
+display "Usually visual novels only show one or two sentences at a time.";
+waitKey();
+display "As discussed earlier, this is done due to lack of space by also style...";
+waitKey();
+display "...as it suits the more dialogue-based nature of visual novels.";
+waitKey();
+display "When it comes to longer sentences like this and that last one...";
+waitKey();
+display "...which cannot be rendered all at once without overflow...";
+waitKey();
+display "...ellipses (...) are often used to indicate a sentence is not finished.";
+waitKey();
+display "However, this is not necessary, and varies depending on the visual novel.";
+waitKey();
+display "This is the last sentence. Pressing a key will close the game.";
+waitKey();

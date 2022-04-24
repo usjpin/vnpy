@@ -1,0 +1,27 @@
+config width 1000;
+config height 600;
+
+display "I remember it like it happened yesterday.";
+waitClick();
+
+let background  = "assets/field.jpg";
+image show background;
+
+display "I was in a sunny field of wheat.";
+waitClick();
+display "It was a bright sunrise.";
+waitClick();
+display "Or it could have been a bright sunset.";
+waitClick();
+display "It didn't really matter. Time didn't matter.";
+waitClick();
+display "No responsibilities, no worries.";
+waitClick();
+display "Just peace...";
+waitClick();
+
+image hide background; //Comment this out and see what happens
+image show "assets/bedroom.jfif";
+
+display "...Then I woke up.";
+waitClick();

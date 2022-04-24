@@ -1,0 +1,2 @@
+display "No configs set.";
+waitClick();

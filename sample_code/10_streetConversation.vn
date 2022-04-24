@@ -1,0 +1,79 @@
+config width 1000;
+config height 600;
+
+let background  = "assets/street.jpg";
+image show background;
+
+display "It's a busy day in the busy city of Busy City.";
+waitClick();
+display "You're rushing on your way to work when suddenly you here a voice call out.";
+waitClick();
+display "???: Hey man!";
+waitClick();
+
+let person = "assets/streetGoer.png";
+image show person;
+
+display "You turn around to see a familiar-looking man in front of you.";
+waitClick();
+display "You: Do I know you?";
+waitClick();
+display "???: No, but I know you! You were at the bar last night, remember?";
+waitClick();
+
+image hide background;
+image hide person;
+
+display "Suddenly, memories of last night fade back into your memory.";
+waitClick();
+
+let bar = "assets/bar.webp"
+image show bar;
+image show person;
+
+display "You didn't notice him then, but he was always lingering in the field of your vision.";
+waitClick();
+
+image hide bar;
+image hide bar;
+
+display "You: Yes, yes, I was. Did something happen?";
+waitClick();
+display "???: Yeah. While you were talking to your friends I saw you dropped your wallet.";
+waitClick();
+
+let wallet = "assets/wallet.webp";
+image show wallet;
+
+display "???: It's this one here, right?";
+waitClick();
+display "You: Yes! You're absolutely right! I thought I had forgotten something.";
+waitClick();
+
+image hide wallet;
+
+display "Relieved, you take the wallet.";
+waitClick();
+display "You: I should give you something as thanks.";
+waitClick();
+display "???: Don't worry about it. Just doing my job as a good sumaritan!";
+waitClick();
+
+image hide person;
+
+display "With that, the familiar-looking man rushed away.";
+waitClick();
+display "You: What a kind person.";
+waitClick();
+display "It's at this point you begin to wonder why he didn't just return the wallet last night.";
+waitClick();
+display "Come to think of it, what type of person calls themself a good sumaritan in the first place?";
+waitClick();
+display "In dread, you open your wallet.";
+waitClick();
+
+image show "assets/emptyWallet.jfif";
+
+display "Morale of the story: Don't trust strangers.";
+waitClick();
+
