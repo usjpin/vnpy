@@ -151,13 +151,13 @@ class VNGUIGame(VNGame):
             h = int(self.height//10) - int(self.height//50) #int(self.height//(len(options) * 5.5)) - int(self.height//50)
             r = int(self.width//25)
             x = int(0.05 * self.width)
-            y = int(self.height//3)
+            y = int(self.height//5)
             for idx, option in enumerate(options):
                 mux, muy = pygame.mouse.get_pos()
                 mx = mux - x
                 my = muy - y
                 s = pygame.Surface((w, h))
-                s.set_alpha(100)
+                s.set_alpha(256)
                 if mx >= 0 and mx <= w and my >= 0 and my <= h:
                     for event in events:
                         if event.type == pygame.MOUSEBUTTONDOWN:

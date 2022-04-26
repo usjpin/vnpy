@@ -1,0 +1,12 @@
+config width 1000;
+config height 600;
+
+let a = 12;
+scene a {
+    log "success";
+    waitClick();
+}
+
+let b = a;
+jump a;
+
