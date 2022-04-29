@@ -49,9 +49,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
             except JumpErr as j:
                 self.env = j.scene.env
                 statements = j.scene.body
-                print('Trying to Jump')
-                print(self.env)
-                print(statements)
+                #print('Trying to Jump')
+                #print(self.env)
+                #print(statements)
             except ReturnErr as r:
                 self.value = r.value
             except RuntimeErr as e:
@@ -133,7 +133,7 @@ class Interpreter(ExprVisitor, StmtVisitor):
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
                 raise RuntimeErr(stmt.tok, "Audio Path Must Be A String")
-            self.game.startAudio(self.resolvePath(path))
+            self.game.startAudio(self.resolvePath(path, stmt.tok))
         elif stmt.action == Type.STOP:
             self.game.stopAudio()
 

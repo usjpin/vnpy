@@ -1,0 +1,180 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+//Out of all examples, this one was cut down the most due to time constraints.
+//Thus, the functionality being demonstrated may not be as clear as could be.
+//Basically, take mind that using variables with options can emulate a dynamic
+//flow of conversation in a conversation hub.
+
+let out = "assets/interrogationOutside.jpg";
+let in = "assets/crook.webp";
+
+let pass = 0;
+scene hub {
+    let o1Text;
+    let o2Text;
+    let o3Text;
+    let o1Jump;
+    let o2Jump;
+    let o3Jump;
+    
+    if (pass >= 3){
+        o1Text = "How much vacation time do you get?";
+        o1Jump = alibi2;
+    }
+    else {
+        o1Text = "Where were you on the night of December 25th?";
+        o1Jump = alibi1;
+    }
+   
+    o2Text = "Do you know the victims of the incident?";
+    o2Jump = victims1;
+    
+    if (pass >= 2) {
+        o3Text = "Do you have any pasttimes?";
+        o3Jump = self1;
+    }
+    else {
+        o3Text = "Do you know anything about where the incident took place?";
+        o3Jump = location1;
+    }
+    display "What should I ask him?";
+    options {
+        case o1Text do jump o1Jump;
+        case o2Text do jump o2Jump;
+        case o3Text do jump o3Jump;
+    }
+}
+
+scene alibi1 {
+    dialogue("Tick", "Night of December 25th? I was well asleep, just like I'd imagine a lot of people were.");
+    dialogue("me", "Not everyone Frank. That's why we're investigating this incident.");
+    dialogue("Tick", "Well, I was. I'm quite a busy man, so I appreciate resting during my vacations.");
+    dialogue("me", "No parties?");
+    dialogue("Tick", "I can't say so, no. I haven't been to a party in forever.");
+    if (pass == 2){
+        dialogue("me", "Really? Didn't you say you heard about the existence of Lofts and Lofts at a party, though?");
+        dialogue("Tick", "Ah, well, it must have been at work then.");
+        dialogue("", "I sighed. It seemed this line of questioning was pointless.");
+        dialogue("", "If all he was going to do was make up shoddy excuses about how he knew about the store");
+        dialogue("", "I was going to have to change my approach.");
+        dialogue("me", "Alright, I see. How is your work, by the way?");
+        dialogue("Tick", "Fine. It pays well. Long hours, however.");
+        dialogue("Tick", "The reason I said I don't go to parties is because I never have the time outside of work.");
+        dialogue("me", "Well, that's unfortunate.");
+        dialogue("Tick", "Quite so.");
+        pass = 3;
+    }
+    else {
+        dialogue("me", "I'm sorry to hear that, Mr. Frank.");
+    }
+    jump hub;
+}
+scene alibi2 {
+    dialogue("", "This dialogue section has been cut out due to time constraints.");
+    jump hub;
+}
+scene location1 {
+    dialogue("Tick", "Well, no, I can't say I've been well informed on the subject.");
+    dialogue("Tick", "When I try to ask anyone, they say that *I* should be the one doing the answering.");
+    dialogue("me", "Sorry, Mr. Frank. If that's the case, I'll catch you up to speed.");
+    dialogue("me", "It happened at a store on Baker's Street.");
+    dialogue("Tick", "Ah, Baker's Street. I pass by there everyday to work.");
+    dialogue("me", "Doesn't it concern you a crime happened so close by?");
+    dialogue("", "Mr. Tick waved his hand.");
+    dialogue("Tick", "Well I'm sure you and the boys in blue will be able to get it sorted out.");
+    dialogue("", "His nonchalance is irritating, but I don't fall for the bait.");
+    dialogue("me", "With your cooperation, I'm sure we can.");
+    pass = 1;
+    jump hub;
+}
+scene victims1 {
+    dialogue("Tick", "Victims? Did someone die?");
+    dialogue("", "His concern seems sincere. Either he really is innocent, or Mr. Tick here is a really good actor.");
+    dialogue("me", "No sir. Victims as in the ones who were robbed.");
+    dialogue("Tick", "Ah, I see.");
+    dialogue("me", "Ms. and Mr. Loft. Owners of the store 'Lofts and Lofts' on Baker's Street.");
+    dialogue("Tick", "Hmm, no, I can't say I have ever heard of the store.");
+    dialogue("me", "Is that so? Interesting.");
+    if (pass == 1){
+        dialogue("me", "Mr. Frank, did you not say you passed by Baker's Street every day?");
+        dialogue("me", "Don't you think it's a bit odd you've never even caught the name of a store on it?");
+        dialogue("Tick", "I think you're being too critical, detective.");
+        dialogue("Tick", "Do you really think I'd notice every single detail about my commute?");
+        dialogue("me", "You're right. Sorry, Mr. Frank. I admit it's a rather small store anyway.");
+        dialogue("Tick", "Right! I don't pay attention to every single small corner store I pass by.");
+        dialogue("me", "Corner store? Mr. Frank, I don't believe I ever mentioned Lofts and Lofts was a corner store.");
+        dialogue("me", "How did you know that, if you've never even heard of the store before?");
+        dialogue("Tick", "Err...lucky guess?");
+        dialogue("me", "That sounds mightly suspicious, Mr. Frank.");
+        dialogue("Tick", "Look, I don't know. Consciously I don't know anything about that store,");
+        dialogue("Tick", "but maybe someone mentioned at a party once. I don't know.");
+        dialogue("me", "Is that so? Well, I suppose that would explain how you would know about Lofts and Lofts then.");
+        dialogue("Tick", "Exactly! So can we move onto a different subject then?");
+        dialogue("me", "Of course.");
+        pass = 2;
+    }
+    jump hub;
+}
+scene self1{
+    dialogue("Tick", "Pasttimes? I thought this an interrogation?");
+    dialogue("me", "Of course. Just thought I'd ask out of curiosity. You did say you wanted to change the subject.");
+    dialogue("Tick", "Well, if you really want to know, I cook.");
+    dialogue("me", "Ah, I see. I watch a few cooking shows from time to time. Seems like interesting stuff.");
+    dialogue("", "Unexpectedly, this seemed to snap something inside of Mr. Tick.");
+    dialogue("Tick", "Hah! Cooking shows? I'm not some amateur, detective.");
+    dialogue("Tick", "I spend several hours a day perfect my craft. It's harder than it looks, you know.");
+    if (pass == 3){
+        dialogue("me", "Several hours? That sounds hard to believe, Mr. Frank.");
+        dialogue("Tick", "What do you maan, detective?");
+        dialogue("me", "Did you not say earlier work took up most of your time? I can get cooking your own meals but spending a few hours each day?");
+        dialogue("me", "With that amount of time I'm sure you can afford to go to a few parties every so often.");
+        dialogue("me", "But hey? What is a detective like me supposed to know about work-life balance?");
+        dialogue("", "Mr. Tick seemed visibly upset.");
+        dialogue("Tick", "Telling me how I should run my life?");
+        dialogue("", "Truth be told, I wasn't sure where this line of questioning was going to lead me.");
+        dialogue("", "But now the usually composed Frank Tick was losing his grip.");
+        dialogue("", "All I needed now was for him to slip up once for the case to be blown wide open.");
+        dialogue("", "Too be continued...");
+        dialogue("", "Except not really, because this is just a proof of concept.");
+        exit;
+    }
+    else {
+        dialogue("me", "Oh, I see. Good at it then?");
+        dialogue("Tick", "Absolutely.");
+    }
+    jump hub;
+}
+
+fun dialogue(character, text){
+    if (character == "")
+        display text;
+    else if (character == "me")
+        display "'" + text + "'";
+    else
+        display character + ": '" + text + "'";
+    waitClick();
+}
+
+image show out;
+dialogue("Cop", "Alright, sir. Think you can handle him?");
+dialogue("me", "I wouldn't be a detective if I couldn't.");
+dialogue("Cop", "Yeah, but you've seen the reports so far. Lips completely sealed. We got nothing on him.");
+dialogue("me", "He's gotta crack at some point. Just watch me.");
+dialogue("", "I walk into the interrogation room.");
+
+image hide out;
+image show in;
+dialogue("", "In front of me is a well-dressed man, in a look you wouldn't normally associate with injustice.");
+dialogue("", "At least, depending on how cynical you are. Could be an American Psycho type.");
+dialogue("", "Doesn't matter to me. All I care about is the job in front of me.");
+dialogue("me", "Mr. Tick, is it? Odd name, pardon me saying.");
+dialogue("Tick", "Please, detective. Call me Frank.");
+dialogue("", "His voice is genuine. Unwavering.");
+dialogue("", "'Pretending to be friendly, huh,' I think.");
+dialogue("me", "Alright Mr...Frank. If you don't mind, I have a few questions to ask you.");
+dialogue("Tick", "But of course, detective. Ask away. I can assure you I have nothing to hide.");
+
+
+jump hub;

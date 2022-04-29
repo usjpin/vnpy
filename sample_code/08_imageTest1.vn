@@ -1,0 +1,8 @@
+config width 700;
+config height 500;
+
+let background  = "assets/imageTest.jfif";
+image show background;
+
+display "700x500";
+waitClick();

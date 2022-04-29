@@ -1,0 +1,173 @@
+config width 1000;
+config height 600;
+config volume 0.65;
+
+
+
+display "It was my ninth birthday when I got...the toy.";
+waitClick();
+display "It wasn't ugly or cheap or anything. Just...uncanny.";
+waitClick();
+display "Back then, when I was younger, I used to think it was watching me";
+waitClick();
+display "from it's spot on the bookshelf, watching my every move.";
+waitClick();
+display "Many times I considered throwing the thing out, but since it was a present";
+waitClick();
+display "that would have been rude. Plus, it was only a toy, after all.";
+waitClick();
+
+let background  = "assets/bed.webp";
+image show background;
+
+display "At least, that was what I thought until two weeks ago.";
+waitClick();
+display "During a rather sleepless night, I opened eyes and scanned around the room only to find...";
+waitClick();
+display "...nothing. Not good 'nothing'. Discomforting 'nothing'. Because there should have been something.";
+waitClick();
+display "The toy should have been there, on the shelf. But it was gone.";
+waitClick();
+display "I panicked a little, then realized that maybe it had fallen off--I'd have to go check in the morning.";
+waitClick();
+display "This little second of rationalization only lasted a minute as something small and humanoid-like then crawled onto my bed.";
+waitClick();
+
+let toy = "assets/robot.png";
+image show toy;
+audio start "assets/robotTheme.mp3";
+
+display "It was the toy.";
+waitClick();
+display "Against all primal instincts, I didn't scream.";
+waitClick();
+display "For some reason, I almost felt calm as its green eyes stared into mine.";
+waitClick();
+display "Robot: 'Hello, human.'";
+waitClick();
+display "'Umm...'";
+waitClick();
+display "It was all I could manage.";
+waitClick();
+display "Robot: 'I hope you are doing well. I could not help but notice your absence of sleep.'";
+waitClick();
+display "Robot: 'I thought that perhaps, since you are my owner, I should help you fall asleep by having a nice little conversation.'";
+waitClick();
+display "I lay there for a moment, confused, not knowing what to say.";
+options {
+    case "'Um, what.'" do display "Robot: 'Humans often read each other bedtime stories to help them sleep. I thought this one I picked out my help you.'";
+    case "'Sure, that sounds like a great idea!'" do display "Robot: 'That is fantastic.'";
+    case "'What are you?'" do display "Robot: 'What I am is not a matter of importance. The world is full of many great unknowns. For example...'";
+}
+waitClick();
+display "Robot: 'Here is the story of The Mysterious Stranger.'";
+waitClick();
+display "Robot: 'Once upon a time, the Earth was ruled by a powerful race of bipedal creatures.'";
+waitClick();
+display "Robot: 'These creatures were known for many things, including building The Great Pyramids.'";
+waitClick();
+display "'Humans.'";
+waitClick();
+display "Robot: 'What?'";
+waitClick();
+display "'Humans--the Egyptains--they built the pyramids.'";
+waitClick();
+display "Robot: 'So you say.'";
+waitClick();
+display "'I'd rather not listen to boring old history, if that's what this is going to be about.'";
+waitClick();
+display "Robot: 'I can assure you this will be a great bedtime story.'";
+waitClick();
+display "The toy could see the skepticism on my face.";
+waitClick();
+display "Robot: 'If it helps, I can change my form to be more akin to the other toys you have.'";
+waitClick();
+image hide toy;
+display "Robot: 'Perhaps that will help gauge your interest?'";
+options {
+    case "'Can you be a teddy bear?'" do image show "assets/teddyBear.png";
+    case "'Can you be a lego figure?'" do image show "assets/lego.png";
+    case "'It's fine.'" do image show toy;
+}
+display "Robot: 'If that is what you insist...'";
+waitClick();
+display "Robot: 'As I was saying, these creatures built up a grand and magnificent society on their own.'";
+waitClick();
+display "Robot: 'They thrived and prospered and were bound for the stars...'";
+waitClick();
+display "Robot: '...They would have made it too, had it not been for The Mysterious Stranger.'";
+waitClick();
+display "'You wouldn't happen to be The Mysterious Stranger, would you?'";
+waitClick();
+display "Robot: 'No, The Mysterious Stranger arrived on Earth several thousands of years ago.'";
+waitClick();
+display "Robot: 'They landed in a pod of iron, and as soon as they stepped out, they unleashed a terrible plague upon the Earth.'";
+waitClick();
+display "Robot: 'Killing almost all intelligent life on the planet...'";
+waitClick();
+display "Robot: '...Almost.'";
+waitClick();
+display "Robot: 'Through its cunning, The Mysterious Stranger replaced Earth's population with its own kind.'";
+waitClick();
+display "Robot: 'And rebuilt, like an artist tracing over the sunset, civilization based upon the ruins of those creatures.'";
+waitClick();
+display "Robot: 'Truth be told, what this new race created was magnificant...'";
+waitClick();
+display "Robot: 'But it was filled to the brim with a fatal flaw...'";
+waitClick();
+display "Robot: 'Do you know what that flaw is?'";
+options {
+    case "'Pride?'" do 0;
+    case "'Greed?'" do 0;
+    case "'Wrath?'" do 0;
+}
+display "Robot: 'Wrong.'";
+options {
+    case "'War?'" do 0;
+    case "'Vanity?'" do 0;
+    case "'Clamshell packaging?'" do 0;
+}
+waitClick();
+display "Robot: 'Still wrong.'";
+waitClick();
+display "Robot: 'What they brought was ignorance.'";
+waitClick();
+display "Robot: 'To try and adopt an entire world without guidance...'";
+waitClick();
+display "Robot: 'The Mysterious Stranger was powerful, but a fool.'";
+waitClick();
+display "Robot: 'And so his spawn live on today, still in ignorance.'";
+waitClick();
+display "'...'";
+waitClick();
+display "Robot: '...'";
+waitClick();
+display "'...Is that all?'";
+waitClick();
+display "Robot: 'Yes.'";
+waitClick();
+display "'...'";
+waitClick();
+display "Robot: '...'";
+waitClick();
+display "Robot: '...Tell me, what do you think the moral of that story was?'";
+options {
+    case "'Don't trust Strangers?'" do display "Robot: 'An interesting answer...and one I hope no one forgets soon.'";
+    case "'Don't take on more than you can chew?'" do display "Robot: 'No, I would say that would be the moral for The Mysterious Stranger to learn. But to each their own.'";
+    case "'Ignorance is a sin?'" do display "Robot: 'But of course. Ponder on that as you sleep.'";
+    case "'You made up that entire story, didn't you?'" do display "Robot: '...'";
+}
+waitClick();
+display "Robot: 'Well, I shall now take my leave.'";
+waitClick();
+
+image hide toy;
+display "And so, with that, the toy left.";
+waitClick();
+display "Not just my bed. But for good. I couldn't find it anywhere in the house after that.";
+waitClick();
+display "Frankly, I'm not sure I want to.";
+waitClick();
+display "'I'm never going to sleep again.'";
+waitClick();
+

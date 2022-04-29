@@ -1,0 +1,303 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+let background  = "assets/maze.jpg";
+image show background;
+
+display "You wake up trapped inside a white room.";
+waitClick();
+display "There are no distinguishing features, no sign of direction.";
+waitClick();
+display "As you turn from corner to corner, you realize that there is nothing you can do but aimlessly wander...";
+waitClick();
+display "...Hoping to eventually, if only by random chance, get out.";
+waitClick();
+
+scene a1 {
+    display "You move onwards.";
+    waitClick();
+    display "It seems like a dead end. A really dead end. Nowhere to go except back.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Down." do jump b1;
+    }
+}
+scene a2 {
+    display "You move onwards.";
+    waitClick();
+    display "Have you been here before already? Who's to say at this point?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Right." do jump a3;
+        case "Go Down." do jump b2;
+    }
+}
+scene a3 {
+    display "You move onwards.";
+    waitClick();
+    display "How long will you be stuck in this maze, you wonder.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump end;
+        case "Go Left." do jump a2;
+        
+    }
+}
+scene a4 {
+    display "You move onwards.";
+    waitClick();
+    display "Another dead end. Or is this the first one?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Right." do jump a5;
+    }
+}
+scene a5 {
+    display "You move onwards.";
+    waitClick();
+    display "Maybe you've gotten in too deep...";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Left." do jump a4;
+        case "Go Down." do jump b5;
+    }
+}
+scene b1 {
+    display "You move onwards.";
+    waitClick();
+    display "This has really been quite a long hallway, hasn't it?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump a1;
+        case "Go Down." do jump c1;
+    }
+}
+scene b2 {
+    display "You move onwards.";
+    waitClick();
+    display "Time will only tell if you ever get out.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump a2;
+        case "Go Down." do jump c2;
+    }
+}
+scene b3 {
+    display "You move onwards.";
+    waitClick();
+    display "Surely this is the right direction. Wait, no...Maybe?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Right." do jump b4;
+        case "Go Down." do jump c3;
+    }
+}
+scene b4 {
+    display "You move onwards.";
+    waitClick();
+    display "You tell yourself you're getting closer. Maybe you are. Maybe you aren't.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Left." do jump b3;
+        case "Go Right." do jump b5;
+    }
+}
+scene b5 {
+    display "You move onwards.";
+    waitClick();
+    display "A certain crossroads. Every maze has got one.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump a5;
+        case "Go Left." do jump b4;
+        case "Go Down." do jump c5;
+    }
+}
+scene c1 {
+    display "You move onwards.";
+    waitClick();
+    display "This has been a rather long hallway, hasn't it?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump b1;
+        case "Go Down." do jump d1;
+    }
+}
+scene c2 {
+    display "You move onwards.";
+    waitClick();
+    display "Mazes mazes mazes. Why did it have to be mazes?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump b2;
+        case "Go Right." do jump c3;
+    }
+}
+scene c3 {
+    display "You move onwards.";
+    waitClick();
+    display "The only solace there is is that at least the walls look nice.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump b3;
+        case "Go Left." do jump c2;
+    }
+}
+scene c4 {
+    display "You move onwards.";
+    waitClick();
+    display "A dead end. Haven't seen one of those before. Or have you?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Down." do jump d4;
+    }
+}
+scene c5 {
+    display "You move onwards.";
+    waitClick();
+    display "Almost halfway there, maybe. Halfway to where, anyway?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump b5;
+        case "Go Down." do jump d5;
+    }
+}
+scene d1 {
+    display "You move onwards.";
+    waitClick();
+    display "Sometimes you wonder if you've just been traveling in circles.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump c1;
+        case "Go Down." do jump e1;
+    }
+}
+scene d2 {
+    display "You move onwards.";
+    waitClick();
+    display "It feels like you've been in here forever.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Right." do jump d3;
+        case "Go Down." do jump e2;
+    }
+}
+scene d3 {
+    display "You move onwards.";
+    waitClick();
+    display "Could this be it? Finally on the path to the right way out?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Left." do jump d2;
+        case "Go Right." do jump d4;
+    }
+}
+scene d4 {
+    display "You move onwards.";
+    waitClick();
+    display "Maybe it's just better to back out while you can.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump c4;
+        case "Go Left." do jump d3;
+    }
+}
+scene d5 {
+    display "You move onwards.";
+    waitClick();
+    display "Yes, yes, this seems like the right way. Or, no, it was that way...";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump c5;
+        case "Go Down." do jump e5;
+    }
+}
+scene e1 {
+    display "You move onwards.";
+    waitClick();
+    display "You turn a corner. And another corner. So many corners...";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump d1;
+        case "Go Right." do jump e2;
+    }
+}
+scene e2 {
+    display "You move onwards.";
+    waitClick();
+    display "You have a good feeling about this path. Now, is it founded is the question.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump d2;
+        case "Go Left." do jump e1;
+        case "Go Right." do jump e3;
+    }
+}
+scene e3 {
+    display "You move onwards.";
+    waitClick();
+    display "Mazes, am I right?";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Left." do jump e2;
+        case "Go Right." do jump e4;
+    }
+}
+scene e4 {
+    display "You move onwards.";
+    waitClick();
+    display "You trip over something. Just kidding. Nothing out of the ordinary happens.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Left." do jump e3;
+        case "Go Right." do jump e5;
+    }
+}
+scene e5 {
+    display "You move onwards.";
+    waitClick();
+    display "Maybe you should have taken that other path a few corners back. Who knows at this point.";
+    waitClick();
+    display "What do you do?";
+    options {
+        case "Go Up." do jump d5;
+        case "Go Left." do jump e4;
+    }
+}
+scene end {
+    display "Not for long, apparently. Because now you finally see a light at the end of the hallway.";
+    waitClick();
+    image show "assets/mazeMap.jpg";
+    image hide background;
+    display "Congradulations! You won!";
+    waitClick();
+    display "Time to head back into the real world.";
+    waitClick();
+}
+
+jump e3;
