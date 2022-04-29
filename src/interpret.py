@@ -1,4 +1,3 @@
-from ast import arg
 import os
 import sys
 from typing import List
@@ -22,8 +21,8 @@ class Interpreter(ExprVisitor, StmtVisitor):
             'mode': 'graphic',
             'volume': 0.5
         }
-        # self.globals.define("readClick", VNClickCallable())
-        # self.globals.define("readKey", VNClickCallable())
+        self.globals.define("waitClick", VNClickCallable())
+        self.globals.define("waitKey", VNKeyCallable())
 
     def interpret(self, configs: List[Config], statements: List[Stmt]) -> None:
         # Error Handling
@@ -50,6 +49,9 @@ class Interpreter(ExprVisitor, StmtVisitor):
             except JumpErr as j:
                 self.env = j.scene.env
                 statements = j.scene.body
+                #print('Trying to Jump')
+                #print(self.env)
+                #print(statements)
             except ReturnErr as r:
                 self.value = r.value
             except RuntimeErr as e:
@@ -72,90 +74,85 @@ class Interpreter(ExprVisitor, StmtVisitor):
         finally:
             self.env = previous
 
-    def resolvePath(self, path: str) -> str:
+    def resolvePath(self, path: str, tok: Token) -> str:
         if not os.path.exists(path):
-            # Need Fix
-            raise RuntimeErr(None, "Path \'" + path + "\' Does Not Exist")
+            raise RuntimeErr(tok, "Path \'" + path + "\' Does Not Exist")
         return path
 
+    def checkGraphic(self, tok: Token, msg: str) -> None:
+        if self.config["mode"] != "graphic":
+            raise RuntimeErr(tok, msg)
+
     def visitConfigStmt(self, stmt: Config):
-        print("Interpreting Config")
+        # print("Interpreting Config")
         self.config[stmt.config.value] = stmt.value.literal
 
     def visitSceneStmt(self, stmt: Scene):
-        print("Interpreting Scene")
+        # print("Interpreting Scene")
         scene = VNScene(stmt.body, self.env)
         self.env.define(stmt.name.lexeme, scene)
 
     def visitImageStmt(self, stmt: Image):
-        print("Interpreting Image")
-        if self.config["mode"] == "console":
-            raise RuntimeErr(stmt.action, "Cannot Use Image In Console Mode")
+        # print("Interpreting Image")
+        self.checkGraphic(stmt.action, "Cannot Use Image In Non-Graphic Mode")
         if stmt.action == Type.SHOW:
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
-                # Need Fix
-                raise RuntimeErr(None, "Image Path Must Be A String")
-            self.game.showImage(self.resolvePath(path))
+                raise RuntimeErr(stmt.tok, "Image Path Must Be A String")
+            self.game.showImage(self.resolvePath(path, stmt.tok))
         elif stmt.action == Type.HIDE:
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
-                # Need Fix
-                raise RuntimeErr(None, "Image Path Must Be A String")
-            self.game.hideImage(self.resolvePath(path))
+                raise RuntimeErr(stmt.tok, "Image Path Must Be A String")
+            self.game.hideImage(self.resolvePath(path, stmt.tok))
         self.game.render()
 
     def visitDisplayStmt(self, stmt: Display):
-        print("Interpreting Display")
+        # print("Interpreting Display")
         message = self.evaluate(stmt.value)
         if not isinstance(message, str):
-            # Need Fix
-            raise RuntimeErr(None, "Display Message Must Be A String")
+            raise RuntimeErr(stmt.tok, "Display Message Must Be A String")
         self.game.display(message)
         self.game.render()
 
     def visitOptionsStmt(self, stmt: Options):
-        print("Interpreting Options")
+        # print("Interpreting Options")
         cases = []
         for case in stmt.cases:
             text = self.evaluate(case[0])
             if not isinstance(text, str):
-                # Need Fix
-                raise RuntimeErr(None, "Options Text Must Be A String")
+                raise RuntimeErr(stmt.tok, "Options Text Must Be A String")
             cases.append((self.evaluate(case[0]), case[1]))
         choice = self.game.popOptions(cases)
         choice.accept(self)
 
     def visitAudioStmt(self, stmt: Audio):
-        print("Interpreting Audio")
-        if self.config["mode"] == "console":
-            raise RuntimeErr(stmt.action, "Cannot Use Audio In Console Mode")
+        # print("Interpreting Audio")
+        self.checkGraphic(stmt.action, "Cannot Use Audio In Non-Graphic Mode")
         if stmt.action == Type.START:
             path = self.evaluate(stmt.path)
             if not isinstance(path, str):
-                # Need Fix
-                raise RuntimeErr(None, "Audio Path Must Be A String")
-            self.game.startAudio(self.resolvePath(path))
+                raise RuntimeErr(stmt.tok, "Audio Path Must Be A String")
+            self.game.startAudio(self.resolvePath(path, stmt.tok))
         elif stmt.action == Type.STOP:
             self.game.stopAudio()
 
     def visitDelayStmt(self, stmt: Delay):
-        print("Interpreting Delay")
+        # print("Interpreting Delay")
         value = self.evaluate(stmt.value)
         if not isinstance(value, float):
-            # Need Fix
-            raise RuntimeErr(None, "Delay Value Must Be Number")
+            raise RuntimeErr(stmt.tok, "Delay Value Must Be Number")
         self.game.delay(value)
 
     def visitJumpStmt(self, stmt: Jump):
-        print("Interpreting Jump")
-        scene = self.env.get(stmt.dest.lexeme)
+        # print("Interpreting Jump")
+        scene = self.env.get(stmt.dest)
         if not isinstance(scene, VNScene):
             raise RuntimeErr(stmt.dest, "Jump Destination Must Be Scene")
         raise JumpErr(scene)
 
     def visitExitStmt(self, stmt: Exit):
-        print("Interpreting Exit")
+        # print("Interpreting Exit")
         sys.exit(0)
 
     def visitSetStmt(self, stmt: Set):
@@ -250,11 +247,11 @@ class Interpreter(ExprVisitor, StmtVisitor):
         arguments = []
         for argument in expr.args:
             arguments.append(self.evaluate(argument))
-        if callee is None or not isinstance(callee, VNFunction):
+        if callee is None or not isinstance(callee, VNCallable):
             raise RuntimeErr(expr.paren, "Can Only Call Functions")
         function: VNCallable = callee
         if len(arguments) != function.arity():
-            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + len(arguments) + ".")
+            raise RuntimeErr(expr.paren, "Expected " + function.arity() + " Arguments But Got " + len(arguments))
         return function.call(self, arguments)
 
     def visitGroupingExpr(self, expr: Grouping):
@@ -295,12 +292,12 @@ class Interpreter(ExprVisitor, StmtVisitor):
     def checkNumberOperand(self, oper: Token, operand: Any):
         if operand is not None and isinstance(operand, float):
             return
-        raise RuntimeErr(oper, "Operand Must Be A Number.")
+        raise RuntimeErr(oper, "Operand Must Be A Number")
 
     def checkNumberOperands(self, oper: Token, left: Any, right: Any):
         if left is not None and isinstance(left, float) and right is not None and isinstance(right, float):
             return
-        raise RuntimeErr(oper, "Operands Must Be Numbers.")
+        raise RuntimeErr(oper, "Operands Must Be Numbers")
 
     def isTruthy(self, obj: Any):
         if obj is None:

@@ -20,7 +20,7 @@ class Env:
         if self.enclosing is not None:
             self.enclosing.assign(name, value)
             return
-        raise RuntimeErr(name, "Undefined Variable \'" + name.lexeme + "\' During Assignment.")
+        raise RuntimeErr(name, "Undefined Variable \'" + name.lexeme + "\' During Assignment")
 
     def get(self, name: Token) -> Any:
         if name.lexeme in self.values:

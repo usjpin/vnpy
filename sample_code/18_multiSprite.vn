@@ -1,0 +1,43 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+let background  = "assets/courtoom.jpg";
+image show background;
+
+let normal = "assets/phoenixNormal.png";
+let confident = "assets/phoenixConfident.png";
+let determined = "assets/phoenixDetermined.png";
+let embarrassed = "assets/phoenixEmbarrassed.png";
+let thinking = "assets/phoenixThinking.png";
+
+let currentSprite = normal;
+fun dialogue(sprite, text){
+    if (sprite != currentSprite){
+        image hide currentSprite;
+        image show sprite;
+        currentSprite = sprite;
+    }
+    display "Phoenix: " + text;
+    waitClick();
+}
+image show normal;
+dialogue(normal, "Hello, it's me. Phoenix Wright, character from the popular visual novel franchise Ace Attorney.");
+dialogue(confident, "As you can see, I have been coded to have a different image sprite shown for each of my dialogues");
+dialogue(confident, "in order to reflect what I am saying.");
+dialogue(thinking, "Technically you can do this manually; however, automating the process with a function makes things a lot easier.");
+dialogue(determined, "Programming is all about automating tedious things, after all.");
+dialogue(normal, "Implementing this functionality at a code level is rather simple.");
+dialogue(determined, "One of the major hurdles of putting this into your visual novel, however, is actually getting the sprites for the first place.");
+dialogue(embarrassed, "We're computer scientists--not artists--and even if we were, we're kind of running out of time.");
+dialogue(normal, "Fortunately, since the Ace Attorney series--which uses this multi-sprite style--is so popular,");
+dialogue(normal, "getting the assets online to borrow for this demonstration was easy.");
+dialogue(confident, "All that was left to do afterwards was adding the images into the assets folder.");
+dialogue(thinking, "Phoenix Wright has a lot of other sprites, however this is all just a proof of concept for what is capable of Vnpy.");
+dialogue(thinking, "You've seen them all by now, but this current program supports five different 'emotions'.");
+dialogue(normal, "Normal");
+dialogue(confident, "Confident");
+dialogue(thinking, "Thinking");
+dialogue(determined, "Determined");
+dialogue(embarrassed, "and Embarrassed.");
+dialogue(determined, "And if you look in the code, you'll see that adding them and using them like this is all very compact compared to previous exmaples.");

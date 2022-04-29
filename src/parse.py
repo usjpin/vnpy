@@ -103,17 +103,17 @@ class Parser:
         if self.match(Type.SHOW):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
-            return Image(Type.SHOW, path)
+            return Image(Type.SHOW, path, self.peek())
         if self.match(Type.HIDE):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Image")
-            return Image(Type.HIDE, path)
+            return Image(Type.HIDE, path, self.peek())
         raise self.error(self.peek(), "Expect Image Action")
 
     def displayStatement(self) -> Stmt:
         value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Display")
-        return Display(value)
+        return Display(value, self.peek())
 
     def optionsStatement(self) -> Stmt:
         self.consume(Type.LEFT_BRACE, "Expect \'{\' After Options Keyword")
@@ -129,22 +129,22 @@ class Parser:
         elif len(cases) > 6:
             raise self.error(self.peek(), "Can Not Have More Than 6 Cases In Option Block")
         self.consume(Type.RIGHT_BRACE, "Expect \'}\' After Options Block")
-        return Options(cases)
+        return Options(cases, self.peek())
 
     def audioStatement(self) -> Stmt:
         if self.match(Type.START):
             path = self.expression()
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
-            return Audio(Type.START, path)
+            return Audio(Type.START, path, self.peek())
         if self.match(Type.STOP):
             self.consume(Type.SEMICOLON, "Expect \';\' After Audio")
-            return Audio(Type.STOP, None)
+            return Audio(Type.STOP, None, self.peek())
         raise self.error(self.peek(), "Expect Audio Action")
 
     def delayStatement(self) -> Stmt:
         value = self.expression()
         self.consume(Type.SEMICOLON, "Expect \';\' After Delay")
-        return Delay(value)
+        return Delay(value, self.peek())
 
     def jumpStatement(self) -> Stmt:
         dest = self.consume(Type.IDENTIFIER, "Expect Scene Name")
@@ -157,9 +157,9 @@ class Parser:
 
     #Standard Statements    
     def ifStatement(self) -> Stmt:
-        self.consume(Type.LEFT_PAREN, "Expect \'(\' After \'If\'.")
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After \'If\'")
         condition = self.expression()
-        self.consume(Type.RIGHT_PAREN, "Expect \')\' After If Condition.")
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After If Condition")
         thenBranch = self.statement()
         elseBranch = None
         if (self.match(Type.ELSE)):
@@ -168,7 +168,7 @@ class Parser:
     
     def printStatement(self) -> Stmt:
         value = self.expression()
-        self.consume(Type.SEMICOLON, "Expect \';\' After Value.")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Value")
         return Print(value)
     
     def returnStatement(self) -> Stmt:
@@ -176,21 +176,21 @@ class Parser:
         value = None
         if (not self.check(Type.SEMICOLON)):
             value = self.expression()
-        self.consume(Type.SEMICOLON, "Expect \';\' After Return Value.")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Return Value")
         return Return(keyword, value)
 
     def setDeclaration(self) -> Stmt:
-        name = self.consume(Type.IDENTIFIER, "Expect Variable Name.")
+        name = self.consume(Type.IDENTIFIER, "Expect Variable Name")
         initializer = None
         if self.match(Type.EQUAL):   
             initializer = self.expression()
-        self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration.")
+        self.consume(Type.SEMICOLON, "Expect \';\' After Variable Declaration")
         return Set(name, initializer)
 
     def whileStatement(self) -> Stmt:
-        self.consume(Type.LEFT_PAREN, "Expect \'(\' After 'while'.")
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After 'while'")
         condition = self.expression()
-        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Condition.")
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Condition")
         body = self.statement()
         return While(condition, body)
 
@@ -200,18 +200,18 @@ class Parser:
         return Expression(expr)
 
     def function(self, kind: str) -> Fun:
-        name = self.consume(Type.IDENTIFIER, "Expect " + kind + " Name.")
-        self.consume(Type.LEFT_PAREN, "Expect \'(\' After " + kind + " Name.")
+        name = self.consume(Type.IDENTIFIER, "Expect " + kind + " Name")
+        self.consume(Type.LEFT_PAREN, "Expect \'(\' After " + kind + " Name")
         params = []
         if not self.check(Type.RIGHT_PAREN):
             while True:
                 if len(params) >= 255:
-                    self.error(self.peek(), "Can't Have More Than 255 Params.")
-                params.append(self.consume(Type.IDENTIFIER, "Expect Param Name."))
+                    self.error(self.peek(), "Can't Have More Than 255 Params")
+                params.append(self.consume(Type.IDENTIFIER, "Expect Param Name"))
                 if not self.match(Type.COMMA):
                     break
-        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Params.")
-        self.consume(Type.LEFT_BRACE, "Expect \'{\' Before " + kind + " Body.")
+        self.consume(Type.RIGHT_PAREN, "Expect \')\' After Params")
+        self.consume(Type.LEFT_BRACE, "Expect \'{\' Before " + kind + " Body")
         body = self.block()
         return Fun(name, params, body)
 
@@ -293,11 +293,11 @@ class Parser:
         if not self.check(Type.RIGHT_PAREN):
             while True:
                 if len(args) >= 255:
-                    raise self.error(self.peek(), "Can't Have More Than 255 Arguments.")
+                    raise self.error(self.peek(), "Can't Have More Than 255 Arguments")
                 args.append(self.expression())
                 if not self.match(Type.COMMA):
                     break
-        paren = self.consume(Type.RIGHT_PAREN, "Expect \')\' After Arguments.")
+        paren = self.consume(Type.RIGHT_PAREN, "Expect \')\' After Arguments")
         return Call(callee, paren, args)
         
     def call(self) -> Expr:
@@ -322,9 +322,9 @@ class Parser:
             return Variable(self.previous())
         if self.match(Type.LEFT_PAREN):
             expr = self.expression()
-            self.consume(Type.RIGHT_PAREN, "Expect ) After Expression.")
+            self.consume(Type.RIGHT_PAREN, "Expect ) After Expression")
             return Grouping(expr)
-        raise self.error(self.peek(), "Expect Expression.")
+        raise self.error(self.peek(), "Expect Expression")
 
     def match(self, *types: List[Type]):
         for type in types:
@@ -358,7 +358,7 @@ class Parser:
         raise self.error(self.peek(), message)
 
     def error(self, token: Token, message: str) -> ParseErr:
-        print("Parse Error.")
+        print("Parse Error")
         return ParseErr(token, message)
 
     returnCases = [

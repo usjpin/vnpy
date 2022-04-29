@@ -1,0 +1,111 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+let background  = "assets/western.jpg";
+image show background;
+
+let joe = "assets/cowboy.png";
+let pistolShot = "assets/pistolShot.mp3";
+let shotgunShot = "assets/shotgunShot.mp3";
+
+audio start "assets/running.mp3";
+
+display "Jesse runs as fast as he can.";
+waitClick();
+display "It's hard to do with a bag of gold over his shoulder,";
+waitClick();
+display "But considering it would be even harder to do with a bullet in his head, he continues onwards.";
+waitClick();
+display "His partner-in-crime, Joe 'Two-Shot' Jenkins, should be around here somewhere with an escape cart...";
+waitClick();
+
+audio start shotgunShot;
+display "The blast of a shotgun and an explosion of sand in front of Jesse stops him in his tracks.";
+waitClick();
+display "In front of him, blocking his path, is none other than...";
+waitClick();
+
+image show joe;
+display "'Joe Jenkins?' Jesse exclaims.";
+waitClick();
+display "'Yer right, buddy,' he says in his thick accent. 'It's me. You're good old pal.'";
+waitClick();
+display "'Why are you doing this?' Jesse asks, baffled at this sudden betrayal.";
+waitClick();
+display "'Didn't you're mamma ever tell you?'";
+waitClick();
+display "'You can't trust a guy with a name like Joe Jenkins.'";
+waitClick();
+display "Jesse nods. It was an unfortunate, but universal truth.";
+waitClick();
+display "'Now, I'll be headin' off with that ten-ton bag of gold of ours, if ya don't mind.'";
+waitClick();
+display "Jesse drops the bag by his feet. 'Not over my dead body,' he says, defiance shining in his eyes.";
+waitClick();
+
+audio start shotgunShot;
+display "A shot rings out by his feet once again. 'That was my last warning shot, pardner.'";
+waitClick();
+display "Jesse freezes for a moment, Joe's gun now pointed right at him, before realization dawns on his face.";
+waitClick();
+display "Jesse grins. 'That was your last shot wasn't it, Joe?' he says smugly.";
+waitClick();
+display "'Whadd'ya mean, pardner?' he asks.";
+waitClick();
+display "'You're not just Joe Jenkins. It's 'Two-Shot' Jenkins.'";
+waitClick();
+display "'Yeah,' Joe says. 'And I only used...' He takes a hand off of his gun to count.";
+waitClick();
+display "'I only used...'";
+waitClick();
+display "'Oh shoot.'";
+waitClick();
+
+image show "assets/pistol.png";
+display "With a twirl of your wrist Jesse pulls out his trusty revolver.";
+waitClick();
+display "'That's right, Joe. Should've carried more bullets.'";
+waitClick();
+
+audio start pistolShot;
+image hide joe;
+image show "assets/tombStone.png";
+image show "assets/pistol.png";
+display "'Aw heck,' are the final words of Joe 'Two-Shot' Jenkins before Jesse shoots him.";
+waitClick();
+audio start pistolShot;
+display "And then shoots him again...";
+waitClick();
+audio start pistolShot;
+display "And again...";
+waitClick();
+audio start pistolShot;
+display "More...";
+waitClick();
+audio start pistolShot;
+display "And more...";
+waitClick();
+audio start pistolShot;
+display "And so on...";
+waitClick();
+audio start pistolShot;
+display "After Jesse---eventually--stopped shooting Joe's corpse";
+waitClick();
+audio start pistolShot;
+display "and left town, legend soon spread about the ordeal,";
+waitClick();
+audio start pistolShot;
+display "and how Joe Jenkins had died.";
+waitClick();
+audio start pistolShot;
+display "Joe 'Two Shot' Jenkins was a legend outlaw.";
+waitClick();
+audio start pistolShot;
+display "But even he should have known better to backstab somebody named:";
+waitClick();
+audio start pistolShot;
+display "Jesse 'Forty-Three Shot' Joiree.";
+waitClick();
+audio start pistolShot;
+
