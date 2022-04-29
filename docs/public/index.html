@@ -4,20 +4,56 @@
 <title>The Vnpy Language</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="./The Vnpy Language_files/style.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 
-<link href="./The Vnpy Language_files/css" rel="stylesheet" type="text/css">
+<link href="font.css" rel="stylesheet" type="text/css">
 
 <style>.hiclass {background-color:rgb(51, 144, 255); color: white}</style></head>
 <body id="top">
 
+<script src="script.js" defer></script>
+
+<div class="sidenav">
+    <a href="#"><b style="font-size: 25px;">VNPY Docs</b></a>
+    <br>
+    <a href="#getting_started">1. Quick Start</a>
+    <a href="#intro">2. Introduction</a>
+    <a href="#purpose">3. Purpose</a>
+    <a href="#overview">4. Overview</a>
+    <button href="#feat" class="dropdown-btn">5. Features
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+        <a href="#feat">All</a>
+        <a href="#config">Config</a>
+        <a href="#display">Display & Wait</a>
+        <a href="#image">Image</a>
+        <a href="#audio">Audio</a>
+        <a href="#options">Options</a>
+        <a href="#scene">Scene, Jump & Exit</a>
+        <a href="#delay">Delay</a>
+    </div>
+    <button class="dropdown-btn">6. Flexibility
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+        <a href="#flex">All</a>
+        <a href="#flow">Text Flow</a>
+        <a href="#hubs">Hubs</a>
+        <a href="#dialogue">Dialogue</a>
+        <a href="#dynamic">Dynamic Dialogue & Hub</a>
+        <a href="#anim">Animation</a>
+    </div>
+    <a href="#build">7. Build Your Own</a>
+    <a href="#grammar">8. Vnpy Grammar</a>
+</div>
+
 <div class="page">
 <article class="chapter">
-
 <h1>The Vnpy Language</h1>
   <p>Vnpy is a Python-based programming language developed for the purpose of streamlining the creation of visual novels, acting in a similar manner to libraries, engines, and other DSLs intended for producing video games (such as Gamemaker and Unity). Using the pygame Python library, it allows users to translate code into rendered visual and textual elements.</p>
   <p>The following documentation refers to several test programs used to showcase Vnpy’s functionality—It is recommended to run the specified programs at the same time while reading this presentation for a more hands-on and in-depth experience. In order to run the programs, please follow the provided README file within the “vnpy” directory or follow the instructions below.</p>
-
+<br id="getting_started">
 <h2><small>1</small>Installation and Running Guide</h2>
 <h3><small>1.1</small>Libraries</h3>
 <p>Vnpy relies on several Python libraries that must be installed before being able to run the interpreter file, “vn.py”. These dependencies can be found in the requirements.txt file. In order to install them all automatically, first make sure your system has Python3 installed. Using Python3, navigate into the “vnpy” directory and run the command</p>
@@ -33,19 +69,19 @@
 </pre>
 <p>in the “vnpy” directory where input is the name/pathname to the .vn file to be run.</p>
 <p>Example code referred to throughout the course of this documentation can be found in the “sample_code” directory. The exact commands used to run these files will be provided throughout the course of this documentation.</p>
-
+<br id="intro">
 <h2><small>2</small>What Are Visual Novels?</h2>
 <p>To those unaware, visual novels are a hybrid form of media between video games and (as the name would suggest) novels. Elements from traditional video games such as user choice, branching paths, internal logic, and rendered visuals are incorporated into a story in order to create a unique experience. As shown from the screenshots below, beyond the general setup of text layered on top of an image, visual novels can range drastically in terms of style and presentation.</p>
-<img src="./The Vnpy Language_files/vnExamples.png">
+<img src="vnExamples.png">
 <aside>Pictured from left to right, top to bottom: <i>A Letter of Challenge</i>, <i>Danganrompa: Trigger Happy Havoc</i>, <i>I Love You, Colonel Sanders!</i>, and <i>Hatoful Boyfriend</i></aside>
 <p>Furthermore, they can also vary heavily in terms of length, depending on the type of story and to what detail the story is told in. Some can take only a few minutes to get through, while others may take dozens of hours. Popular visual novels include the games in the <i>Ace Attorney</i> and <i>Danganronpa</i> franchises, and <i>Doki Doki Literature Club</i>.</p>
 
 <h3><small>2.1</small>Origins: The Text Adventure Game</h3>
 <p>Many similarities exist between visual novels and text-adventure games from the late 1900s such as <i>Zork</i> and <i>Night House</i>—some may even consider text-adventure games to be the progenitor of visual novels, or at least of the general idea of adding user input and branching paths into text-based stories. However, while while the two are quite similar in some aspects, visual novels tend to be distinct in having less open-ended input (presenting users with a list of choices as opposed to an open prompt, as was common for text-adventure games), being more story-focused, and—of course—having visuals to accompany them, as well as having extra gameplay features only possible in a visual medium such as the ability to point and click around a virtual environment.</p>
 <p>Beyond functionality, when it comes to the manner of storytelling, visual novels lie closer to screenplays and movie scripts—focusing on dialogue over environmental descriptions and small details—while text-adventure games have more in common with traditional books and novels. This difference can be attributed simply to the presentation of text in both mediums: While text-adventure games have the luxury of an entire screen/terminal to display text on at once, visual novels are limited to only a few readable lines at a time, meaning story beats tend to be condensed and portrayed through dialogue as opposed to heavy descriptions.</p>
-<img src="./The Vnpy Language_files/textAdventureExample.jpg">
+<img src="textAdventureExample.jpg">
 <aside>Pictured: Zork I: The Great Underground Empire</aside>
-
+<br id="purpose">
 <h2><small>3</small>Purpose</h2>
 <h3><small>3.1</small>Visual Novels: A Niche(?) Genre</h3>
 <p>While visual novels are not the most popular medium in the world, they remain important due to their inherent versatility. Stories spanning several different genres have been portrayed within visual novels, from romance to horror to mystery to comedy—As long as a story can be portrayed in text-format, it can be reasonably portrayed in a visual novel, and sometimes even better due to added visuals and other features such as audio and timing. Even extremely linear stories do not have to compromise when it comes to the user interactivity aspect of visual novels, as while many visual novels contain branching paths and narratives, such branches do not have to be completely story-changing to work—some visual novels opt to have no user options at all.</p>
@@ -58,7 +94,7 @@
 <h3><small>3.3</small>Vnpy Applications</h3>
 <p>Our language—Vnpy—is a DSL we created to remedy the above problem. It is specifically suited for the creation of visual novels, being complex enough to accomodate popular visual novel gameplay elements yet not so complex as to be as inaccessible as building a visual novel framework from scratch. The design philosophy we followed in order to make this a reality was to base Vnpy off of preexisting languages—most notably Lox. Many programmers are already familiar with C-style languages such as C++ and Java and their associated syntax, and will thus be able to jump into the language without having to deal with a steep learning curve, avoiding the problem of requiring upcoming visual novel developers to pick up a completely new and unfamiliar language. Furthermore, the elegant simplicity of Lox will allow programmers to focus less on how to work out using the language and more on the higher-level aspects of game development, such as writing and asset-creation.</p>
 <p>When it comes to the specific functions of the language itself, we have included not only the bare minimums of being able to render images and text, but also staples features within visual novels such as being able to play audio. Of course, due to the scope of this project and the desire to not overcomplicate things, Vnpy was created using a pragmatic approach as we asked the question “What exactly <i>is</i> a visual novel?” and from there aimed to tailour the language such that any possible definitions can be reasonably created or re-created within it. Branching choices, animations, audio cues—as all of these are elements of what constitute a visual novel, Vnpy works to support them.</p>
-
+<br id="overview">
 <h2><small>4</small>Language Overview</h2>
 <h3><small>4.1</small>A High-Level Language</h3>
 <p>Considering Vnpy is intended for game creation, we decided to make it a high-level language. Despite their complexity, DSLs and engines used for creating video games in general tend to be high-level in order to abstract tedious aspects of development such as visuals, and to allow programmers to focus on holistic decisions and game logic. Vnpy accomplishes this by simplifying game elements such as images into simple statements, and by utilizing a new <code>scene</code> object type. While making it high-level does provide limitations in terms of customization, users are otherwise saved from much of the behind-the-scenes hassle involved in creating a visual novel from scratch in pygame or by some other means.</p>
@@ -88,8 +124,9 @@
 
 <h3><small>4.3</small>Simplifications in Design</h3>
 <p>For-loops, classes, and closures are not supported within the scope of Vnpy. While it may appear to be unwise to leave these out, in practice their exclusion hardly hinders using Vnpy at all, as although games benefit from coding abstractions, classes and simulated classes using closures tend to be going too far for the scope of a visual novel—at most, only functions are needed. In fact, most Vnpy programs using internal logic will really only need global variables at most. As for for-loops, Vnpy still supports while-loops, so for-loops can be recreated easily and are not necessary.</p>
-
+<br id="feat">
 <h2><small>5</small>Unique Features and Functionality</h2>
+<br id="config">
 <h3><small>5.1</small>Config</h3>
 <p>Vnpy allows users to set configuration settings within their code using the <code>config</code> statement. Thus, instead of having fixed values, users can customize the screen height and width of their game as seen below.</p>
 <div class="codehilite"><pre>
@@ -120,7 +157,7 @@
   py vn.py sample_code/04_configText.vn
 </pre>
 <p>A mode like this would be ideal for people with slower computers that cannot handle pygame well, or for audiences nostalgic for text-adventure video games. However, considering this mode is not within the main scope or focus of Vnpy, and also considering not all features are present within this mode (nor do the ones that are present necessarily work), it will not be covered within this documentation. Use at your own risk.</p>
-
+<br id="display">
 <h3><small>5.2</small>Display and Wait</h3>
 <p>If you have been following along by writing your own code whilst reading this documentation, and have tried running it after writing your three <code>config</code> statements, you may have noticed that while the screen does render, it only does so for a second before closing, and nothing is shown on it! The former problem can be explained by the fact that—as it goes with most any other language—Vnpy will close the program as soon as all code has been run. If we want to show our configured screen and hold it there, we must make use of the <code>waitClick()</code> and <code>waitKey()</code> functions. These do exactly what they sound like they do, in that they halt statements afterward from being run until the player clicks on the screen or presses any button while in focus of the window respectively. By adding a <code>waitClick()</code> or <code>waitKey()</code> function to the end of our program, we can have it linger there until the user chooses to close the program—This method is what has been used for the previous example codes.</p>
 <div class="codehilite"><pre>
@@ -153,7 +190,7 @@
 </pre>
 <p>Putting multiple <code>display</code> statements in succession like so is a common mistake when using Vnpy, and its solution—that being to insert <code>waitClick()</code> or <code>waitKey()</code> between every one of them—may make one wonder why not just have <code>display</code> statements automatically wait after being called? You’ll see the possibilities that arise when separating these two elements of Vnpy in the first few sections of <strong>Flexibility in Design</strong>, but for now just know that—as said section’s name implies—it allows us to do a lot more than if <code>display</code> statements and wait functions were hard-coded together.</p>
 <p>As a final note, you might have noticed from the previous two example files that only one of the two wait functitons are generally used at once. This is done to keep user input consistent—it would be disorentiating for players to have to constantly switch between clicking or pressing keys to continue. For the rest of the code shown throughout this documentation, assume that <code>waitClick()</code> will be used, and that you will need to progress by clicking.</p>
-
+<br id="image">
 <h3><small>5.3</small>Image</h3>
 <p>Having <code>display</code> statements is good and all, but if we want to show that text over something other than the black voids seen thus far, we must use <code>image</code> statements. <code>image</code> takes a <code>show</code> or <code>hide</code> specifier as well as a value corresponding to a string containing the file/path name of the image asset to be shown or hidden. </p>
 <div class="codehilite"><pre>
@@ -194,7 +231,7 @@
 <p>Here, an asset of a person with a transparent background is rendered over a normal image in order to simulate the look of them actually being part of the scene without having to create an entirely new asset containing both.</p>
 <p>On a technical level, image statements are based on a sort of stack, meaning multiple of the same image can be rendered on top of each other, and <code>image hide</code> only hides the top-most image of the same name on the stack (or does nothing if said image is already hidden). You may have noticed this while looking at the code of “10_streetConversation.vn”, as when moving to a new scene with our morally-dubious street-goer, instead of hiding all images, we simply render the new images on top of the old ones and then hide them  afterwards.</p>
 <aside>Layering images over each other and then subsequently hiding them is not necessarily the most efficient way to do things in terms of performance, however.</aside>
-
+<br id="audio">
 <h3><small>5.4</small>Audio</h3>
 <p>While not a necessary part of visual novels, a staple of the genre also involves adding in music and general sound elements. Vnpy supports this through the <code>audio</code> statement, which works somewhat similarly to <code>image</code>, taking a string representing a file/path for a value to start playing—this is the part which <code>config volume</code> from before comes into play.</p>
 <div class="codehilite"><pre>
@@ -211,7 +248,7 @@
 <pre>
   py vn.py sample_code/12_westernado.vn
 </pre>
-
+<br id="options">
 <h3><small>5.5</small>Options</h3>
 <p>While some visual novels are completely linear like the examples shown thus far, most of them support branching choices at varying points throughout their stories. Vnpy supports these through the <code>options</code> block, which consists of various <code>case do</code> statements, each representing a different option for a player to choose from. The string value provided after <code>case</code> determines the text to be shown on the corresponding button, informing players of their choice. After <code>do</code> is a single-line statement—either Vnpy specific or a Lox command—that will be executed should the player choose that option. After the statement has been executed, the code after the options statement will be run.</p>
 <aside>Something important to note is that an <code>options</code> block must be preceded by a <code>display</code> statement, which will show alongside the choices on screen. From a game-design perspective, this <code>display</code> statement is usually used to tell players what decision they are making.</aside>
@@ -230,6 +267,7 @@
   py vn.py sample_code/13_totallyNormalConversation.vn
 </pre>
 <aside>As seen in “13_totallyNormalConversation.vn”, <code>do</code> does not necessarily have to execute anything meaningful. For some of the later options in the program, <code>0;</code> is executed for each choice to give the illusion of choice without actually providing differing text.</aside>
+<br id="scene">
 <h3><small>5.6</small>Scenes, Jump, and Exit</h3>
 <p>While <code>options</code> completes the general foundation of a visual novel alongside <code>display</code> and <code>image</code>, its ability to only execute one statement per choice is rather limiting. We could theoretically bypass this by setting a variable to a number depending on the choice and then having an if-else statement afterwards.</p>
 <div class="codehilite"><pre>
@@ -351,7 +389,7 @@
 <pre>
   py vn.py sample_code/14_maze.vn
 </pre>
-
+<br id="delay">
 <h3><small>5.7</small>Delay</h3>
 <p>The appropriately last Vnpy-specific functionality is the <code>delay</code> statement, which does exactly what you expect: stopping the execution of statements for a specified amount of seconds supplied as its value.</p>
 <div class="codehilite"><pre>
@@ -360,10 +398,10 @@
   display “Okay we’re good.”;
 </pre></div>
 <p>On its own, <code>delay</code> doesn’t really bring much new to the table—most visual novels can get away with not having it or similar functions that rely on the passage of time, instead relying purely on user input. The unique things a programmer can do with this command fall less under the basics of the language and more of what will be covered in the next section.</p>
-
+<br id="flex">
 <h2><small>6</small>Flexibility in Design</h2>
 <p>Now with the specifics of Vnpy out of the way, there are many things we can accomplish beyond what we have demonstrated in the rudimentary examples thus far, especially when adding the Lox portion of the language. From here on out are less technical details about the language and more so on how they can be implemented in smart and practical ways.</p>
-
+<br id="flow">
 <h3><small>6.1</small>Text Flow</h3>
 <p>Before the <code>waitClick()</code> and <code>waitKey()</code> functions were added to Vnpy, all of our test programs used the <code>delay</code> statement instead. When there are no options for user input, it is a natural alternative for progressing text and dialogue.</p>
 <div class="codehilite"><pre>
@@ -403,7 +441,7 @@
   py vn.py sample_code/16_televisionBroadcast.vn
 </pre>
 <aside>“16_televisionBroadcast.vn” in particular uses a combination of all three input types. Third-person narration is based on the standard <code>waitClick()</code> function, while when the player character speaks, they can only progress by clicking after the dialogue has finished playing and the indicator appears. As for the television broadcast, multiple lines are read at once, during the whole time the player’s control is taken away, creating a sort of mini-cutscene.</aside>
-
+<br id="hubs">
 <h3><small>6.2</small>Hubs</h3>
 <p>As stated earlier, <code>scene</code>s are a good way to represent branching paths in visual novels. In many stories these branches—while overlapping at some points—are completely linear, meaning that you cannot go back on your decision. For example, in a choice between staying in bed or going outside, the choice to stay in bed may become inaccessible throughout the rest of the visual novel if you’ve chosen to go outside.</p>
 <div class="codehilite"><pre>
@@ -462,7 +500,7 @@
   }
 </pre></div>
 <aside>Having separate themes for separate areas not only makes them more unique, but also—as mentioned before—helps mitigate Vnpy’s limitation of not looping music, as players would ideally jump to a new <code>scene</code> with a new audio track before the old one finishes playing.</aside>	
-
+<br id="dialogue">
 <h3><small>6.3</small>Dialogue Formatting Functions</h3>
 <p>There’s a lot more we can expand on using hubs, but before that we need to address a huge issue. “17_atTheLibrary.vn” was the largest example file by far in terms of lines of code. This makes sense considering it was also the longest in play length, but we could have cut it down in half by incorporating Lox functions.</p>
 <div class="codehilite"><pre>
@@ -507,7 +545,7 @@
   py vn.py sample_code/19_multiCharacter.vn
 </pre>
 <p>Looking at both programs’ functions, we can see that beyond using a global function to keep track of the last dialogue function input, both are built rather differently and—at least in the current implementation—would not be interchangeable due to the differing visual styles used.</p>
-
+<br id="dynamic">
 <h3><small>6.4</small>Dynamic Dialogue and Hubs</h3>
 <p>Now that we’ve got that interlude out of the way, we can go back to adding onto hubs. We can first start by adding dynamic dialogue.</p>
 <p>“17_atTheLibrary.vn” was designed such that the two hubs are at constant states—no matter what you do and in what order you do them in, their choices remain the same. When it comes to dialogue and internal monologue, this can be rather unrealistic. People don’t just repeat the same lines in real life—they move onto different subjects and progress the conversation over time. Replicating the dynamic dialogue of real life in Vnpy can be accomplished by incorporating Lox logic into our code.</p>
@@ -562,7 +600,7 @@
   py vn.py sample_code/21_interrogation.vn
   py vn.py sample_code/22_groceryStore.vn
 </pre>
-
+<br id="anim">
 <h3><small>6.5</small>Animation</h3>
 <p>With dynamic dialogue and hubs out of the way, we’ve pretty much covered all the major concepts that would generally be used in a Vnpy program. There are, of course, more complex things you could accomplish by incorporating even more Lox elements, but for now we’ll just show you one last thing: animations. If you know anything about animations, you should know that all they are are just multiple images presented in sequential order. And since Vnpy already supports rendering images, we can show animations by doing something like</p>
 <div class="codehilite"><pre>
@@ -616,7 +654,7 @@
 </pre>
 <aside>23_walking.vn’s animation code differs in a few noticeable ways from the above example, the changes being made to account for slow runtimes and lack of optimization when it comes to this feature. However the proof of concept is still there.</aside>
 <p>Just like with voice acting (as discussed earlier), it’s often applicable to have the game progress through <code>delay</code>s instead of user input—even more so this time, as using any wait function will pause the currently running animations. It is for this reason (as well as the relatively high cost of producing animations) that animations in Vnpy (even when optimized) will generally be limited to cutscenes/pseudo-cutscenes, or not used at all.</p>
-
+<br id="build">
 <h2><small>7</small>Building a Game Using Vnpy</h2>
 <p>Now that you know the potential of Vnpy, it may be tempting to start coding right away. However, there are a few things you might want to take into account when using the language that go beyond the technicalities of coding.</p>
 
