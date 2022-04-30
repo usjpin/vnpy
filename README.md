@@ -4,7 +4,7 @@
 This project contains all the files for the DSL Project - Vnpy. The project is written using Python 3 and the Pygame library.
 
 ## Requirements
-Please have a version of Python 3.6+ installed. For all the examples/documentation, make sure to use the alias/path that calls the Python 3.6+ interpreter. We will be referring to this alias as `py` throughout the project.
+Please have a version of Python 3.6+ installed. For all the examples/documentation, make sure to use the alias/path that calls the Python 3.6+ interpreter. We will be using `py` as our alias throughout the project.
 
 ## Documentation
 The documentation/presentation of the project is hosted on: [https://vnpy-docs.herokuapp.com/](https://vnpy-docs.herokuapp.com/). If the web hosting documentation failes to load (Heroku goes down sometimes), please navigate and open to `/docs/public/index.html`. In-depth discussion of the language and grammar details are provided in the documentation.
