@@ -1,0 +1,35 @@
+config width 1000;
+config height 600;
+config volume 0.65;
+
+let background  = "assets/desk.jpg";
+image show background;
+
+display "After a solid thirty minutes of studying, Thomas began to feel rather bored.";
+waitClick();
+display "He reminisced about a better time, back when his attention-span could be measured in minutes.";
+waitClick();
+display "After a moment, he noticed the radio in front of him, and decided while studying was painful...";
+waitClick();
+
+let radioMusic = "assets/lounge.mp3";
+audio start radioMusic;
+
+display "...he could make it less so with some music.";
+waitClick();
+display "...";
+waitClick();
+display "...Hours passed by in calm melodies.";
+waitClick();
+display "Finally Thomas could finish his paper on Underwater Basket Weaving...";
+waitClick();
+display "...and other important subjects, as well as his tax return forms.";
+waitClick();
+display "Life was good.";
+waitClick();
+
+audio stop;
+
+display "Content with his work, he turned off the radio.";
+waitClick();
+

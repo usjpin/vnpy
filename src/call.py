@@ -17,11 +17,11 @@ class VNScene:
 class VNCallable:
 
     #Function to check how many args are expected
-    def arity() -> int:
+    def arity(self) -> int:
         pass
 
     # Call the function using the args passed in an interpreter in case it is necessary
-    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
+    def call(self, interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
         pass
 
 # Class for VNFunctions
@@ -58,42 +58,32 @@ class VNFunction(VNCallable):
 class VNClickCallable(VNCallable):
 
     # No args needed
-    def arity() -> int:
+    def arity(self) -> int:
         return 0
 
     # Print simple native function obj
     def __str__(self) -> str:
-        return "<native fn>"
-
-    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
-        # Get game from current interpreter
-        game = interpreter.game
-
-        # Return action that occurs when clicked
-        if game.options is not None:
-            return game.getClick()
-
-        # No action on click specified
-        raise RuntimeErr(None, "Can Not Call Read Click Native Function")
+        return "<native fn - click>"
+    
+    # Calls the given function by executing its getClick function.
+    def call(self, interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
+        tmpTok = Token(None, None, None, -1)
+        interpreter.checkGraphic(tmpTok, "Can Not Wait Click In Non-Graphic Mode")
+        interpreter.game.getClick()
 
 # VNKeyCallable class
 class VNKeyCallable(VNCallable):
 
     # No args needed
-    def arity() -> int:
+    def arity(self) -> int:
         return 0
 
     # Print simple native function obj
     def __str__(self) -> str:
-        return "<native fn>"
+        return "<native fn - key>"
     
-    def call(interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
-        # Get game from current interpreter
-        game = interpreter.game
-
-        # Return action that occurs when clicked
-        if game.options is not None:
-            return game.getClick()
-
-        # No action on click specified
-        raise RuntimeErr(None, "Can Not Call Read Key Native Function")
+    # Calls the given function by executing its getClick function.
+    def call(self, interpreter: 'interpret.Interpreter', args: List[Any]) -> Any:
+        tmpTok = Token(None, None, None, -1)
+        interpreter.checkGraphic(tmpTok, "Can Not Wait Key In Non-Graphic Mode")
+        interpreter.game.getKey()

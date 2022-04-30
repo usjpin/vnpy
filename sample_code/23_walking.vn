@@ -1,0 +1,95 @@
+config width 1000;
+config height 600;
+
+let frameRate = 24;
+fun animation(name, numOfFrames){
+    fun mod(num, modulus){
+        let increment = modulus;
+        if (modulus == 1)
+            return 0;
+        while (modulus <= num){
+            if (num / modulus > 2)
+                modulus = modulus * 2;
+            else
+                modulus = modulus + increment;
+        }
+        return num - (modulus - increment);
+    }
+
+    fun intToString(int){
+        let result = "";
+        let divisor = 10;
+        while (divisor >= 1){
+            let quotient = int / divisor;
+            let nextChar;
+            if (quotient >= 9)
+                nextChar = "9";
+            else if (quotient >= 8)
+                nextChar = "8";
+            else if (quotient >= 7)
+                nextChar = "7";
+            else if (quotient >= 6)
+                nextChar = "6";
+            else if (quotient >= 5)
+                nextChar = "5";
+            else if (quotient >= 4)
+                nextChar = "4";
+            else if (quotient >= 3)
+                nextChar = "3";
+            else if (quotient >= 2)
+                nextChar = "2";
+            else if (quotient >= 1)
+                nextChar = "1";
+            else
+                nextChar = "0";
+            result = result + nextChar;
+            
+            int = mod(int, divisor);
+            divisor = divisor / 10;
+        }
+        return result;
+    }
+    let mainPath = "assets/" + name + "/frame_";
+    let prevPath = "";
+    let i = 0;
+    while (i < numOfFrames){
+        let path = mainPath + intToString(i) + "_delay-0.04s.jpg";
+        image show path;
+        delay 1/frameRate;
+        if (prevPath != "")
+            image hide prevPath;
+        prevPath = path;
+        i = i + 1;
+    }
+    image hide prevPath;
+}
+
+display "Walking to work...";
+delay 2;
+
+let times = 5;
+while (times > 0){
+    animation("walking", 29);
+    times = times - 1;
+}
+
+display "Stop 1.";
+delay 2;
+
+times = 5;
+while (times > 0){
+    animation("walking", 29);
+    times = times - 1;
+}
+
+display "Stop 2.";
+delay 2;
+
+times = 3;
+while (times > 0){
+    animation("walking", 29);
+    times = times - 1;
+}
+
+display "Finished Walking.";
+delay 2;

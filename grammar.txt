@@ -5,18 +5,16 @@ ConfType -> "width" | "height" | "mode" | "volume"
 ConfValue -> num | string
 
 Decl -> SetDecl | FunDecl | SceneDecl | Stmt
-/*all this
-SetDecl -> "let" id ( "=" Expr )? ";" //
+SetDecl -> "let" id ( "=" Expr )? ";"
 FunDecl -> "fun" Func
 Func -> id "(" Params? ")" BlockStmt
 Params -> id ( "," id )*
 Args -> Expr ( "," Expr )*
-*/
 SceneDecl -> "scene" id BlockStmt
 
 Stmt -> ExprStmt | IfStmt | ReturnStmt 
     | WhileStmt | BlockStmt | SpecialStmt
-ExprStmt -> Expr ";" //this?
+ExprStmt -> Expr ";"
 IfStmt -> "if" "(" Expr ")" Stmt ( "else Stmt )?
 ReturnStmt -> "return" Stmt 
 WhileStmt -> "while" "(" Expr ")" Stmt
@@ -32,7 +30,6 @@ AudioStmt -> "audio" ( "start" Expr | "stop" ) ";"
 WaitStmt -> "wait" Expr ";"
 JumpStmt -> "jump" Expr ";"
 
-//all this
 Expr -> A
 A -> id "=" A | Or
 Or -> And ( "or" And )*

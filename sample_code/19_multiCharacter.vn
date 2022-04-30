@@ -1,0 +1,118 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+let background  = "assets/office.webp";
+image show background;
+
+let a = "A";
+let b = "B";
+let c = "C";
+let d = "D";
+let e = "E";
+
+let path = "assets/person";
+let dim = "assets/dimmer.png";
+
+let currentCharacter = a;
+fun dialogue(character, text){
+    if (character != currentCharacter){
+        
+        image hide path + currentCharacter + "Big.png";
+        image hide path + character + ".png";
+        image hide dim;
+        image show path + currentCharacter + ".png";
+        image show dim;
+        image show path + character + "Big.png";
+        currentCharacter = character;
+    }
+    display text;
+    waitClick();
+}
+fun startup(){
+    image show path + "B.png";
+    image show path + "C.png";
+    image show path + "D.png";
+    image show path + "E.png";
+    image show dim;
+    image show path + "ABig.png";
+}
+
+startup();
+dialogue(a, "Alright everybody, settle down. We have a lot of work to do today.");
+dialogue(b, "If you want my opinion, meetings like these are the exact opposite of work.");
+dialogue(c, "I agree. I could be working right now instead of wasting my time here.");
+dialogue(a, "I can assure you all that this will NOT be a waste of time.");
+dialogue(d, "What exactly are we supposed to be doing again?");
+dialogue(a, "We're here to discuss ideas for our next big project.");
+dialogue(b, "Before we've even finished the last one?");
+dialogue(a, "Well we don't want to start completely from scratch after we're done with this one.");
+dialogue(a, "It pays to plan ahead.");
+dialogue(c, "Speaking of paying, are we getting paid for attending this meeting?");
+dialogue(a, "...");
+dialogue(a, "No.");
+dialogue(c, "Very cool.");
+dialogue(e, "I don't mean to be a bummer, but I just got a text from my wife.");
+dialogue(e, "...and um, and um...");
+dialogue(b, "C'mon, out with it.");
+dialogue(e, "...Well, um...apparently my kid is in the hospital.");
+dialogue(a, "That's great Charlie, but we've got to discuss some ideas.");
+dialogue(d, "Yeah Charlie, get a grip.");
+dialogue(c, "Is it okay if I fall asleep during this meeting? I skipped my afternoon nap for this.");
+dialogue(c, "Paid afternoon nap.");
+dialogue(a, "Yeah sure, go ahead man.");
+dialogue(b, "Just don't snore too loudly.");
+image hide "assets/personC.png";
+dialogue(e, "Hey wait a minute! If he gets to sleep, can't I go over and visit my daughter? She might be dying.");
+dialogue(b, "Better than dying of boredom! Heyo!");
+dialogue(d, "Nice one Jim.");
+dialogue(b, "Thanks. I thought really hard about that one.");
+dialogue(a, "You know, Jim, I've always thought of you as a sour apple.");
+dialogue(a, "But that was just uncalled for!");
+dialogue(e, "Yeah! My kid is literally dying!");
+dialogue(a, "I mean, these conference meetings aren't boring!");
+dialogue(a, "Inter-person communication is what distinguishes us as highly-trained professionals.");
+dialogue(a, "On our own, we may be flawed.");
+dialogue(e, "Oh God...");
+dialogue(a, "But when brought together, we can sort out all of our individual problems, and contribute to making a better world!");
+dialogue(e, "Apparently my house just burned down!");
+dialogue(a, "Not now, Charles.");
+dialogue(e, "But it's Charlie...");
+dialogue(d, "Yeah, get a grip, Charles. That was a really motivational speech right there.");
+dialogue(a, "Thank you, thank you.");
+dialogue(b, "Yeah, I got to say, boss, I've never really liked you as a person--");
+dialogue(b, "You were always just so annoying and overly-optimistic and a sucker for management--");
+dialogue(b, "And also you dress terribly and your voice is irritating and I may have poisoned your coffee a few minutes ago--");
+dialogue(a, "Wait what?");
+dialogue(b, "But now I see that you truly are a great team leader, and I'm glad to have you as ours.");
+image hide "assets/personA.png";
+dialogue(d, "Guys I think-");
+dialogue(c, "Wow, that was a great nap. Did I miss anything?");
+dialogue(d, "Guys I think he just died.");
+dialogue(c, "Cool, does that mean I'm team leader now?");
+dialogue(d, "Sure, go for it.");
+dialogue(c, "Nice.");
+dialogue(e, "Hey, since you're team leader now, can you call this meeting quits? I've really got to...");
+dialogue(e, "Got to sort some things out in my life...");
+dialogue(b, "Oh bother. What happened now?");
+dialogue(e, "Well I think my wife is cheating on me.");
+dialogue(e, "With our daughter's doctor.");
+dialogue(c, "Man, that really sucks. Anyway, I'm going to take another nap.");
+dialogue(b, "Does that mean we can leave?");
+dialogue(c, "Yeah, sure.");
+dialogue(b, "Awesome.");
+image hide "assets/personC.png";
+dialogue(e, "...");
+image hide "assets/personB.png";
+dialogue(d, "Well, Charles, aren't you going to go see your family?");
+dialogue(e, "...I think...");
+dialogue(e, "I think I'll just get back to work...");
+dialogue(d, "That's the spirit! Boss would have been proud of you.");
+dialogue(d, "The old one, I mean.");
+
+
+
+
+
+
+

@@ -1,0 +1,4 @@
+config mode "text";
+
+display "This is using text mode.";
+display "Not as exciting, is it?";

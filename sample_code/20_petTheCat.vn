@@ -1,0 +1,121 @@
+config width 1000;
+config height 600;
+
+let happiness = -20;
+let hunger = -20;
+let counter = 8;
+
+image show "assets/cat.jpg";
+
+fun dialogue(string){
+    display string;
+    waitClick();
+}
+
+scene cat {
+    counter = counter - 1;
+    if (counter != 0){
+        display "What do you do?";
+        options {
+            case "Pet the cat." do jump pet;
+            case "Feed the cat." do jump feed;
+            case "Play with cat." do jump play;
+            case "Ignore cat." do jump ignore;
+            case "Scare cat." do jump scare;
+        }
+    }
+    else if (happiness < -20 or hunger < -20){
+        dialogue("Eventually the cat runs away.");
+        dialogue("It did not like you at all.");
+        dialogue("From then on for the rest of your life you are avoided by all cats.");
+        dialogue("A fact you may or may not be happy with.");
+    }
+    else if (happiness < 0 and hunger < 0){
+        dialogue("Although the cat seems satisfied by your presence.");
+        dialogue("Eventually it grows bored and walks away.");
+        dialogue("You're a bit sad that you couldn't get to keep it, but oh well.");
+    }
+    else if (happiness < 0){
+        dialogue("After being fed so much, the cat seems to like you, so you decide to keep it.");
+        dialogue("Unfortunately, aside from the food you provide it it doesn't seem to care much about you.");
+        dialogue("One day, it runs away, never to be seen again.");
+        dialogue("Maybe you should have made it happier if you wanted it to stay. Oh well.");
+    }
+    else if (hunger < 0){
+        dialogue("After a while, the cat seems to be extremely happy at your presence.");
+        dialogue("Unfortunately, it seems rather hungry still, and decides to walk away to look for food.");
+        dialogue("Maybe you should have fed it more if you wanted it to stay. Oh well.");
+    }
+    else {
+        dialogue("After treating the cat as well as you could, the cat walks away.");
+        dialogue("You are a bit saddened, but the next day it comes back to.");
+        dialogue("You feed it and play with it some more.");
+        dialogue("It comes back the next day, and the day after that,");
+        dialogue("and eventually you decide to adopt the cat.");
+        dialogue("It's one of the best decisions of your life.");
+        dialogue("Or maybe not, depending on how much you like cats.");
+        dialogue("The end.");
+    }
+}
+
+scene pet {
+    dialogue("You bend over to pet the cat.");
+    if (happiness < -15){
+        dialogue("The cat rears back, clearly untrustful of you.");
+    }
+    else{
+        dialogue("The cat gladly accepts your petting.");
+        happiness = happiness + 5;
+    }
+    jump cat;
+}
+scene feed {
+    dialogue("You put some cat food on the ground for it to eat.");
+    if (hunger > 0){
+        dialogue("The cat seems uninterested.");
+    }
+    else if (happiness < -10){
+        dialogue("The cat happily eats the food.");
+        hunger = hunger + 5;
+        happiness = happiness + 2.5;
+    }
+    else {
+        dialogue("The cat eats the food.");
+        hunger = hunger + 5;
+    }
+    jump cat;
+}
+scene play {
+    dialogue("You take out a ball of yarn to play with the cat.");
+    if (hunger < -10){
+        dialogue("The cat looks at the yarn like a meal, and begins to chase after it.");
+        dialogue("After a while, it looks tired, but invigatorated by the case.");
+        hunger = hunger - 5;
+        happiness = happiness + 7.5;
+    }
+    else {
+        dialogue("The cat looks at the yarn with slight interest, and after a while begins chasing it.");
+        dialogue("It seems satisfied after chasing it for a bit, if not a bit tired.");
+        hunger = hunger - 2.5;
+        happiness = happiness + 7.5;
+    }
+    jump cat;
+}
+scene ignore {
+    dialogue("You ignore the cat.");
+    dialogue("It meows at you expectantly.");
+    happiness = happiness + 2.5;
+    jump cat;
+}
+scene scare {
+    dialogue("You yell at the cat.");
+    dialogue("It retreats backwards a little.");
+    happiness = happiness - 5;
+    jump cat;
+}
+
+dialogue("A wild cat appeared!");
+jump cat;
+
+
+

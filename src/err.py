@@ -1,6 +1,6 @@
+from typing import Any
 
 from tok import Token, Type
-from typing import Any
 
 # Class for Runtime Errors
 class RuntimeErr(Exception):
@@ -25,7 +25,7 @@ class ParseErr(Exception):
         if self.token.type == Type.EOF:
             print("[line " + str(self.token.line)+ "] Error At End: " + self.message)
         else:
-            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\':" + self.message)
+            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\': " + self.message)
 
 # Class for Scan Error
 class ScanErr(Exception):
@@ -39,7 +39,7 @@ class ScanErr(Exception):
         if self.token.type == Type.EOF:
             print("[line " + str(self.token.line) + "] Error At End: " + self.message)
         else:
-            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\':" + self.message)
+            print("[line " + str(self.token.line) + "] Error At \'" + self.token.lexeme + "\': " + self.message)
 
 # Jump error - used when jumping to scenes
 class JumpErr(Exception):

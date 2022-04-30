@@ -14,28 +14,28 @@ class Expr(ABC):
 # Visit expressions for all types
 class ExprVisitor(ABC):
     @abstractmethod
-    def visitAssignExpr(self, stmt: Expr):
+    def visitAssignExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitBinaryExpr(self, stmt: Expr):
+    def visitBinaryExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitCallExpr(self, stmt: Expr):
+    def visitCallExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitGroupingExpr(self, stmt: Expr):
+    def visitGroupingExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitLiteralExpr(self, stmt: Expr):
+    def visitLiteralExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitLogicalExpr(self, stmt: Expr):
+    def visitLogicalExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitUnaryExpr(self, stmt: Expr):
+    def visitUnaryExpr(self, expr: Expr):
         pass
     @abstractmethod
-    def visitVariableExpr(self, stmt: Expr):
+    def visitVariableExpr(self, expr: Expr):
         pass
 
 # Each of the following class definitions contains a constructor and

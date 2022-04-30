@@ -1,0 +1,5 @@
+config width 1000;
+config height 600;
+
+display "1000x600";
+waitClick();

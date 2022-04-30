@@ -18,13 +18,13 @@ def run(source: str) -> None:
     # for token in tokens:
     #     print(token)
     parser = Parser(tokens)
-    configs, statements = parser.parse()
+    configs, statements, hadErr = parser.parse()
+    if hadErr: return
     # for stmt in configs:
     #     print(ASTPrinter().print(stmt))
     # for stmt in statements:
     #     print(ASTPrinter().print(stmt))
-    if hadErr: return
-    interpreter.interpret(configs, statements)
+    hadRunErr = interpreter.interpret(configs, statements)
 
 
 def runFile(path: str) -> None:

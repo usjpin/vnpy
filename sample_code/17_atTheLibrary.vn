@@ -1,0 +1,363 @@
+config width 1000;
+config height 600;
+config volume 0.5;
+
+let library  = "assets/library.jpg";
+let librarian = "assets/librarian.png";
+let book = "assets/book.png";
+image show library;
+
+let libTheme = "assets/jazz.mp3";
+let bookTheme = "assets/lounge.mp3";
+
+scene begin {
+    display "It's a rather boring day at the library.";
+    waitClick();
+    display "At least, more boring than usual.";
+    waitClick();
+    display "You've got a book picked out called 'The Wonders of South Landia',";
+    waitClick();
+    display "an encyclopedia of what you can only assume to be a fictional country.";
+    waitClick();
+    display "It's rather strange, but the cover caught your eye so you figured, hey, why not?";
+    waitClick();
+    display "Only before reading it it might be better to get some context on this strange book.";
+    waitClick();
+    display "Maybe you should ask the librarian for some? He looks rather helpful.";
+    options {
+        case "Talk to the librarian." do jump libIntro;
+        case "Start reading on your own." do jump bookIntro;
+    }
+}
+scene bookIntro {
+    display "Sometimes, you figure, the best way to learn about something is to just jump straight in.";
+    waitClick();
+    display "Thus, you walk over to a nice quiet part of the library and sit down.";
+    waitClick();
+    image show "assets/book.jpg";
+    audio start bookTheme;
+    display "You can tell it's an old book, yet somehow it's held together fairly well, the leather binding being extremely durable.";
+    waitClick();
+    display "Taking a rudimentary flip through, well...the writing itself seems rather scarred in places.";
+    waitClick();
+    display "Needless to say, it looks nothing like a traditional book or encyclopedia.";
+    waitClick();
+    display "Something seems...off, just by holding it, but then again you've never held anything so old before.";
+    waitClick();
+    display "Maybe all old books are like that.";
+    waitClick();
+    display "You flip to the table of contents.";
+    waitClick();
+    jump book;
+}
+scene libIntro {
+    display "You have a lot of questions about the book that you feel probably wouldn't be answered just by reading it.";
+    waitClick();
+    display "so you decide to talk to the librarian first.";
+    waitClick();
+    display "After all, if he's no help, then you could always just sit back down and read on your own.";
+    waitClick();
+    image show "assets/librarian.png";
+    audio start libTheme;
+    display "You walk over to the man.";
+    waitClick();
+    display "Librarian: 'Why hello there.'";
+    waitClick();
+    display "'Hey, do you know anything about this book here?'";
+    waitClick();
+    display "Librarian: 'Oh. Hah. That one.'";
+    waitClick();
+    display "Librarian: 'I forgot we still had that one on the shelves.'";
+    waitClick();
+    display "Librarian: 'Could have sworn it was in storage...'";
+    waitClick();
+    display "Librarian: 'Ah well. You have a few questions?'";
+    waitClick();
+    jump lib;
+}
+scene bookMed {
+    display "Librarian: 'Well, if you have any more questions, feel free to ask.'";
+    waitClick();
+    image hide "assets/librarian.png";
+    image show "assets/library.jpg";
+    display "With perhaps more questions now than answers, you decide to find a quiet placea to sit down and read the book.";
+    waitClick();
+    display "Maybe you'll get more information from the source material itself.";
+    waitClick();
+    image hide "assets/library.jpg";
+    audio start bookTheme;
+    jump book;
+}
+scene book {
+    image show "assets/book.jpg";
+    display "'Now, what section should I read?'";
+    options {
+        case "'Chapter 1: General Geography'" do jump bookC1;
+        case "'Chapter 2: Flora and Fauna'" do jump bookC2;
+        case "'Chapter 3: History and Speculation'" do jump bookC3;
+        case "Talk to the librarian" do jump libMed;
+    }
+}
+scene bookC1 {
+    display "This seems to be the longest and most detailed section by far. There's no way you're ever going to get through the book if you read it all.";
+    waitClick();
+    display "You end up flipping through the pages aimlessly, looking at scribbles of abstract art resembling maps,";
+    waitClick();
+    display "and reading through random sentences.";
+    waitClick();
+    display "'...South Landia is centered around a large mountain, tall enough for snow to reach its peak.'";
+    waitClick();
+    display "'Despite my efforts, my men and I have not been able to make a successful venture up it...'";
+    waitClick();
+    display "'...and the men are tired from what we have dubbed the 'Night Hunts'...'";
+    waitClick();
+    display "'...Every few nights, in the trees or distant plains, or even at the mountain peak itself, we have spotted smoke...'";
+    waitClick();
+    display "'...Finnigan Realsit, one of our messengers, managed to catch up to the smoke by just before it completely vanished...'";
+    waitClick();
+    display "'...crazed, delusional for a few hours, and claiming visions of the new America...'";
+    waitClick();
+    display "'...fortunately he recovered, and...'";
+    waitClick();
+    display "'...Something about the butcheries back in the city, did the smell reminded him...'";
+    waitClick();
+    display "At the bottom of one of the 'maps' is what you can barely make out to be a compass.";
+    waitClick();
+    display "Each direction is labeled with what seems to be a different animal...";
+    waitClick();
+    display "...a pig for east, a cow--at least, you think it's a cow--for south, a chicken for west...";
+    waitClick();
+    display "...What puzzles you the most is north. It's hard to distinguish, but the picture associated with it almost looks...human.";
+    waitClick();
+    display "Despite your best attempts, none of the text makes any sense. You're not sure what you expected.";
+    waitClick();
+    display "You flip back to the table of contents.";
+    waitClick();
+    jump book;
+}
+scene bookC2 {
+    display "For such a visual subject, there appears to be little to no drawings in this section.";
+    waitClick();
+    display "There's lots of word descriptions, however. They all document unfamiliar and seemingly fantastical creatures.";
+    waitClick();
+    display "'...The Long Pig, so called for their abnormally long spines, perhaps resembles creatures of our own world the most.'";
+    waitClick();
+    display "'Still, even they are a far cry from the hooved animals back home. The squeals are...well, how do I even describe them...'";
+    waitClick();
+    display "'...perhaps their most odd quirk is their tendency to, well, jump off of cliffs--there's no better way to put it.'";
+    waitClick();
+    display "'The things drop down without much care or thought in the world, as if they had wings. But of course, they don't...'";
+    waitClick();
+    display "'...After fending off a flock of Spotted Birds, some of our men made their way to the bottom, and the sight was ghastly.'";
+    waitClick();
+    display "'Even more ghastly than the sight of it alive. I requested it not be brought back to camp. In fact, I had it burned.'";
+    waitClick();
+    display "'Just the sight of any of these creatures. They look fine at first, perhaps in the way the mind cannot comprehend yet the horror behind a shadow,'";
+    waitClick();
+    display "'But over time the more meticulous man will notice something quite unnatural and disturbing about them...'";
+    waitClick();
+    display "'...I warned him not to eat it. I warned him! But I cannot even blame him. Food has been running low, and the men are becoming wary.'";
+    waitClick();
+    display "'...We haven't seen him in a long time. The words he shouted as he ran off haunt me, because it was exactly what I said back then...'";
+    waitClick();
+    display "...Well, that was an enlightening section to read.";
+    waitClick();
+    display "A bit stunned, you flip back to the table of contents.";
+    waitClick();
+    jump book;
+}
+scene bookC3 {
+    display "In comparison to what you've seen so far, the writing here looks the most rushed and unfocused,";
+    waitClick();
+    display "as if whoever had been writing it was in a daze, or perhaps some sort of euphoria.";
+    waitClick();
+    display "You can only make out a few words and sentences.";
+    waitClick();
+    display "'...I can't believe it! Three...have been...shall be Gods!...since...and I have been assigned...'";
+    waitClick();
+    display "'...and so ironic it is, because...as if we should make the history of this place ourselves...'";
+    waitClick();
+    display "The handwriting at this point is so terrible it doesn't even resemble the original from the other sections.";
+    waitClick();
+    display "'...with a leather hide, thick...submerged it...nothing...explains why they were...kill...'";
+    waitClick();
+    display "'...could even be a predecessor to the Hide Pigs...see them hiding around these flowers...'";
+    waitClick();
+    display "'...now that I think about it...steak...he would find them...and then that was it...'";
+    waitClick();
+    display "'...mixing, something about mixing...now I begin to see...like, a Chimera...'";
+    waitClick();
+    display "'...I want to go back...grow them...the world would be a better place...'";
+    waitClick();
+    display "'...like a Chimera...all one...all one...one...no difference...'";
+    waitClick();
+    display "'...man and beast are all equal under the eyes of God.'";
+    waitClick();
+    display "...Well, that was a headache to read. Had the text gone any farther you would have needed a magnifying glass.";
+    waitClick();
+    display "You turn back to the table of contents, eyes adjusting to normal lettering.";
+    waitClick();
+    jump book;
+}
+scene libMed {
+    display "On second thought, this book seems to be a lot more of a handful than you bargained for.";
+    waitClick();
+    image hide "assets/book.jpg";
+    image show "assets/library.jpg";
+    display "Perhaps it would be better to ask the librarian for his take.";
+    waitClick();
+    audio start libTheme;
+    jump lib;
+}
+scene lib {
+    image show "assets/librarian.png";
+    display "'Yeah, so about this book...'";
+    options {
+        case "'Who wrote it?'" do jump libQ1;
+        case "'What exactly is South Landia?'" do jump libQ2;
+        case "'This book is fictional, right?'" do jump libQ3;
+        case "'Nevermind.'" do jump bookMed;
+    }
+}
+scene libQ1 {
+    display "'It doesn't say the author's name on the cover.'";
+    waitClick();
+    display "Librarian: 'Ah, there's a fascinating story behind the answer.'";
+    waitClick();
+    display "Librarian: 'Most scholars believe it was written by one Sir Sirloin Steak of England in 1615.'";
+    waitClick();
+    display "'Sir Sirloin Steak? You're joking.'";
+    waitClick();
+    display "Librarian: 'Not at all. As the story goes, he named himself that after eating one.'";
+    waitClick();
+    display "Librarian: 'According to him, it was so good, he temporarily ascended to a higher plane of existence and saw many great wonders of the world.'";
+    waitClick();
+    display "Librarian: 'One of them being, well...'";
+    waitClick();
+    display "'South Landia?'";
+    waitClick();
+    display "Librarian: 'Precisely.'";
+    waitClick();
+    display "'I'm going to be honest, that was the worst answer I've ever heard in my life.'";
+    waitClick();
+    display "'You didn't tell me much about the guy, except for the fact he liked beef.'";
+    waitClick();
+    display "Librarian: 'That's because if I told you more you wouldn't believe me.'";
+    waitClick();
+    display "'Try me.'";
+    waitClick();
+    display "Librarian: 'Well, if you insist. In 1610--the year he had that fated steak--he apparently hired a crew to venture out'";
+    waitClick();
+    display "Librarian: 'and find the mythical land. Spent all of his life savings on it.'";
+    waitClick();
+    display "'Did he ever find it?'";
+    waitClick();
+    display "Librarian: 'Well, it's hard to say. He and the 200 men he hired were never seen again.'";
+    waitClick();
+    display "Librarian: 'The last trace of his existence is the book you're holding in your hands right now, found washed up on an English shore.'";
+    waitClick();
+    display "'Spooky. How did a book survive floating in the ocean?'";
+    waitClick();
+    display "Librarian: 'Hard to say. That unanswerability of that question is the reason many people dismiss the story as a hoax.'";
+    waitClick();
+    display "'Yeah, as if the rest of the story is so believable. Sirloin Steak?'";
+    waitClick();
+    display "Librarian: 'Yes. Although there is much intrigue, most likely Sir Sirloin Steak nor his expedition ever existed.'";
+    waitClick();
+    display "'Makes sense. Although...hmm...'";
+    waitClick();
+    display "Librarian: 'Yes?'";
+    waitClick();
+    display "'Nevermind. Just a fleeting thought.'";
+    waitClick();
+    display "Librarian: 'In that case, do you have any more questions?'";
+    waitClick();
+    jump lib;
+}
+scene libQ2{
+    display "Librarian: 'It's certainly not a country you'll see on a modern map, that's for sure.'";
+    waitClick();
+    display "Librarian: 'Many speculate it's a lost land, like Atlantis...'";
+    waitClick();
+    display "Librarian: '...Except a lot less cool.'";
+    waitClick();
+    display "Librarian: 'Others say it's all a metaphor.'";
+    waitClick();
+    display "'A metaphor.'";
+    waitClick();
+    display "Librarian: 'That's right. Something representing the human mind, and all the curiosity and wonder within it.'";
+    waitClick();
+    display "Librarian: 'Or maybe it has something to do with eating. Scholarly opinions are mixed.'";
+    waitClick();
+    display "'Any better explanations?'";
+    waitClick();
+    display "Librarian: 'If you'll look through the book, a lot of what is described of the place resembles common Western European characteristics.'";
+    waitClick();
+    display "'Maybe it's an actual country then, just misnamed?'";
+    waitClick();
+    display "Librarian: 'Highly unlikely. While there are matches, the problem is is that there are too many of them.'";
+    waitClick();
+    display "Librarian: 'There's aspects from England, Spain, Germany--'";
+    waitClick();
+    display "Librarian: '--Even some of the Nordic countries. No single stretch of land in history has been able to fit every bill.'";
+    waitClick();
+    display "'Like a Frankenstein's monster?'";
+    waitClick();
+    display "Librarian: 'Exactly, and perhaps equally as fictional, although that's a topic for another discussion.'";
+    waitClick();
+    display "'I don't know. With what you've said, I get the impression it's all fake.'";
+    waitClick();
+    display "Librarian: 'Maybe so. Maybe so.'";
+    waitClick();
+    display "Librarian: 'Did you have anything else to ask?'";
+    waitClick();
+    jump lib;
+}
+
+scene libQ3 {
+    display "Librarian: 'That's a contentious question. There are believers and nonbelievers, as there are for many things.'";
+    waitClick();
+    display "'Could a believer point on a map where this magical South Landia is?'";
+    waitClick();
+    display "Librarian: 'Why, yes actually!'";
+    waitClick();
+    display "'Oh?'";
+    waitClick();
+    display "Librarian: 'Some will point to Iceland. Others will point to Russia. Others will strain their finger to tap on Texas.'";
+    waitClick();
+    display "'Oh. One of those situations.'";
+    waitClick();
+    display "Librarian: 'Indeed. Belief is shared, but details are a bit more varied.'";
+    waitClick();
+    display "'Why do they even care where it is in the first place? Sounds kind of lame.'";
+    waitClick();
+    display "Librarian: 'What do you mean?'";
+    waitClick();
+    display "'Well, I'm assuming this mystical South Landia is at least the size of an entire state or country. Maybe even more, if it has so many 'Wonders' in it.'";
+    waitClick();
+    display "'So if that's the case, it's not like some lost Aztec city.'";
+    waitClick();
+    display "'It's gotta be huge.'";
+    waitClick();
+    display "'If it was really Iceland, or Russia, or wherever-'";
+    waitClick();
+    display "Librarian: 'Texas.'";
+    waitClick();
+    display "'Right. If it was really one of those places, it would be the *entire* place, would it not?'";
+    waitClick();
+    display "'Therefore, we would have already discovered it. Just by a different name. And I don't know about you, but none of the places'";
+    waitClick();
+    display "'you listed are so interesting as to have all this folklegend surrounding them.'";
+    waitClick();
+    display "Librarian: 'Hmm, that may be so. But it may also be simply that the lay of the land has changed over the years.'";
+    waitClick();
+    display "Librarian: 'Perhaps once upon a time Texas used to be as described in the book.'";
+    waitClick();
+    display "'Perhaps. Or perhaps it's all fake.'";
+    waitClick();
+    display "Librarian: 'Well, regardless, do you have any more questions?'";
+    waitClick();
+    jump lib;
+}
+
+jump begin;

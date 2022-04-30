@@ -1,4 +1,5 @@
 from typing import Any, List
+
 from err import ScanErr
 from tok import Token, Type
 
@@ -32,7 +33,7 @@ class Scanner:
         'if': Type.IF,
         'nil': Type.NIL,
         'or': Type.OR,
-        'print': Type.PRINT,
+        'log': Type.PRINT,
         'return': Type.RETURN,
         'true': Type.TRUE,
         'while': Type.WHILE
