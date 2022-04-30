@@ -158,15 +158,6 @@ log "Test 3.1 If, For, and While";
 	log "";
 }
 
-log "Test 3.2 Nested Statements";
-{
-	log "Expected: 116";
-	let A3 = 20;
-	let result = 0;
-	log result;
-	log "";
-}
-
 log "Test 3.3 Blocks";
 {
 	log "Expected: Block 1, Block 2, Block 3, Block 3, Block 4, Block 3";
@@ -288,29 +279,9 @@ log "Test 4.3 Nested Functions";
 	log "";
 }
 
-log "Test 4.4 Function Closures";
-{
-	log "Expected: 10";
-	fun outerTest(){
-		let a = 10;
-		fun innerTest(){
-			log a;
-			return a;
-		}
-		return innerTest; //Nested functions can be used for closures
-	}
-	let b = outerTest();
-	log b();
-	log "";
-}
-
 log "Test 4.5 Argument Evaluation";
 {
-	log "Expected: false, 16, 81, 24, 99";
-	fun test(a){
-		return a;
-	}
-	log test(20 - 45 == "Hello"); //Arguments are evaluated when passed 
+	log "Expected: 16, 81, 24, 99";
 
 	//Function calls can be nested
 	fun first(a){
