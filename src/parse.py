@@ -8,12 +8,16 @@ from err import ParseErr
 # For use in synchronize
 returnCases = [Type.SCENE, Type.FUN, Type.SET, Type.IF, Type.WHILE, Type.PRINT, Type.RETURN, Type.IMAGE, Type.DISPLAY, Type.OPTIONS, Type.AUDIO, Type.WAIT, Type.JUMP, Type.EXIT, Type.LOG]
 
+# Parser class - takes in a list of tokens and parses the list.
 class Parser:
     current = 0
 
+    # Constructor - initializes the tokens variable.
     def __init__(self, tokens: List[Token]):
         self.tokens = tokens
 
+    # Main parse function. While there are tokens to parse, append the 
+    # configuration first, then the statements parsed to the end of the list.
     def parse(self) -> List[Stmt]:
         # Check Error Handling
         configs = []
@@ -28,9 +32,11 @@ class Parser:
             #print(statements[len(statements)-1])
         return configs, statements
 
+    # Expression, returns assignment.
     def expression(self) -> Expr:
         return self.assignment()
 
+    
     def config(self) -> Stmt:
         # Need Error Handling
         if self.match(Type.WIDTH):
