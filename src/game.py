@@ -25,7 +25,7 @@ class VNGame:
         # Clear the Screen
         pass
 
-    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
+    def popOptions(self, options: List[Tuple[str, Stmt]]) -> None:
         # Clear Previous Options
         # Display Options (store locations of each)
         pass
@@ -43,9 +43,9 @@ class VNConsoleGame(VNGame):
     def display(self, text: str) -> None:
         print(text)
 
-    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
+    def popOptions(self, options: List[Tuple[str, Stmt]]) -> None:
         for idx, option in enumerate(options):
-            print(str(idx+1) + ". " + option[0].literal)
+            print(str(idx+1) + ". " + option[0])
         print("Pick An Option (Enter a Number):")
         valid = False
         while not valid:
@@ -59,7 +59,7 @@ class VNConsoleGame(VNGame):
                 valid = False
             if valid == False:
                 print("Incorrect Input, Pick Again:")
-        return options[choice]
+        return options[choice][1]
 
     def delay(self, value: int) -> None:
         i = 0
