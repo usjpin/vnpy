@@ -1,7 +1,9 @@
 from enum import Enum
 from typing import Any
 
+# Declare enum of token types
 class Type(Enum):
+    # List of special characters
     LEFT_PAREN = '('
     RIGHT_PAREN = ')'
     LEFT_BRACE = '{'
@@ -13,6 +15,8 @@ class Type(Enum):
     SEMICOLON = ';'
     SLASH = '/'
     STAR = '*'
+
+    # List of comparison operators
     BANG = '!'
     BANG_EQUAL = '!='
     EQUAL = '='
@@ -22,10 +26,12 @@ class Type(Enum):
     LESS = '<'
     LESS_EQUAL = '<='
 
+    # List of data types
     IDENTIFIER = 'identifier'
     STRING = 'string'
     NUMBER = 'number'
 
+    # List of reserved keywords
     AND = 'and'
     ELSE = 'else'
     FALSE = 'false'
@@ -39,7 +45,10 @@ class Type(Enum):
     TRUE = 'true'
     WHILE = 'while'
 
+    # End of file
     EOF = ''
+
+    # VNPy exclusive tokens
 
     # Config
     CONFIG = 'config'
@@ -47,8 +56,10 @@ class Type(Enum):
     HEIGHT = 'height'
     MODE = 'mode'
     VOLUME = 'volume'
+
     # Declaration
     SCENE = 'scene'
+
     # Statement
     IMAGE = 'image'
     DISPLAY = 'display'
@@ -57,6 +68,7 @@ class Type(Enum):
     WAIT = 'wait'
     JUMP = 'jump'
     EXIT = 'exit'
+
     # Other
     SHOW = 'show'
     HIDE = 'hide'
@@ -66,12 +78,14 @@ class Type(Enum):
     DO = 'do'
     DELAY = 'delay'
 
-
+# Token class
 class Token:
+    # Constructor to create general token
     def __init__(self, type: Type, lexeme: str, literal: Any, line: int):
         self.type = type
         self.lexeme = lexeme
         self.literal = literal
         self.line = line
+    # toString operator
     def __str__(self) -> str:
         return f'{self.type} {self.lexeme} {self.literal}'
