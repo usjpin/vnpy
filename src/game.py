@@ -11,8 +11,10 @@ FONT_COLOR = (0, 0, 0)
 
 from stmt import *
 
+# Overall VNGame class
 class VNGame:
 
+    # Default constructor
     def __init__(self) -> None:
         pass
 
@@ -25,7 +27,7 @@ class VNGame:
         # Clear the Screen
         pass
 
-    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
+    def popOptions(self, options: List[Tuple[str, Stmt]]) -> None:
         # Clear Previous Options
         # Display Options (store locations of each)
         pass
@@ -34,20 +36,25 @@ class VNGame:
         # Delay (Check For Events While At it (like quit))
         pass
 
-
+# VNConsoleGame class
 class VNConsoleGame(VNGame):
 
+    # Default constructor
     def __init__(self) -> None:
         pass
 
+    # Prints given text
     def display(self, text: str) -> None:
         print(text)
 
-    def popOptions(self, options: List[Tuple[Token, Stmt]]) -> None:
+    # Displays all options given in list
+    def popOptions(self, options: List[Tuple[str, Stmt]]) -> None:
         for idx, option in enumerate(options):
-            print(str(idx+1) + ". " + option[0].literal)
+            print(str(idx+1) + ". " + option[0])
         print("Pick An Option (Enter a Number):")
         valid = False
+        # Prints each option to the console and takes input
+        # for choice.
         while not valid:
             valid = True
             print(">> Option #", end = "")
@@ -59,25 +66,30 @@ class VNConsoleGame(VNGame):
                 valid = False
             if valid == False:
                 print("Incorrect Input, Pick Again:")
-        return options[choice]
+        return options[choice][1]
 
+    # Delays the given value of seconds
     def delay(self, value: int) -> None:
         i = 0
         while i < value:
             i += 1
             time.sleep(1)
 
+    # Renders the scene
     def render(self) -> None:
         pass
 
+# VNGUIGame class
 class VNGUIGame(VNGame):
 
+    # Constructor given config variables
     def __init__(self, width: int, height: int, volume: float):
         self.width = width
         self.height = height
         self.volume = volume
         self.imagePaths = []
         self.imageSurfaces = []
+        # Initialized through Pygame
         pygame.init()
         pygame.mixer.init()
         pygame.mixer.music.set_volume(self.volume)
@@ -85,6 +97,7 @@ class VNGUIGame(VNGame):
             (self.width, self.height)
         )
 
+    # Shows the image specified through path
     def showImage(self, path: str = None):
         if path is not None:
             self.imagePaths.append(path)
@@ -95,6 +108,7 @@ class VNGUIGame(VNGame):
         for imageSurface in self.imageSurfaces:
             self.screen.blit(imageSurface, (0, 0))
 
+    # Hides the image specified through path
     def hideImage(self, path: str):
         if path not in self.imagePaths:
             return
@@ -103,16 +117,20 @@ class VNGUIGame(VNGame):
         self.imageSurfaces.pop(idx)
         self.showImage()
 
+    # Starts the audio specified through path
     def startAudio(self, path: str):
         pygame.mixer.music.load(path)
         pygame.mixer.music.play()
 
+    # Stops the current audio
     def stopAudio(self):
         pygame.mixer.music.stop()
 
+    # Displays the game
     def display(self, text: str = None):
         x = int(self.width//50)
         y = int(self.height - self.height // 4)
+        # Displays all text with styling based on UI screen size
         if text is not None:
             self.displayText = text
             w = self.width - 2 * x
@@ -122,7 +140,7 @@ class VNGUIGame(VNGame):
             s.set_alpha(256)
             pygame.draw.rect(s, OPTION_COLOR, [0, 0, w, h], border_radius = r)
 
-            #for text wrapping
+            # For text wrapping
             fontSize = h/3.5
             charsPerLine = int(w // (fontSize * 1/2))
             font = pygame.font.SysFont(FONT_FAMILY, int(fontSize))
@@ -136,6 +154,7 @@ class VNGUIGame(VNGame):
         if self.displaySurface is not None:
             self.screen.blit(self.displaySurface, (x, y))
 
+    # Delays specified number of seconds
     def delay(self, number: int):
         i = 0
         while i < number * 10:
@@ -143,6 +162,7 @@ class VNGUIGame(VNGame):
             i += 1
             time.sleep(0.1)
 
+    # Pops all options on UI
     def popOptions(self, options: List[Tuple[str, Stmt]]) -> Stmt:
         while True:
             events = self.checkEvents()
@@ -152,6 +172,7 @@ class VNGUIGame(VNGame):
             r = int(self.width//25)
             x = int(0.05 * self.width)
             y = int(self.height//5)
+            # Iterates through options dict and displays them on UI
             for idx, option in enumerate(options):
                 mux, muy = pygame.mouse.get_pos()
                 mx = mux - x
@@ -172,35 +193,44 @@ class VNGUIGame(VNGame):
                 y += h + self.height//50
             self.render()
 
+    # Gets next user click
     def getClick(self):
         while True:
             events = self.checkEvents()
+            # Waits until the next click to return
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     return
             time.sleep(0.01)
 
+    # Gets next user key press
     def getKey(self):
         while True:
             events = self.checkEvents()
+            # Waits until next key press to return
             for event in events:
                 if event.type == pygame.KEYDOWN:
                     return
             time.sleep(0.01)
 
+    # Checks the next user events
     def checkEvents(self):
         events = pygame.event.get()
+        # Quitting the VN
         for event in events:
             if event.type == pygame.QUIT:
                 sys.exit(0)
         return events
 
+    # Renders the UI using Pygame
     def render(self):
         pygame.display.flip()
 
 
 #from PIL import Image
-# For later?
+
+# Not currently implemented - a way to view images 
+# through ASCII art on the console
 def to_ascii(path):
     img = Image.open(path)
     width, height = img.size

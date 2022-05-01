@@ -1,44 +1,50 @@
-S0 -> Config* Decl* EOF
+// Entry Point
+S0 -> Config* Declaration* EOF
 
-Config -> "config" ConfType ConfValue ";"
-ConfType -> "width" | "height" | "mode" | "volume"
-ConfValue -> num | string
+// Configs
+Config -> "config" ConfigType ConfigValue ";"
+ConfigType -> "width" | "height" | "mode" | "volume"
+ConfigValue -> number | string
 
-Decl -> SetDecl | FunDecl | SceneDecl | Stmt
-SetDecl -> "let" id ( "=" Expr )? ";"
-FunDecl -> "fun" Func
-Func -> id "(" Params? ")" BlockStmt
-Params -> id ( "," id )*
-Args -> Expr ( "," Expr )*
-SceneDecl -> "scene" id BlockStmt
+// Declarations
+Declaration -> LetDeclaration | FunDeclaration | SceneDeclaration | Statement
+LetDeclaration -> "let" identifier ( "=" Expression )? ";"
+FunDeclaration -> "fun" Function
+Function -> identifier "(" Params? ")" BlockStatement
+Params -> identifier ( "," identifier )*
+SceneDeclaration -> "scene" identifier BlockStatement
 
-Stmt -> ExprStmt | IfStmt | ReturnStmt 
-    | WhileStmt | BlockStmt | SpecialStmt
-ExprStmt -> Expr ";"
-IfStmt -> "if" "(" Expr ")" Stmt ( "else Stmt )?
-ReturnStmt -> "return" Stmt 
-WhileStmt -> "while" "(" Expr ")" Stmt
-BlockStmt -> "{" Decl* "}"
+// Statements
+Statement -> ExpressionStatement | IfStatement | ReturnStatement 
+    | WhileStatement | BlockStatement | SpecialStatement
+ExpressionStatement -> Expression ";"
+IfStatement -> "if" "(" Expression ")" Statement ( "else Statement )?
+ReturnStatement -> "return" ExpressionStatement
+WhileStatement -> "while" "(" Expression ")" Statement
+BlockStatement -> "{" Declaration* "}"
 
-SpecialStmt -> ImageStmt | DisplayStmt | OptionsStmt 
-    | AudioStmt | WaitStmt | JumpStmt | ExitStmt
-ImageStmt -> "image ( "show" | "hide" ) Expr ";"
-DisplayStmt -> "display" Expr ";"
-OptionsStmt -> "options" "{" Case* "}"
-Case -> "case" Expr "do" Stmt ";"
-AudioStmt -> "audio" ( "start" Expr | "stop" ) ";"
-WaitStmt -> "wait" Expr ";"
-JumpStmt -> "jump" Expr ";"
+// Special Statements
+SpecialStatatement -> ImageStatement | DisplayStatement | OptionsStatement
+    | AudioStatement | WaitStatement | JumpStatement | ExitStatement
+ImageStatement -> "image ( "show" | "hide" ) Expression ";"
+DisplayStatement -> "display" Expression ";"
+OptionsStatement -> "options" "{" Case+ "}"
+Case -> "case" Expression "do" Statement ";"
+AudioStatement -> "audio" ( "start" Expression | "stop" ) ";"
+WaitStatement -> "delay" Expression ";"
+JumpStatement -> "jump" Expression ";"
 
-Expr -> A
-A -> id "=" A | Or
+// Expressions
+Expression -> Assignment
+Assignment -> identifier "=" Assignment | Or
 Or -> And ( "or" And )*
 And -> Eq ( "and" Eq )*
 Eq -> Comp ( ( "!=" | "==" ) Comp )*
 Comp -> Term ( ( ">" | ">=" | "<" | "<=" ) Term )*
 Term -> Fact ( ( "-" | "+" ) Fac )*
-Fact -> U ( ( "/" | "*" ) U )*
-U -> ( "!" | "-" ) U | C
-C -> Prim ( "(" Args ")" )*
-Prim -> "true" | "false" | "nil" | num 
-    | string | id | "(" Expr ")"
+Fact -> Unary ( ( "/" | "*" ) Unary )*
+Unary -> ( "!" | "-" ) Unary | Call
+Call -> Prim ( "(" Args ")" )*
+Args -> Expression ( "," Expression )*
+Prim -> "true" | "false" | "nil" | number
+string | identifier | "(" Expression ")"
