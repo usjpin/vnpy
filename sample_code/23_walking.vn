@@ -73,23 +73,5 @@ while (times > 0){
     times = times - 1;
 }
 
-display "Stop 1.";
-delay 2;
-
-times = 5;
-while (times > 0){
-    animation("walking", 29);
-    times = times - 1;
-}
-
-display "Stop 2.";
-delay 2;
-
-times = 3;
-while (times > 0){
-    animation("walking", 29);
-    times = times - 1;
-}
-
 display "Finished Walking.";
 delay 2;
