@@ -723,8 +723,8 @@ ConfigValue -> number | string
 <br><br>
 <div class="codehilite"><pre>
 // Declarations
-Declaration -> LetDeclaration | FunDeclaration | SceneDeclaration | Statement
-LetDeclaration -> "let" identifier ( "=" Expression )? ";"
+Declaration -> SetDeclaration | FunDeclaration | SceneDeclaration | Statement
+SetDeclaration -> "let" identifier ( "=" Expression )? ";"
 FunDeclaration -> "fun" Function
 Function -> identifier "(" Params? ")" BlockStatement
 Params -> identifier ( "," identifier )*
@@ -745,13 +745,13 @@ BlockStatement -> "{" Declaration* "}"
 <div class="codehilite"><pre>
 // Special Statements
 SpecialStatatement -> ImageStatement | DisplayStatement | OptionsStatement
-    | AudioStatement | WaitStatement | JumpStatement | ExitStatement
+    | AudioStatement | DelayStatement | JumpStatement | ExitStatement
 ImageStatement -> "image ( "show" | "hide" ) Expression ";"
 DisplayStatement -> "display" Expression ";"
 OptionsStatement -> "options" "{" Case+ "}"
 Case -> "case" Expression "do" Statement ";"
 AudioStatement -> "audio" ( "start" Expression | "stop" ) ";"
-WaitStatement -> "delay" Expression ";"
+DelayStatement -> "delay" Expression ";"
 JumpStatement -> "jump" Expression ";"
 ExitStatement -> "exit" ";"
 </pre></div>
