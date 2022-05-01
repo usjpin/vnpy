@@ -33,6 +33,7 @@ Case -> "case" Expression "do" Statement ";"
 AudioStatement -> "audio" ( "start" Expression | "stop" ) ";"
 WaitStatement -> "delay" Expression ";"
 JumpStatement -> "jump" Expression ";"
+ExitStatement -> "exit" ";"
 
 // Expressions
 Expression -> Assignment
