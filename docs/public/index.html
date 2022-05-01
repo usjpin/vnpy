@@ -705,9 +705,75 @@
 <p>A good practice is to have separate directories for images and audio, or possibly even further subdivisions beyond that (as discussed in <strong>Coding Conventions</strong>). For example, a visual novel that has different facial expressions for each character may have a “characters” subdirectory with further subdirectories inside of it, one for each character and containing all of the character’s sprites. The same applies to animations, with a single directory for each animation containing the animation’s frames.</p>
 
 <!--<h3><small>7.4</small>Image Editing</h3> -->
+<br id="grammar">
+<h2><small>8</small>Vnpy Grammar</h2>
+<p>For a more in-depth view of how the Vnpy .vn files are understood by the interpreter, we have provided the full grammar of the language below:</p>
+
+<div class="codehilite" style="margin-top:71px;"><pre>
+// Entry Point
+S0 -> Config* Declaration* EOF
+</pre></div>
+<br><br>
+<div class="codehilite"><pre>
+// Configs
+Config -> "config" ConfigType ConfigValue ";"
+ConfigType -> "width" | "height" | "mode" | "volume"
+ConfigValue -> number | string
+</pre></div>
+<br><br>
+<div class="codehilite"><pre>
+// Declarations
+Declaration -> LetDeclaration | FunDeclaration | SceneDeclaration | Statement
+LetDeclaration -> "let" identifier ( "=" Expression )? ";"
+FunDeclaration -> "fun" Function
+Function -> identifier "(" Params? ")" BlockStatement
+Params -> identifier ( "," identifier )*
+SceneDeclaration -> "scene" identifier BlockStatement
+</pre></div>
+<br><br>
+<div class="codehilite"><pre>
+// Statements
+Statement -> ExpressionStatement | IfStatement | ReturnStatement 
+    | WhileStatement | BlockStatement | SpecialStatement
+ExpressionStatement -> Expression ";"
+IfStatement -> "if" "(" Expression ")" Statement ( "else Statement )?
+ReturnStatement -> "return" Statement
+WhileStatement -> "while" "(" Expression ")" Statement
+BlockStatement -> "{" Declaration* "}"
+</pre></div>
+<br><br>
+<div class="codehilite"><pre>
+// Special Statements
+SpecialStatatement -> ImageStatement | DisplayStatement | OptionsStatement
+    | AudioStatement | WaitStatement | JumpStatement | ExitStatement
+ImageStatement -> "image ( "show" | "hide" ) Expression ";"
+DisplayStatement -> "display" Expression ";"
+OptionsStatement -> "options" "{" Case* "}"
+Case -> "case" Expression "do" Statement ";"
+AudioStatement -> "audio" ( "start" Expression | "stop" ) ";"
+WaitStatement -> "wait" Expression ";"
+JumpStatement -> "jump" Expression ";"
+</pre></div>
+<br><br>
+<div class="codehilite"><pre>
+// Expressions
+Expression -> Assignment
+Assignment -> identifier "=" Assignment | Or
+Or -> And ( "or" And )*
+And -> Eq ( "and" Eq )*
+Eq -> Comp ( ( "!=" | "==" ) Comp )*
+Comp -> Term ( ( ">" | ">=" | "<" | "<=" ) Term )*
+Term -> Fact ( ( "-" | "+" ) Fac )*
+Fact -> Unary ( ( "/" | "*" ) Unary )*
+Unary -> ( "!" | "-" ) Unary | Call
+Call -> Prim ( "(" Args ")" )*
+Args -> Expression ( "," Expression )*
+Prim -> "true" | "false" | "nil" | number
+string | identifier | "(" Expression ")"
+  </pre></div>
+
 </article>
 
 </div>
-
 
 </body></html>
