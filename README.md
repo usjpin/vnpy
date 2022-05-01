@@ -16,4 +16,4 @@ Installation of dependencies (pygame) can be done by running: `pip install -r re
 To run the program, simply use `py vn.py [filename]`.
 
 ## Sample Test Code
-The sample test code discussed in the documentation are hosting in the `/sample_code` folder. Please use these examples from the root directory as: `py vn.py sample_code/<file_name>`. The assets for these files are store in the `/assets` folder.
+The sample test code discussed in the documentation are hosting in the `/sample_code` folder. Please use these examples from the root directory as: `py vn.py sample_code/<file_name>`. The assets for these programs are store in the `/assets` folder.
