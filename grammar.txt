@@ -19,7 +19,7 @@ Statement -> ExpressionStatement | IfStatement | ReturnStatement
     | WhileStatement | BlockStatement | SpecialStatement
 ExpressionStatement -> Expression ";"
 IfStatement -> "if" "(" Expression ")" Statement ( "else Statement )?
-ReturnStatement -> "return" Statement
+ReturnStatement -> "return" ExpressionStatement
 WhileStatement -> "while" "(" Expression ")" Statement
 BlockStatement -> "{" Declaration* "}"
 
@@ -28,10 +28,10 @@ SpecialStatatement -> ImageStatement | DisplayStatement | OptionsStatement
     | AudioStatement | WaitStatement | JumpStatement | ExitStatement
 ImageStatement -> "image ( "show" | "hide" ) Expression ";"
 DisplayStatement -> "display" Expression ";"
-OptionsStatement -> "options" "{" Case* "}"
+OptionsStatement -> "options" "{" Case+ "}"
 Case -> "case" Expression "do" Statement ";"
 AudioStatement -> "audio" ( "start" Expression | "stop" ) ";"
-WaitStatement -> "wait" Expression ";"
+WaitStatement -> "delay" Expression ";"
 JumpStatement -> "jump" Expression ";"
 
 // Expressions
